@@ -14,7 +14,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="abort_button">Abort</string>
+    <string name="cancel_button">Cancel</string>
 
     <string name="login_button">Log in</string>
     <string name="register_button">Register</string>
