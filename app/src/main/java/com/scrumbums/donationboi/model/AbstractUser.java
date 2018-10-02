@@ -7,12 +7,12 @@ package com.scrumbums.donationboi.model;
  * @author jdierberger3
  * @version 1.0
  */
-abstract class AbstractUser {
+public abstract class AbstractUser {
 
     /**
      * Regular expression for a valid email address.
      */
-    private static final String EMAILREGEX = "(\\w|\\d)+@(\\w|\\d)+.com";
+    public static final String EMAILREGEX = "(\\w|\\d)+@(\\w|\\d)+.com";
 
     private final String username;
     private String name;
@@ -77,6 +77,20 @@ abstract class AbstractUser {
      */
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * Set the password of this user.
+     * @param password The new password for this user. Must be non-null.
+     */
+    public void setPassword(String password) {
+        if (password != null && password.length() >= 4) {
+            this.password = password;
+        }
+    }
+
+    public boolean verifyPassword(String password) {
+        return this.password.equals(password);
     }
 
     // TODO : Serialization?

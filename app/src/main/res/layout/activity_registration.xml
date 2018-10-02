@@ -113,14 +113,19 @@
 
         <Button
             android:id="@+id/button_register"
-            android:layout_width="173dp"
-            android:layout_height="67dp"
+            android:layout_width="110dp"
+            android:layout_height="58dp"
             android:text="Register" />
+
+        <Space
+            android:layout_width="94dp"
+            android:layout_height="25dp"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/button_cancel"
-            android:layout_width="176dp"
-            android:layout_height="67dp"
+            android:layout_width="110dp"
+            android:layout_height="58dp"
             android:text="Cancel" />
 
     </LinearLayout>
