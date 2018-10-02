@@ -15,8 +15,8 @@ public class Employee extends AbstractUser {
      * @param name Name of the Employee.
      * @param email Email address for the Employee.
      */
-    public Employee(String username, String name, String email) {
-        super(username, name, email);
+    public Employee(String username, String name, String email, String password) {
+        super(username, name, email, password);
     }
 
 }

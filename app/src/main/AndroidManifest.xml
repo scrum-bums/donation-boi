@@ -17,13 +17,22 @@
         <activity
             android:name=".controllers.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".controllers.MainActivity" >
+        <activity android:name=".controllers.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.ApplicationActivity"></activity>
+        <activity android:name=".controllers.ApplicationActivity" />
+        <activity
+            android:name=".controllers.RegistrationActivity"
+            android:label="@string/title_activity_registration"
+            android:parentActivityName=".controllers.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.scrumbums.donationboi.controllers.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

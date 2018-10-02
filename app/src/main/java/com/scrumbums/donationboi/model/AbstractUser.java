@@ -17,6 +17,7 @@ abstract class AbstractUser {
     private final String username;
     private String name;
     private String emailAddress;
+    private String password;
 
     /**
      * Create an AbstractUser.
@@ -24,10 +25,11 @@ abstract class AbstractUser {
      * @param name The name of this user.
      * @param emailAddress The email address of this user.
      */
-    AbstractUser(String username, String name, String emailAddress) {
+    AbstractUser(String username, String name, String emailAddress, String password) {
         this.username = username;
         this.name = name;
         this.emailAddress = emailAddress;
+        this.password = password; // TODO : not this lol
     }
 
     /**
