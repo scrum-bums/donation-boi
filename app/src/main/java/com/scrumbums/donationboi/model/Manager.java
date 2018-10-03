@@ -7,7 +7,7 @@ package com.scrumbums.donationboi.model;
  * @author jdierberger3
  * @version 1.0
  */
-public class Manager extends AbstractUser {
+public class Manager extends Employee {
 
     /**
      * Create a Manager.

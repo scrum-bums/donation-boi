@@ -12,7 +12,7 @@ public abstract class AbstractUser {
     /**
      * Regular expression for a valid email address.
      */
-    public static final String EMAILREGEX = "(\\w|\\d)+@(\\w|\\d)+.com";
+    public static final String EMAILREGEX = "(\\w|\\d)+@(\\w|\\d)+.(\\w|\\d)+";
 
     private final String username;
     private String name;
@@ -58,7 +58,6 @@ public abstract class AbstractUser {
      */
     public void setEmailAddress(String email) {
         if (email != null && email.matches(EMAILREGEX)) {
-            // TODO : Verify email address?
             this.emailAddress = email;
         }
     }

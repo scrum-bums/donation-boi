@@ -11,123 +11,129 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".controllers.RegistrationActivity">
 
-    <Space
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="27dp" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/label_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reg_username" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/field_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="Enter username"
-        android:ems="10"
-        android:hint="Enter username"
-        android:inputType="textPersonName"
-        android:autofillHints="" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="27dp" />
+            <TextView
+                android:id="@+id/label_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reg_username" />
 
-    <TextView
-        android:id="@+id/label_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reg_full_name" />
+            <EditText
+                android:id="@+id/field_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/field_name"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:contentDescription="Enter your name"
-        android:ems="10"
-        android:hint="Enter your name"
-        android:inputType="textPersonName" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="27dp" />
+            <TextView
+                android:id="@+id/label_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reg_email_address" />
 
-    <TextView
-        android:id="@+id/label_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reg_email_address" />
+            <EditText
+                android:id="@+id/field_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/field_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="Enter your email address"
-        android:ems="10"
-        android:hint="Enter your email address"
-        android:inputType="textEmailAddress" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="27dp" />
+            <TextView
+                android:id="@+id/label_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reg_full_name" />
 
-    <TextView
-        android:id="@+id/label_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reg_password" />
+            <EditText
+                android:id="@+id/field_name"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/field_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="Enter your password"
-        android:ems="10"
-        android:inputType="textPassword" />
+            <TextView
+                android:id="@+id/label_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reg_password" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="27dp" />
+            <EditText
+                android:id="@+id/field_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="Enter your password"
+                android:ems="10"
+                android:inputType="textPassword" />
 
-    <TextView
-        android:id="@+id/label_usertype"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reg_user_type" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
 
-    <Spinner
-        android:id="@+id/field_usertype"
-        android:layout_width="match_parent"
-        android:layout_height="33dp" />
+            <TextView
+                android:id="@+id/label_usertype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reg_user_type" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="27dp" />
+            <Spinner
+                android:id="@+id/field_usertype"
+                android:layout_width="match_parent"
+                android:layout_height="33dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
 
-        <Button
-            android:id="@+id/button_register"
-            android:layout_width="110dp"
-            android:layout_height="58dp"
-            android:text="Register" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-        <Space
-            android:layout_width="94dp"
-            android:layout_height="25dp"
-            android:layout_weight="1" />
+                <Button
+                    android:id="@+id/button_register"
+                    android:layout_width="110dp"
+                    android:layout_height="58dp"
+                    android:text="Register" />
 
-        <Button
-            android:id="@+id/button_cancel"
-            android:layout_width="110dp"
-            android:layout_height="58dp"
-            android:text="Cancel" />
+                <Space
+                    android:layout_width="94dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1" />
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/button_cancel"
+                    android:layout_width="110dp"
+                    android:layout_height="58dp"
+                    android:text="Cancel" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

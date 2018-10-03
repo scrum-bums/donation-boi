@@ -19,7 +19,7 @@ import com.scrumbums.donationboi.model.User;
 public class RegistrationActivity extends Activity {
 
     Button regBtn;
-    Button canBtn;
+    Button cancelBtn;
     Spinner typeSpinner;
     EditText usernameField;
     EditText nameField;
@@ -32,7 +32,7 @@ public class RegistrationActivity extends Activity {
         setContentView(R.layout.activity_registration);
 
         regBtn = findViewById(R.id.button_register);
-        canBtn = findViewById(R.id.button_cancel);
+        cancelBtn = findViewById(R.id.button_cancel);
         typeSpinner = (Spinner) findViewById(R.id.field_usertype);
         usernameField = findViewById(R.id.field_username);
         nameField = findViewById(R.id.field_name);
@@ -59,7 +59,7 @@ public class RegistrationActivity extends Activity {
             }
         });
 
-        canBtn.setOnClickListener(new View.OnClickListener() {
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
@@ -72,7 +72,14 @@ public class RegistrationActivity extends Activity {
         String name = nameField.getText().toString();
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
-        if (password.length() < 4 || ! email.matches(AbstractUser.EMAILREGEX)) {
+        if (password.length() < 4) {
+            passwordField.setError(getString(R.string.error_invalid_password));
+            passwordField.requestFocus();
+            return null;
+        }
+        if (!email.matches(AbstractUser.EMAILREGEX)) {
+            emailField.setError(getString(R.string.error_invalid_email));
+            emailField.requestFocus();
             return null;
         }
         switch ((String) typeSpinner.getSelectedItem()) {
