@@ -18,5 +18,11 @@
 
     <string name="login_button">Log in</string>
     <string name="register_button">Register</string>
+    <string name="title_activity_registration">Registration</string>
+    <string name="reg_username">Username</string>
+    <string name="reg_full_name">Full name</string>
+    <string name="reg_email_address">Email address</string>
+    <string name="reg_password">Password</string>
+    <string name="reg_user_type">User type:</string>
 
 </resources>

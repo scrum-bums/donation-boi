@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
+import com.scrumbums.donationboi.model.AbstractUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +49,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
+     * User models for authentication.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "user:pass"
-    };
+    public static final ArrayList<AbstractUser> USERS = new ArrayList<>();
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -322,11 +321,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+            for (AbstractUser user : USERS) {
+                if (user.getEmailAddress().equals(mEmail)) {
+                    return user.verifyPassword(mPassword);
                 }
             }
 
