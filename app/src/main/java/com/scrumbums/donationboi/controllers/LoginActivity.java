@@ -317,7 +317,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                     return false;
                 case -1:
                     mEmailView.setError(getString(R.string.error_account_not_recognized));
-//                    mEmailView.requestFocus();
                     return false;
                 default:
                     return false;

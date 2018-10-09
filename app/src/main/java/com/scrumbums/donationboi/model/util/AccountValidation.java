@@ -18,14 +18,20 @@ public final class AccountValidation {
     private static final String EMAILREGEX = "(\\w|\\d|\\.|_)+@(\\w|\\d|\\.|_)+\\.(\\w|\\d)+";
 
     /**
+     * Special characters list. Used in constructing the following
+     * regular expressions.
+     */
+    private static final String SPECIALCHARS = "@_\\$~\\.!-\\^%";
+
+    /**
      * Regular expression for 'special characters.'
      */
-    private static final String SPECIALCHARSREGEX = "[@_\\$~\\.]+";
+    private static final String SPECIALCHARSREGEX = "[" + SPECIALCHARS + "]+";
 
     /**
      * Regular expression for legal characters.
      */
-    private static final String LEGALCHARSREGEX = "[a-zA-Z0-9@_\\$~\\.]+";
+    private static final String LEGALCHARSREGEX = "[a-zA-Z0-9" + SPECIALCHARS + "]+";
 
     /**
      * Minimum required password length.

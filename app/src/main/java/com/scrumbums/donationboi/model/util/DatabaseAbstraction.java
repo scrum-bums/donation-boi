@@ -19,7 +19,7 @@ public final class DatabaseAbstraction {
     private DatabaseAbstraction() { }
 
     /**
-     * Local databse while we wait on Firebase. Maps keys (email in this case)
+     * Local database while we wait on Firebase. Maps keys (email in this case)
      * to users.
      */
     private static final HashMap<String, AbstractUser> DATABASE
