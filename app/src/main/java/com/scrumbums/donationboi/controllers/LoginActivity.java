@@ -1,5 +1,6 @@
 package com.scrumbums.donationboi.controllers;
 
+import android.accounts.Account;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.AbstractUser;
+import com.scrumbums.donationboi.model.util.AccountValidation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -197,13 +199,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return true;
+        return AccountValidation.isValidEmail(email);
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() >= 4;
+        return AccountValidation.isValidPassword(password);
     }
 
     /**
@@ -339,7 +340,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             if (success) {
                 finish();
                 startActivity(new Intent(LoginActivity.this, ApplicationActivity.class));
-
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

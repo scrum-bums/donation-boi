@@ -1,5 +1,7 @@
 package com.scrumbums.donationboi.model;
 
+import com.scrumbums.donationboi.model.util.AccountValidation;
+
 /**
  * Common superclass to Employee, Manager, User, etc. Defines things common
  * to users for back-end purposes; not an actual part of the domain.
@@ -8,11 +10,6 @@ package com.scrumbums.donationboi.model;
  * @version 1.0
  */
 public abstract class AbstractUser {
-
-    /**
-     * Regular expression for a valid email address.
-     */
-    public static final String EMAILREGEX = "(\\w|\\d)+@(\\w|\\d)+.(\\w|\\d)+";
 
     private final String username;
     private String name;
@@ -38,7 +35,7 @@ public abstract class AbstractUser {
      * This includes containing non-whitespace characters.
      */
     public void setName(String name) {
-        if (name != null && !name.replaceAll("\\s", "").isEmpty()) {
+        if (AccountValidation.isStringNonEmpty(name)) {
             this.name = name;
         }
     }
@@ -57,7 +54,7 @@ public abstract class AbstractUser {
      * be a valid email address.
      */
     public void setEmailAddress(String email) {
-        if (email != null && email.matches(EMAILREGEX)) {
+        if (AccountValidation.isValidEmail(email)) {
             this.emailAddress = email;
         }
     }
@@ -83,7 +80,7 @@ public abstract class AbstractUser {
      * @param password The new password for this user. Must be non-null.
      */
     public void setPassword(String password) {
-        if (password != null && password.length() >= 4) {
+        if (AccountValidation.isValidPassword(password)) {
             this.password = password;
         }
     }
