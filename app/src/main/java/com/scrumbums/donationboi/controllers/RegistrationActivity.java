@@ -1,5 +1,6 @@
 package com.scrumbums.donationboi.controllers;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
@@ -15,6 +16,8 @@ import com.scrumbums.donationboi.model.Administrator;
 import com.scrumbums.donationboi.model.Employee;
 import com.scrumbums.donationboi.model.Manager;
 import com.scrumbums.donationboi.model.User;
+import com.scrumbums.donationboi.model.util.AccountValidation;
+import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 public class RegistrationActivity extends Activity {
 
@@ -53,8 +56,12 @@ public class RegistrationActivity extends Activity {
             public void onClick(View v) {
                 AbstractUser u;
                 if ((u = getUser()) != null) {
-                    LoginActivity.USERS.add(u);
-                    startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                    if (DatabaseAbstraction.register(u)) {
+                        finish();
+                    } else {
+                        emailField.setError(getString(R.string.error_email_already_registered));
+                        emailField.requestFocus();
+                    }
                 }
             }
         });
@@ -62,7 +69,7 @@ public class RegistrationActivity extends Activity {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                finish();
             }
         });
     }
@@ -72,14 +79,14 @@ public class RegistrationActivity extends Activity {
         String name = nameField.getText().toString();
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
-        if (password.length() < 4) {
-            passwordField.setError(getString(R.string.error_invalid_password));
-            passwordField.requestFocus();
-            return null;
-        }
-        if (!email.matches(AbstractUser.EMAILREGEX)) {
+        if (!AccountValidation.isValidEmail(email)) {
             emailField.setError(getString(R.string.error_invalid_email));
             emailField.requestFocus();
+            return null;
+        }
+        if (!AccountValidation.isValidPassword(password)) {
+            passwordField.setError(getString(R.string.error_invalid_password));
+            passwordField.requestFocus();
             return null;
         }
         switch ((String) typeSpinner.getSelectedItem()) {

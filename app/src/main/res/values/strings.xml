@@ -8,7 +8,9 @@
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_account_not_recognized">This email address has not been registered</string>
+    <string name="error_email_already_registered">This email address has already been registered.</string>
+    <string name="error_invalid_password">This password is invalid</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
@@ -23,6 +25,7 @@
     <string name="reg_full_name">Full name</string>
     <string name="reg_email_address">Email address</string>
     <string name="reg_password">Password</string>
+    <string name = "reg_password_info">(Must have at least 2 uppercase, 3 lowercase, 1 special and 2 numeric characters)</string>
     <string name="reg_user_type">User type:</string>
 
 </resources>
