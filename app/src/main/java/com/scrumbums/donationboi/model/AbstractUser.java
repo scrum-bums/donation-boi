@@ -89,5 +89,23 @@ public abstract class AbstractUser {
         return this.password.equals(password);
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 0x31313131; // magic number, idc what it is really :)
+        hash = username.hashCode() * 17 + hash;
+        hash = name.hashCode() * 17 + hash;
+        hash = emailAddress.hashCode() * 17 + hash;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof AbstractUser)) return false;
+        AbstractUser a = (AbstractUser) o;
+        return name.equals(a.name) && username.equals(a.username)
+                && emailAddress.equals(emailAddress);
+    }
+
     // TODO : Serialization?
 }

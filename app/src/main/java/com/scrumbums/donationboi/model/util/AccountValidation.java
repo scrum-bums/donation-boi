@@ -15,17 +15,17 @@ public final class AccountValidation {
     /**
      * Regular expression for a valid email address.
      */
-    private static final String EMAILREGEX = "(\\w|\\d|\\.|_)+@(\\w|\\d|\\.|_)+.(\\w|\\d)+";
+    private static final String EMAILREGEX = "(\\w|\\d|\\.|_)+@(\\w|\\d|\\.|_)+\\.(\\w|\\d)+";
 
     /**
      * Regular expression for 'special characters.'
      */
-    private static final String SPECIALCHARSREGEX = "@_\\$~\\.";
+    private static final String SPECIALCHARSREGEX = "[@_\\$~\\.]+";
 
     /**
      * Regular expression for legal characters.
      */
-    private static final String LEGALCHARSREGEX = "[a-zA-Z0-9" + SPECIALCHARSREGEX + "]+";
+    private static final String LEGALCHARSREGEX = "[a-zA-Z0-9@_\\$~\\.]+";
 
     /**
      * Minimum required password length.
@@ -90,7 +90,7 @@ public final class AccountValidation {
      */
     public static final boolean isValidPassword(String s) {
         return isStringNonEmpty(s) && !containsIllegalCharacters(s)
-                && s.length() > MINPASSWORDLENGTH && hasMinChars(s);
+                && s.length() >= MINPASSWORDLENGTH && hasMinChars(s);
     }
 
     /**
