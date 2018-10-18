@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controllers.ApplicationActivity"></activity>
+        <activity android:name=".controllers.ListViewCustom"></activity>
     </application>
 
 </manifest>

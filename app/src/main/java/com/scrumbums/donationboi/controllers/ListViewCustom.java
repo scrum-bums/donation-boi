@@ -46,12 +46,21 @@ import android.app.Activity;
 
 public class ListViewCustom extends AppCompatActivity {
     private List<ListElement> locationSamples = new ArrayList<>();
+    private ListView listView;
+//    private TextView csvElementView;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.csv_view);
+        readLocationData();
 
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.csv_view, locationSamples);
+//        csvElementView = findViewById(R.id.csv_text);
+
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, locationSamples);
+        listView = findViewById(R.id.mobile_list);
+
+        listView.setAdapter(adapter);
     }
 
     private void readLocationData() {
@@ -74,7 +83,7 @@ public class ListViewCustom extends AppCompatActivity {
                 listElement.setState(tokens[6]);
                 listElement.setZipCode(Integer.parseInt(tokens[7]));
                 listElement.setLocationType(tokens[8]);
-                listElement.setPhoneNumber(Integer.parseInt(tokens[9]));
+                listElement.setPhoneNumber(tokens[9]);
                 listElement.setWebsite(tokens[10]);
                 locationSamples.add(listElement);
 
@@ -98,7 +107,7 @@ public class ListViewCustom extends AppCompatActivity {
         private String state;
         private int zipCode;
         private String locationType;
-        private int phoneNumber;
+        private String phoneNumber;
         private String website;
 
         private ListElement(Object[] args) {
@@ -155,10 +164,10 @@ public class ListViewCustom extends AppCompatActivity {
         public String getLocationType() {
             return locationType;
         }
-        private void setPhoneNumber(int phone) {
+        private void setPhoneNumber(String phone) {
             phoneNumber = phone;
         }
-        public int getPhoneNumber() {
+        public String getPhoneNumber() {
             return phoneNumber;
         }
         private void setWebsite(String web) {
