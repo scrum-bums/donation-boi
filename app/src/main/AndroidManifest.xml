@@ -29,6 +29,15 @@
         <activity
             android:name=".controllers.ListElementPage"
             android:label="@string/title_activity_list_element_page"></activity>
+
+        <activity
+            android:name=".controllers.RegistrationActivity"
+            android:label="@string/title_activity_registration"
+            android:parentActivityName=".controllers.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.scrumbums.donationboi.controllers.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

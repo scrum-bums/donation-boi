@@ -1,5 +1,6 @@
 package com.scrumbums.donationboi.controllers;
 
+import android.accounts.Account;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -31,6 +32,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
+import com.scrumbums.donationboi.model.AbstractUser;
+import com.scrumbums.donationboi.model.util.AccountValidation;
+import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +105,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                finish();
             }
         });
     }
@@ -167,7 +172,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+
+        if (!AccountValidation.isValidPassword(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -178,7 +184,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+
+        } else if (!AccountValidation.isValidEmail(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -195,16 +202,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return true;
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() >= 4;
     }
 
     /**
@@ -306,6 +303,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         private final String mEmail;
         private final String mPassword;
 
+        private int loginResult = 0;
+
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -322,16 +321,18 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
 
-            // TODO: register the new account here.
-            return false;
+            switch ((loginResult = DatabaseAbstraction.login(mEmail, mPassword))) {
+                case 1:
+                    return true;
+                case 0:
+                    return false;
+                case -1:
+                    mEmailView.setError(getString(R.string.error_account_not_recognized));
+                    return false;
+                default:
+                    return false;
+            }
         }
 
         @Override
@@ -341,9 +342,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             if (success) {
                 finish();
-                startActivity(new Intent(LoginActivity.this, ListViewCustom.class));
 
-            } else {
+                startActivity(new Intent(LoginActivity.this, ApplicationActivity.class));
+            } else if (loginResult == 0){
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
