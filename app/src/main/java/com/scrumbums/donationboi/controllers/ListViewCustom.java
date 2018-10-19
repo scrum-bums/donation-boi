@@ -24,6 +24,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -61,6 +62,22 @@ public class ListViewCustom extends AppCompatActivity {
         listView = findViewById(R.id.mobile_list);
 
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
+                ListElement e = locationSamples.get(position);
+                Intent intent = new Intent(ListViewCustom.this, ListElementPage.class);
+                intent.putExtra("Name", e.getName());
+                intent.putExtra("Address", e.getStreetAddress());
+                intent.putExtra("Phone Number", e.getPhoneNumber());
+                Bundle bund = intent.getExtras();
+                startActivity(intent);
+
+
+            }
+
+        });
     }
 
     private void readLocationData() {

@@ -17,14 +17,18 @@
         <activity
             android:name=".controllers.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".controllers.MainActivity" >
+        <activity android:name=".controllers.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.ApplicationActivity"></activity>
-        <activity android:name=".controllers.ListViewCustom"></activity>
+        <activity android:name=".controllers.ApplicationActivity" />
+        <activity android:name=".controllers.ListViewCustom" />
+        <activity
+            android:name=".controllers.ListElementPage"
+            android:label="@string/title_activity_list_element_page"></activity>
     </application>
 
 </manifest>
