@@ -95,7 +95,8 @@ public final class AccountValidation {
      * @return If the String is a valid password
      */
     public static final boolean isValidPassword(String s) {
-        return true;
+        return isStringNonEmpty(s) && !containsIllegalCharacters(s)
+                && s.length() >= MINPASSWORDLENGTH && hasMinChars(s);
     }
 
     /**
