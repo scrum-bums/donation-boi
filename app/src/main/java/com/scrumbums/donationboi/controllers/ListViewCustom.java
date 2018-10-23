@@ -104,7 +104,6 @@ public class ListViewCustom extends AppCompatActivity {
                 listElement.setWebsite(tokens[10]);
                 locationSamples.add(listElement);
 
-                Log.d("MainActivity", "Just Created: " + listElement);
 
             }
         } catch (IOException e) {
