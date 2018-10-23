@@ -76,7 +76,6 @@ public class ListViewCustom extends AppCompatActivity {
                 Bundle bund = intent.getExtras();
                 startActivity(intent);
 
-
             }
         });
     }
