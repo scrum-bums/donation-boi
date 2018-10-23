@@ -1,25 +1,21 @@
 package com.scrumbums.donationboi.controllers;
 
-import android.accounts.Account;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,7 +28,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.AbstractUser;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
@@ -51,6 +46,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+    /**
+     * A dummy authentication store containing known user names and passwords.
+     * TODO: remove after connecting to a real authentication system.
+     */
+    private static final String[] DUMMY_CREDENTIALS = new String[]{
+            "user:pass"
+    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -98,6 +100,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
             }
         });
@@ -164,6 +167,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
+
         if (!AccountValidation.isValidPassword(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
@@ -175,6 +179,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
+
         } else if (!AccountValidation.isValidEmail(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
@@ -292,6 +297,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         private final String mEmail;
         private final String mPassword;
+
         private int loginResult = 0;
 
         UserLoginTask(String email, String password) {
@@ -309,6 +315,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             } catch (InterruptedException e) {
                 return false;
             }
+
 
             switch ((loginResult = DatabaseAbstraction.login(mEmail, mPassword))) {
                 case 1:
@@ -330,7 +337,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             if (success) {
                 finish();
-                startActivity(new Intent(LoginActivity.this, ApplicationActivity.class));
+
+                startActivity(new Intent(LoginActivity.this, ListViewCustom.class));
             } else if (loginResult == 0){
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
