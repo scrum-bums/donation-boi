@@ -33,6 +33,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.scrumbums.donationboi.controllers.MainActivity" />
         </activity>
+        <activity
+            android:name=".controllers.StoreViewActivity"
+            android:label="@string/title_activity_store_view"></activity>
     </application>
 
 </manifest>
