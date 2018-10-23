@@ -57,9 +57,12 @@ public class ListElementPage extends Activity {
 
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        setContentView(R.layout.activity_list_element_page);
+        setContentView(R.layout.csv_element_view);
+
+
         tv = findViewById(R.id.csv_text);
-        tv.setText(intent.getStringExtra("Name"));
+        tv.setText(String.format("%s%n%s%n%s%n%s%n%s%n%s%n",intent.getStringExtra("Name"), intent.getStringExtra("Address"), intent.getStringExtra("Phone Number"),
+                intent.getStringExtra("Longitude"), intent.getStringExtra("Latitude"), intent.getStringExtra("Type")));
 
 
     }

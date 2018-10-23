@@ -4,11 +4,12 @@
     <!--android:layout_height="match_parent">-->
 
 
-    <TextView
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/csv_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ></TextView>
+    android:id="@+id/csv_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    ></TextView>
+
 
 <!--</LinearLayout>-->

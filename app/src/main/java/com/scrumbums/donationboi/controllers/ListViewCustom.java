@@ -71,6 +71,10 @@ public class ListViewCustom extends AppCompatActivity {
                 intent.putExtra("Name", e.getName());
                 intent.putExtra("Address", e.getStreetAddress());
                 intent.putExtra("Phone Number", e.getPhoneNumber());
+                intent.putExtra("Longitude", e.getLongitude());
+                intent.putExtra("Latitude", e.getLatitude());
+                intent.putExtra("Type", e.getLocationType());
+
                 Bundle bund = intent.getExtras();
                 startActivity(intent);
 
