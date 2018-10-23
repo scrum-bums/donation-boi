@@ -103,69 +103,88 @@ public class ListViewCustom extends AppCompatActivity {
             this(new Object[0]);
         }
 
-        private void setName(String nam) {
-            name = nam;
+        public String toString(){
+            return getName() + ", " + getStreetAddress();
         }
+
         public String getName() {
             return name;
         }
-        private void setLatitude(float lat) {
-            latitude = lat;
+
+        public void setName(String name) {
+            this.name = name;
         }
+
         public float getLatitude() {
             return latitude;
         }
-        private void setLongitude(float longi) {
-            longitude = longi;
+
+        public void setLatitude(float latitude) {
+            this.latitude = latitude;
         }
+
         public float getLongitude() {
             return longitude;
         }
-        private void setStreetAddress(String str) {
-            streetAddress = str;
+
+        public void setLongitude(float longitude) {
+            this.longitude = longitude;
         }
+
         public String getStreetAddress() {
             return streetAddress;
         }
-        private void setCity(String cit) {
-            city = cit;
+
+        public void setStreetAddress(String streetAddress) {
+            this.streetAddress = streetAddress;
         }
+
         public String getCity() {
             return city;
         }
-        private void setState(String st) {
-            state = st;
+
+        public void setCity(String city) {
+            this.city = city;
         }
+
         public String getState() {
             return state;
         }
-        private void setZipCode(int zippy) {
-            zipCode = zippy;
+
+        public void setState(String state) {
+            this.state = state;
         }
+
         public int getZipCode() {
             return zipCode;
         }
-        private void setLocationType(String ty) {
-            locationType = ty;
+
+        public void setZipCode(int zipCode) {
+            this.zipCode = zipCode;
         }
+
         public String getLocationType() {
             return locationType;
         }
-        private void setPhoneNumber(String phone) {
-            phoneNumber = phone;
+
+        public void setLocationType(String locationType) {
+            this.locationType = locationType;
         }
+
         public String getPhoneNumber() {
             return phoneNumber;
         }
-        private void setWebsite(String web) {
-            website = web;
+
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
         }
+
         public String getWebsite() {
             return website;
         }
 
-        public String toString(){
-            return name + ", " + streetAddress;
+        public void setWebsite(String website) {
+            this.website = website;
         }
     }
 
