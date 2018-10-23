@@ -21,6 +21,7 @@ import java.util.List;
 public class ListViewCustom extends AppCompatActivity {
     private List<ListElement> locationSamples = new ArrayList<>();
     private ListView listView;
+    final String TAG = "MainActivity";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,6 @@ public class ListViewCustom extends AppCompatActivity {
         try {
             br.readLine();
             while ((line = br.readLine()) != null) {
-//                Log.d(MainActivity.TAG, line);
                 String[] tokens = line.split(",");
                 ListElement listElement = new ListElement();
                 listElement.setName(tokens[1]);
@@ -79,7 +79,7 @@ public class ListViewCustom extends AppCompatActivity {
 
             }
         } catch (IOException e) {
-            Log.e("MainActivity", "error reading assets", e);
+            Log.e(TAG, "error reading assets", e);
         }
 
     }
