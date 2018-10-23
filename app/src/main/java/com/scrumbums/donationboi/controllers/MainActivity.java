@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         btn = findViewById(R.id.button_register);
 
         btn.setOnClickListener(new View.OnClickListener() {
