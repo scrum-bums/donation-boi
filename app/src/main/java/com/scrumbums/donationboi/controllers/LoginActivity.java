@@ -1,25 +1,21 @@
 package com.scrumbums.donationboi.controllers;
 
-import android.accounts.Account;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,7 +28,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.AbstractUser;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
