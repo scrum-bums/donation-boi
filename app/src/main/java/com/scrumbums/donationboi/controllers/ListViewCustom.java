@@ -82,7 +82,6 @@ public class ListViewCustom extends AppCompatActivity {
     }
 
     private void readLocationData() {
-
         InputStream is = getResources().openRawResource(R.raw.location_data);
         BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
