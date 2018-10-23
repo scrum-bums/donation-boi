@@ -28,7 +28,6 @@
         <activity android:name=".controllers.ListViewCustom" />
         <activity
             android:name=".controllers.ListElementPage"></activity>
-            <!-- android:label="@string/title_activity_list_element_page"-->
 
         <activity
             android:name=".controllers.RegistrationActivity"
