@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.scrumbums.donationboi.R;
+import com.scrumbums.donationboi.model.Location;
+import com.scrumbums.donationboi.model.Store;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,8 +31,7 @@ public class ListViewCustom extends AppCompatActivity {
         setContentView(R.layout.csv_view);
         readLocationData();
 
-
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, locationSamples);
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.store_view, locationSamples);
         listView = findViewById(R.id.mobile_list);
 
         listView.setAdapter(adapter);
@@ -39,13 +40,14 @@ public class ListViewCustom extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
                 ListElement e = locationSamples.get(position);
-                Intent intent = new Intent(ListViewCustom.this, ListElementPage.class);
+                Intent intent = new Intent(ListViewCustom.this, StoreViewActivity.class);
                 intent.putExtra("Name", e.getName());
                 intent.putExtra("Address", e.getStreetAddress());
                 intent.putExtra("Phone Number", e.getPhoneNumber());
                 intent.putExtra("Longitude", e.getLongitude());
                 intent.putExtra("Latitude", e.getLatitude());
                 intent.putExtra("Type", e.getLocationType());
+                intent.putExtra("Store", e.getStoreObject());
 
                 Bundle bund = intent.getExtras();
                 startActivity(intent);
@@ -74,6 +76,8 @@ public class ListViewCustom extends AppCompatActivity {
                 listElement.setLocationType(tokens[8]);
                 listElement.setPhoneNumber(tokens[9]);
                 listElement.setWebsite(tokens[10]);
+                listElement.setStoreObject();
+
                 locationSamples.add(listElement);
 
 
@@ -96,6 +100,7 @@ public class ListViewCustom extends AppCompatActivity {
         private String locationType;
         private String phoneNumber;
         private String website;
+        private Store storeObject;
 
         private ListElement(Object[] args) {
         }
@@ -185,6 +190,23 @@ public class ListViewCustom extends AppCompatActivity {
 
         public void setWebsite(String website) {
             this.website = website;
+        }
+
+        public Store getStoreObject() {
+            return storeObject;
+        }
+
+        public void setStoreObject(Store storeObject) {
+            this.storeObject = storeObject;
+        }
+
+        public void setStoreObject() {
+            this.storeObject = createStore();
+        }
+
+
+        private Store createStore() {
+            return new Store (name, new Location(streetAddress, state, city, zipCode, latitude, longitude), phoneNumber, website);
         }
     }
 

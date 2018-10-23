@@ -30,5 +30,6 @@
     <string name="reg_password_info">(Must have at least 2 uppercase, 3 lowercase, 1 special and 2 numeric characters)</string>
     <string name="reg_user_type">User type:</string>
     <string name="title_activity_store_view">StoreViewActivity</string>
+    <string name="title_activity_item_view">ItemView</string>
 
 </resources>

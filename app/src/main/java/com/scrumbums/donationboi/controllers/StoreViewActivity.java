@@ -1,7 +1,11 @@
 package com.scrumbums.donationboi.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -13,26 +17,44 @@ import com.scrumbums.donationboi.model.Store;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreViewActivity extends Activity {
+public class StoreViewActivity extends AppCompatActivity {
 
-    private TextView name;
-    private TextView location;
-    private TextView phoneNumber;
-    private TextView website;
-    private List<Store.Item> inventoryView = new ArrayList<>();
-    private ListView listView;
-    private Button back;
+    private TextView storeInfo;
+    private List<Store.Item> inventoryArray = new ArrayList<>();
+    private ListView inventoryListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_store_view);
+        Intent intent = getIntent();
+        setContentView(R.layout.store_view);
+
+        storeInfo = findViewById(R.id.store_info);
+        storeInfo.setText(intent.getParcelableExtra("Store").toString());
+
+        inventoryArray = ((Store) (intent.getParcelableExtra("Store"))).getInventory();
+
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.item_view, inventoryArray);
+        inventoryListView = findViewById(R.id.inventory_scroll);
+        inventoryListView.setAdapter(adapter);
+
+        inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
+                Store.Item i = inventoryArray.get(position);
+                Intent intent = new Intent(StoreViewActivity.this, ItemView.class);
+                intent.putExtra("Name", i.getName());
+                intent.putExtra("Type", i.getType());
+                intent.putExtra("Price", i.getPrice());
+                intent.putExtra("Description", i.getDescription());
+                Bundle bund = intent.getExtras();
+                startActivity(intent);
+
+            }
+        });
     }
 
-    ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout. , inventoryView);
-    listView = findViewById(R.id.);
-    listView.setAdapter(adapter);
-    listView.setOnItemClickListenter(new AdapterView.OnItemClick);
+
 
 
 }
