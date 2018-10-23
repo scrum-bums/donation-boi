@@ -110,7 +110,6 @@ public class ListViewCustom extends AppCompatActivity {
             Log.e("MainActivity", "error reading assets", e);
         }
 
-
     }
 
     class ListElement {
