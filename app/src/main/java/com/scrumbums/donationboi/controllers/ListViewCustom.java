@@ -48,7 +48,6 @@ import android.app.Activity;
 public class ListViewCustom extends AppCompatActivity {
     private List<ListElement> locationSamples = new ArrayList<>();
     private ListView listView;
-//    private TextView csvElementView;
 
 
     protected void onCreate(Bundle savedInstanceState) {
