@@ -3,6 +3,7 @@ package com.scrumbums.donationboi.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Store;
 
-public class AddItemForm extends Activity {
+public class AddItemForm extends AppCompatActivity {
 
     private EditText nameBox;
     private TextView nameLabel;
