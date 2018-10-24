@@ -40,7 +40,7 @@ public class StoreViewActivity extends AppCompatActivity {
         inventoryArray = ((Store) (intent.getParcelableExtra("Store"))).getInventory();
 
 
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.item_view, inventoryArray);
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.store_view_item, inventoryArray);
         inventoryListView = findViewById(R.id.inventory_scroll);
         inventoryListView.setAdapter(adapter);
 
