@@ -23,7 +23,7 @@ import java.util.List;
 public class ListViewCustom extends AppCompatActivity {
     private List<ListElement> locationSamples = new ArrayList<>();
     private ListView listView;
-    final String TAG = "MainActivity";
+    final String TAG = "LIST_VIEW_CUSTOM";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,8 @@ public class ListViewCustom extends AppCompatActivity {
 
         listView = findViewById(R.id.mobile_list);
 
-        /////The adapter will change depending on the type of user that is logged in
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.store_view, locationSamples);
+        //The adapter will change depending on the type of user that is logged in
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, locationSamples);
 
 
         listView.setAdapter(adapter);
@@ -53,7 +53,7 @@ public class ListViewCustom extends AppCompatActivity {
                 intent.putExtra("Type", e.getLocationType());
                 intent.putExtra("Store", e.getStoreObject());
 
-                Bundle bund = intent.getExtras();
+
                 startActivity(intent);
 
             }
