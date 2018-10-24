@@ -31,8 +31,12 @@ public class ListViewCustom extends AppCompatActivity {
         setContentView(R.layout.csv_view);
         readLocationData();
 
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.store_view, locationSamples);
+
         listView = findViewById(R.id.mobile_list);
+
+        /////The adapter will change depending on the type of user that is logged in
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.store_view, locationSamples);
+
 
         listView.setAdapter(adapter);
 

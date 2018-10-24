@@ -31,5 +31,15 @@
     <string name="reg_user_type">User type:</string>
     <string name="title_activity_store_view">StoreViewActivity</string>
     <string name="title_activity_item_view">ItemView</string>
+    <string name="title_activity_store_view_employee">StoreViewEmployeeActivity</string>
+    <string name="title_activity_add_item_form">AddItemForm</string>
+
+    <string name="add_new_item_employee">Add Item</string>
+    <string name="add_button_text">Add</string>
+    <string name="cancel_button_item">Cancel</string>
+    <string name="price_label_text">Price: </string>
+    <string name="type_label_text">Type: </string>
+    <string name="descrip_label_text">Description: </string>
+    <string name="name_label_text">Name: </string>
 
 </resources>

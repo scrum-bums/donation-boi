@@ -18,9 +18,20 @@ public final class AccountValidation {
     private static final String EMAILREGEX = "(\\w|\\d|\\.|_)+@(\\w|\\d|\\.|_)+\\.(\\w|\\d)+";
 
     /**
+     * Special characters list. Used in constructing the following
+     * regular expressions.
+     */
+    private static final String SPECIALCHARS = "@_\\$~\\.!-\\^%";
+
+    /**
+     * Regular expression for 'special characters.'
+     */
+    private static final String SPECIALCHARSREGEX = "[" + SPECIALCHARS + "]+";
+
+    /**
      * Regular expression for legal characters.
      */
-    private static final String LEGALCHARSREGEX = "[a-zA-Z0-9]+";
+    private static final String LEGALCHARSREGEX = "[a-zA-Z0-9" + SPECIALCHARS + "]+";
 
     /**
      * Minimum required password length.
@@ -38,6 +49,11 @@ public final class AccountValidation {
     private static final int MINLOWERCASECHARS = 3;
 
     /**
+     * Minimum number of special characters required in a password.
+     */
+    private static final int MINSPECIALCHARS = 1;
+
+    /**
      * Minimum number of numeric characters required in a password.
      */
     private static final int MINNUMERICCHARS = 2;
@@ -49,7 +65,8 @@ public final class AccountValidation {
      * @return
      */
     public static final boolean isStringNonEmpty(String s) {
-        return s != null && s.replaceAll("\\s", "").length() > 0;
+        return true;
+//        return s != null && s.replaceAll("\\s", "").length() > 0;
     }
 
     /**
@@ -58,7 +75,8 @@ public final class AccountValidation {
      * @return If the String contains illegal characters.
      */
     public static final boolean containsIllegalCharacters(String s) {
-        return s != null && !s.matches(LEGALCHARSREGEX);
+        return false;
+//        return s != null && !s.matches(LEGALCHARSREGEX);
     }
 
     /**
@@ -67,7 +85,8 @@ public final class AccountValidation {
      * @return If the String is a valid email.
      */
     public static final boolean isValidEmail(String s) {
-        return s != null && s.matches(EMAILREGEX);
+        return true;
+//        return s != null && s.matches(EMAILREGEX);
     }
 
     /**
@@ -91,20 +110,24 @@ public final class AccountValidation {
      * @return If the String has the min character requirements.
      */
     private static final boolean hasMinChars(String s) {
-        int numUpper = 0;
-        int numLower = 0;
-        int numNum = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c >= 'a' && c <= 'z') {
-                numLower++;
-            } else if (c >= 'A' && c <= 'Z') {
-                numUpper++;
-            } else if (c >= '0' && c <= '9') {
-                numNum++;
-            } // else should never happen
-        }
-        return numUpper >= MINUPPERCASECHARS && numLower >= MINLOWERCASECHARS
-                && numNum >= MINNUMERICCHARS;
+        return true;
+//        int numUpper = 0;
+//        int numLower = 0;
+//        int numSpecial = 0;
+//        int numNum = 0;
+//        for (int i = 0; i < s.length(); i++) {
+//            char c = s.charAt(i);
+//            if ((c + "").matches(SPECIALCHARSREGEX)) {
+//                numSpecial++;
+//            } else if (c >= 'a' && c <= 'z') {
+//                numLower++;
+//            } else if (c >= 'A' && c <= 'Z') {
+//                numUpper++;
+//            } else if (c >= '0' && c <= '9') {
+//                numNum++;
+//            } // else should never happen
+//        }
+//        return numUpper >= MINUPPERCASECHARS && numLower >= MINLOWERCASECHARS
+//                && numSpecial >= MINSPECIALCHARS && numNum >= MINNUMERICCHARS;
     }
 }

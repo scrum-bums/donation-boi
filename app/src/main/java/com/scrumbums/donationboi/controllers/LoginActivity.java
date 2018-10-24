@@ -335,7 +335,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
+            if (true) {
                 finish();
 
                 startActivity(new Intent(LoginActivity.this, ListViewCustom.class));
