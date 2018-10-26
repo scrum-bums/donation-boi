@@ -1,8 +1,10 @@
 package com.scrumbums.donationboi.controllers;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,6 +52,12 @@ public class StoreViewActivity extends AppCompatActivity {
 
 
         addItemBtn = findViewById(R.id.add_item_button);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean canAddItems = prefs.getBoolean("canAddItems",false);
+        if (!canAddItems) {
+            addItemBtn.setVisibility(View.GONE);
+        }
+
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

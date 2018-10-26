@@ -8,7 +8,7 @@ package com.scrumbums.donationboi.model;
  * @version 1.0
  */
 public class Manager extends Employee {
-
+    public boolean canAddDonations = true;
     /**
      * Create a Manager.
      * @param username Username of the Manager.

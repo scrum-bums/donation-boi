@@ -1,5 +1,10 @@
 package com.scrumbums.donationboi.model.util;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.scrumbums.donationboi.controllers.LoginActivity;
 import com.scrumbums.donationboi.model.AbstractUser;
 
 import java.util.HashMap;
@@ -32,13 +37,17 @@ public final class DatabaseAbstraction {
      * @return 1 if the given credentials are valid, 0 if the password is
      * invalid, or -1 if the username is invalid.
      */
-    public static int login(String key, String password) {
+    public static int login(Context context, String key, String password) {
         // case where the account is not registered
         if (DATABASE.get(key) == null) {
             return -1;
         }
         // account exists; verify password
         if (DATABASE.get(key).verifyPassword(password)) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("canAddItems", DATABASE.get(key).canAddDonations);
+            editor.commit();
             return 1;
         }
         // otherwise password is bayud

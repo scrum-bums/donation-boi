@@ -9,16 +9,26 @@ public class Item implements Parcelable {
     private String description;
     private double price;
     private String type;
+    private String category;
 
-    public Item(String n, String d, double p, String t) {
+    public Item(String n, String d, double p, String t, String category) {
         this.name = n;
         this.description = d;
         this.price = p;
         this.type = t;
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Item(String n) {
-        this(n, null, 0.0, null);
+        this(n, null, 0.0, null, null);
     }
 
     public String getName() {
@@ -55,8 +65,6 @@ public class Item implements Parcelable {
 
     public String toString() {
         String ret = "Name: " + name;
-        ret += price == 0.0 ? "\n" + "Price: not listed" : "\n" + "Price: $" + price;
-        ret += type == null ? "\n" + "Type: not listed" : "\n" + "Type: " + type;
         ret += description == null ? "\n" + "Description: not listed": "\n" + "Description: " + description;
         return ret;
     }
@@ -92,6 +100,7 @@ public class Item implements Parcelable {
         dest.writeString(this.description);
         dest.writeDouble(this.price);
         dest.writeString(this.type);
+        dest.writeString(this.category);
     }
 
     protected Item(Parcel in) {
@@ -99,6 +108,7 @@ public class Item implements Parcelable {
         this.description = in.readString();
         this.price = in.readDouble();
         this.type = in.readString();
+        this.category = in.readString();
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {

@@ -24,6 +24,7 @@ public class AddItemForm extends AppCompatActivity {
     private TextView descripLabel;
     private Button mAddButton;
     private Button mCancelItemButton;
+    private TextView categoryBox;
     Store store;
 
     @Override
@@ -37,6 +38,7 @@ public class AddItemForm extends AppCompatActivity {
         priceBox = findViewById(R.id.price_box);
         descripBox = findViewById(R.id.descrip_box);
         typeBox = findViewById(R.id.type_box);
+        categoryBox = findViewById(R.id.category_box);
 
         mAddButton = findViewById(R.id.add_button);
         mAddButton.setText(R.string.add_button_text);
@@ -48,7 +50,8 @@ public class AddItemForm extends AppCompatActivity {
                 String itemType = typeBox.getText().toString();
                 double itemPrice = Double.valueOf(priceBox.getText().toString());
                 String itemDescription = descripBox.getText().toString();
-                store.addToInventory(itemName, itemDescription, itemPrice, itemType);
+                String itemCategory = categoryBox.getText().toString();
+                store.addToInventory(itemName, itemDescription, itemPrice, itemType, itemCategory);
                 Intent intent = new Intent(AddItemForm.this, StoreViewActivity.class);
                 intent.putExtra("Store",store);
                 startActivity(intent);

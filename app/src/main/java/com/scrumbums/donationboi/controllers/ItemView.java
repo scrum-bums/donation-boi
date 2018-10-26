@@ -15,6 +15,7 @@ public class ItemView extends AppCompatActivity {
     private TextView typeView;
     private TextView priceView;
     private TextView descripView;
+    private TextView categoryView;
 
 
     @Override
@@ -36,6 +37,11 @@ public class ItemView extends AppCompatActivity {
 
         descripView = findViewById(R.id.item_descrip);
         descripView.setText(item.getDescription());
+
+        categoryView = findViewById(R.id.item_category);
+        categoryView.setText(item.getCategory());
+
+
 
     }
 

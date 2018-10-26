@@ -77,12 +77,12 @@ public class Store implements Parcelable {
         inventory.add(item);
     }
 
-    public void addToInventory(String name, String description, double price, String type) {
-        addToInventory(new Item(name, description, price, type));
+    public void addToInventory(String name, String description, double price, String type, String category) {
+        addToInventory(new Item(name, description, price, type, category));
     }
 
     public void addToInventory(String name) {
-        addToInventory(name, null, 0.0, null);
+        addToInventory(name, null, 0.0, null, null);
     }
 
     public String toString() {
