@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
+import com.scrumbums.donationboi.model.Item;
+import com.scrumbums.donationboi.model.Store;
 
 public class ItemView extends AppCompatActivity {
     private TextView nameView;
@@ -20,18 +22,20 @@ public class ItemView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         setContentView(R.layout.item_view);
+        final Item item = intent.getParcelableExtra("item");
 
-        nameView.findViewById(R.id.item_name);
-        nameView.setText(intent.getStringExtra("Name"));
 
-        typeView.findViewById(R.id.item_type);
-        typeView.setText(intent.getStringExtra("Type"));
+        nameView = findViewById(R.id.item_name);
+        nameView.setText(item.getName());
 
-        priceView.findViewById(R.id.item_price);
-        priceView.setText(intent.getStringExtra("Price"));
+        typeView= findViewById(R.id.item_type);
+        typeView.setText(item.getType());
 
-        descripView.findViewById(R.id.item_descrip);
-        descripView.setText(intent.getStringExtra("Description"));
+        priceView = findViewById(R.id.item_price);
+        priceView.setText(item.getPrice() + "");
+
+        descripView = findViewById(R.id.item_descrip);
+        descripView.setText(item.getDescription());
 
     }
 

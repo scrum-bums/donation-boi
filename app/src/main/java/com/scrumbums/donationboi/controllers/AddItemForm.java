@@ -24,34 +24,21 @@ public class AddItemForm extends AppCompatActivity {
     private TextView descripLabel;
     private Button mAddButton;
     private Button mCancelItemButton;
+    Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
         setContentView(R.layout.add_item_form);
+        store = intent.getParcelableExtra("store");
 
-        nameBox.findViewById(R.id.name_box);
+        nameBox = findViewById(R.id.name_box);
+        priceBox = findViewById(R.id.price_box);
+        descripBox = findViewById(R.id.descrip_box);
+        typeBox = findViewById(R.id.type_box);
 
-        nameLabel.findViewById(R.id.name_label);
-        nameLabel.setText(R.string.name_label_text);
-
-        typeBox.findViewById(R.id.type_label);
-
-        typeLabel.findViewById(R.id.type_label);
-        typeLabel.setText(R.string.type_label_text);
-
-        priceBox.findViewById(R.id.price_box);
-
-        priceLable.findViewById(R.id.price_label);
-        priceLable.setText(R.string.price_label_text);
-
-        descripBox.findViewById(R.id.descrip_box);
-
-        descripLabel.findViewById(R.id.descip_label);
-        descripLabel.setText(R.string.descrip_label_text);
-
-        mAddButton.findViewById(R.id.add_button);
+        mAddButton = findViewById(R.id.add_button);
         mAddButton.setText(R.string.add_button_text);
 
         mAddButton.setOnClickListener(new View.OnClickListener() {
@@ -61,14 +48,16 @@ public class AddItemForm extends AppCompatActivity {
                 String itemType = typeBox.getText().toString();
                 double itemPrice = Double.valueOf(priceBox.getText().toString());
                 String itemDescription = descripBox.getText().toString();
-                ((Store) intent.getParcelableExtra("StoreAdd")).addToInventory(itemName, itemDescription, itemPrice, itemType);
-                finish();
+                store.addToInventory(itemName, itemDescription, itemPrice, itemType);
+                Intent intent = new Intent(AddItemForm.this, StoreViewActivity.class);
+                intent.putExtra("Store",store);
+                startActivity(intent);
+                
             }
         });
 
 
-        mCancelItemButton.findViewById(R.id.cancel_button);
-        mCancelItemButton.setText(R.string.cancel_button_item);
+        mCancelItemButton = findViewById(R.id.cancel_button);
 
         mCancelItemButton.setOnClickListener(new View.OnClickListener(){
             @Override

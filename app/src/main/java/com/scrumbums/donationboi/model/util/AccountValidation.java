@@ -65,8 +65,7 @@ public final class AccountValidation {
      * @return
      */
     public static final boolean isStringNonEmpty(String s) {
-        return true;
-//        return s != null && s.replaceAll("\\s", "").length() > 0;
+        return s != null && s.replaceAll("\\s", "").length() > 0;
     }
 
     /**
@@ -75,8 +74,7 @@ public final class AccountValidation {
      * @return If the String contains illegal characters.
      */
     public static final boolean containsIllegalCharacters(String s) {
-        return false;
-//        return s != null && !s.matches(LEGALCHARSREGEX);
+        return s != null && !s.matches(LEGALCHARSREGEX);
     }
 
     /**
@@ -85,8 +83,7 @@ public final class AccountValidation {
      * @return If the String is a valid email.
      */
     public static final boolean isValidEmail(String s) {
-        return true;
-//        return s != null && s.matches(EMAILREGEX);
+        return s != null && s.matches(EMAILREGEX);
     }
 
     /**
@@ -98,9 +95,8 @@ public final class AccountValidation {
      * @return If the String is a valid password
      */
     public static final boolean isValidPassword(String s) {
-        return true;
-//        return isStringNonEmpty(s) && !containsIllegalCharacters(s)
-//                && s.length() >= MINPASSWORDLENGTH && hasMinChars(s);
+        return isStringNonEmpty(s) && !containsIllegalCharacters(s)
+                && s.length() >= MINPASSWORDLENGTH; //&& hasMinChars(s);
     }
 
     /**
@@ -110,24 +106,23 @@ public final class AccountValidation {
      * @return If the String has the min character requirements.
      */
     private static final boolean hasMinChars(String s) {
-        return true;
-//        int numUpper = 0;
-//        int numLower = 0;
-//        int numSpecial = 0;
-//        int numNum = 0;
-//        for (int i = 0; i < s.length(); i++) {
-//            char c = s.charAt(i);
-//            if ((c + "").matches(SPECIALCHARSREGEX)) {
-//                numSpecial++;
-//            } else if (c >= 'a' && c <= 'z') {
-//                numLower++;
-//            } else if (c >= 'A' && c <= 'Z') {
-//                numUpper++;
-//            } else if (c >= '0' && c <= '9') {
-//                numNum++;
-//            } // else should never happen
-//        }
-//        return numUpper >= MINUPPERCASECHARS && numLower >= MINLOWERCASECHARS
-//                && numSpecial >= MINSPECIALCHARS && numNum >= MINNUMERICCHARS;
+        int numUpper = 0;
+        int numLower = 0;
+        int numSpecial = 0;
+        int numNum = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if ((c + "").matches(SPECIALCHARSREGEX)) {
+                numSpecial++;
+            } else if (c >= 'a' && c <= 'z') {
+                numLower++;
+            } else if (c >= 'A' && c <= 'Z') {
+                numUpper++;
+            } else if (c >= '0' && c <= '9') {
+                numNum++;
+            } // else should never happen
+        }
+        return numUpper >= MINUPPERCASECHARS && numLower >= MINLOWERCASECHARS
+                && numSpecial >= MINSPECIALCHARS && numNum >= MINNUMERICCHARS;
     }
 }
