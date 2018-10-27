@@ -129,6 +129,11 @@ public class Location implements Parcelable {
         this.zipcode = in.readInt();
     }
 
+    @Override
+    public int hashCode() {
+        return cityStateZipCode().hashCode();
+    }
+
     public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
         @Override
         public Location createFromParcel(Parcel source) {

@@ -128,6 +128,11 @@ public class Store implements Parcelable {
     }
 
     @Override
+    public int hashCode() {
+        return inventory.hashCode() + name.hashCode() + location.hashCode() + phoneNumber.hashCode() + website.hashCode();
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
