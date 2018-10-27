@@ -9,9 +9,9 @@ public class Item implements Parcelable {
     private String description;
     private double price;
     private String type;
-    private String category;
+    private Categories category;
 
-    public Item(String n, String d, double p, String t, String category) {
+    public Item(String n, String d, double p, String t, Categories category) {
         this.name = n;
         this.description = d;
         this.price = p;
@@ -19,11 +19,11 @@ public class Item implements Parcelable {
         this.category = category;
     }
 
-    public String getCategory() {
+    public Categories getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Categories category) {
         this.category = category;
     }
 

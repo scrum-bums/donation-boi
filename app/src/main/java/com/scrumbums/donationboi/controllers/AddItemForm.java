@@ -2,15 +2,18 @@ package com.scrumbums.donationboi.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
+import com.scrumbums.donationboi.model.Categories;
 import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 public class AddItemForm extends AppCompatActivity {
 
@@ -24,21 +27,30 @@ public class AddItemForm extends AppCompatActivity {
     private TextView descripLabel;
     private Button mAddButton;
     private Button mCancelItemButton;
-    private TextView categoryBox;
-    Store store;
+    private Spinner categorySpinner;
+    private Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
         setContentView(R.layout.add_item_form);
-        store = intent.getParcelableExtra("store");
+        store = DatabaseAbstraction.getStore(intent.getIntExtra("storeIdExtra", 0));
 
         nameBox = findViewById(R.id.name_box);
         priceBox = findViewById(R.id.price_box);
         descripBox = findViewById(R.id.descrip_box);
         typeBox = findViewById(R.id.type_box);
-        categoryBox = findViewById(R.id.category_box);
+
+        categorySpinner = findViewById(R.id.category_spinner);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, new String[] {
+                "Clothing",
+                "Hat",
+                "Kitchen",
+                "Electronics",
+                "Household",
+                "Other"
+        });
 
         mAddButton = findViewById(R.id.add_button);
         mAddButton.setText(R.string.add_button_text);
@@ -50,11 +62,29 @@ public class AddItemForm extends AppCompatActivity {
                 String itemType = typeBox.getText().toString();
                 double itemPrice = Double.valueOf(priceBox.getText().toString());
                 String itemDescription = descripBox.getText().toString();
-                String itemCategory = categoryBox.getText().toString();
-                store.addToInventory(itemName, itemDescription, itemPrice, itemType, itemCategory);
-                Intent intent = new Intent(AddItemForm.this, StoreViewActivity.class);
-                intent.putExtra("Store",store);
-                startActivity(intent);
+                Categories cat;
+                switch ((String) categorySpinner.getSelectedItem()) {
+                    case "Clothing":
+                        cat = Categories.CLOTHING;
+                        break;
+                    case "Hat":
+                        cat = Categories.HAT;
+                        break;
+                    case "Kitchen":
+                        cat = Categories.KITCHEN;
+                        break;
+                    case "Electronics":
+                        cat = Categories.ELECTRONICS;
+                        break;
+                    case "Household":
+                        cat = Categories.HOUSEHOLD;
+                        break;
+                    default:
+                        cat = Categories.OTHER;
+                }
+
+                store.addToInventory(itemName, itemDescription, itemPrice, itemType, cat);
+                finish();
                 
             }
         });

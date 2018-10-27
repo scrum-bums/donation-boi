@@ -45,13 +45,8 @@ public class ListViewCustom extends AppCompatActivity {
             public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
                 ListElement e = locationSamples.get(position);
                 Intent intent = new Intent(ListViewCustom.this, StoreViewActivity.class);
-                intent.putExtra("Name", e.getName());
-                intent.putExtra("Address", e.getStreetAddress());
-                intent.putExtra("Phone Number", e.getPhoneNumber());
-                intent.putExtra("Longitude", e.getLongitude());
-                intent.putExtra("Latitude", e.getLatitude());
-                intent.putExtra("Type", e.getLocationType());
-                intent.putExtra("Store", e.getStoreObject());
+
+                intent.putExtra("Store", 0);
 
 
                 startActivity(intent);
