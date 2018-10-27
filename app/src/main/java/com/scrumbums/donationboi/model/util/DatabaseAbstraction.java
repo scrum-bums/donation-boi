@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.scrumbums.donationboi.controllers.LoginActivity;
 import com.scrumbums.donationboi.model.AbstractUser;
+import com.scrumbums.donationboi.model.Store;
 
 import java.util.HashMap;
 
@@ -27,7 +28,7 @@ public final class DatabaseAbstraction {
      * Local database while we wait on Firebase. Maps keys (email in this case)
      * to users.
      */
-    private static final HashMap<String, AbstractUser> DATABASE
+    private static final HashMap<String, AbstractUser> USERDATABASE
             = new HashMap<String, AbstractUser>();
 
     /**
@@ -39,14 +40,14 @@ public final class DatabaseAbstraction {
      */
     public static int login(Context context, String key, String password) {
         // case where the account is not registered
-        if (DATABASE.get(key) == null) {
+        if (USERDATABASE.get(key) == null) {
             return -1;
         }
         // account exists; verify password
-        if (DATABASE.get(key).verifyPassword(password)) {
+        if (USERDATABASE.get(key).verifyPassword(password)) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("canAddItems", DATABASE.get(key).canAddDonations);
+            editor.putBoolean("canAddItems", USERDATABASE.get(key).canAddDonations);
             editor.commit();
             return 1;
         }
@@ -62,9 +63,24 @@ public final class DatabaseAbstraction {
      */
     public static boolean register(AbstractUser au) {
         // in this case, the email is already registered
-        if (DATABASE.get(au.getEmailAddress()) != null) return false;
+        if (USERDATABASE.get(au.getEmailAddress()) != null) return false;
         // otherwise add it
-        DATABASE.put(au.getEmailAddress(), au);
+        USERDATABASE.put(au.getEmailAddress(), au);
+        return true;
+    }
+
+    private static final HashMap<Integer, Store> STOREDATABASE
+            = new HashMap<Integer, Store>();
+
+    public static Store getStore(Integer key) {
+        return STOREDATABASE.get(key);
+    }
+
+    public static boolean addStore(Integer key, Store store) {
+        if (STOREDATABASE.get(key) != null) {
+            return false;
+        }
+        STOREDATABASE.put(key, store);
         return true;
     }
 

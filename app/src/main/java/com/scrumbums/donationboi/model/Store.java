@@ -6,6 +6,10 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Store class. Abstracts away a store.
+ * @author Nate Schneider
+ */
 public class Store implements Parcelable {
     private ArrayList<Item> inventory;
     private String name;
@@ -13,14 +17,35 @@ public class Store implements Parcelable {
     private String phoneNumber;
     private String website;
 
+    /**
+     * Constructor for a store. Only accepts a name and location with no phone
+     * number or website.
+     * @param name The name of the store.
+     * @param location The location of the store.
+     */
     public Store(String name, Location location) {
         this(name, location, null);
     }
 
+    /**
+     * Constructor for a store. Only accepts a name, location and phone number
+     * without a website.
+     * @param name The name of the store.
+     * @param location The location of the store.
+     * @param phoneNumber This store's phone number.
+     */
     public Store(String name, Location location, String phoneNumber) {
         this(name, location, phoneNumber, null);
     }
 
+    /**
+     * Constructor for a store. Only accepts a name, location and phone number
+     * without a website.
+     * @param name The name of the store.
+     * @param location The location of the store.
+     * @param phoneNumber This store's phone number.
+     * @param website This store's website.
+     */
     public Store(String name, Location location, String phoneNumber, String website) {
         this.inventory = new ArrayList<>();
         this.name = name;
@@ -29,10 +54,18 @@ public class Store implements Parcelable {
         this.website = website;
     }
 
+    /**
+     * Set this store's entire inventory.
+     * @param aList The list to set the inventory to.
+     */
     private void setInventory(ArrayList<Item> aList) {
         this.inventory = aList;
     }
 
+    /**
+     * Get this store's inventory.
+     * @return
+     */
     public ArrayList<Item> getInventory() {
         return inventory;
     }
