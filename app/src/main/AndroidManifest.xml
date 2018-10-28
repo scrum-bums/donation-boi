@@ -42,9 +42,6 @@
             android:name=".controllers.ItemView"
             android:label="@string/title_activity_item_view" />
         <activity
-            android:name=".controllers.StoreViewEmployeeActivity"
-            android:label="@string/title_activity_store_view_employee" />
-        <activity
             android:name=".controllers.AddItemForm"
             android:label="@string/title_activity_add_item_form"></activity>
     </application>

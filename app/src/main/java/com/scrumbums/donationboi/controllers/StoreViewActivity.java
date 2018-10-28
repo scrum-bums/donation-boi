@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Item;
 import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +31,12 @@ import java.util.List;
 public class StoreViewActivity extends AppCompatActivity {
 
     private TextView storeInfo;
-    private List<Item> inventoryArray = new ArrayList<>();
+    private ArrayList<Item> inventoryArray = new ArrayList<>();
     private ListView inventoryListView;
     private Button addItemBtn;
+    private Store store;
+    private ArrayAdapter adapter;
+    private int storeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +44,16 @@ public class StoreViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         setContentView(R.layout.store_view);
 
+        storeId = intent.getIntExtra("storeId", 0);
+        //TODO: if storeId = 0, show "store not found"
+        store = DatabaseAbstraction.getStore(storeId);
+
         storeInfo = findViewById(R.id.store_info);
-        storeInfo.setText(intent.getParcelableExtra("Store").toString());
+        storeInfo.setText(store.toString());
 
-        final Store store = (Store) (intent.getParcelableExtra("Store"));
+        inventoryArray = store.getInventoryArrayList();
 
-        inventoryArray = store.getInventory();
-
-
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.store_view_item, inventoryArray);
+        adapter = new ArrayAdapter<>(this, R.layout.store_view_item, inventoryArray);
         inventoryListView = findViewById(R.id.inventory_list_view);
         inventoryListView.setAdapter(adapter);
 
@@ -62,20 +69,33 @@ public class StoreViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addItemIntent = new Intent(StoreViewActivity.this, AddItemForm.class);
-                addItemIntent.putExtra("store",store);
+                addItemIntent.putExtra("storeId", storeId);
                 startActivity(addItemIntent);
             }
         });
+
         inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
                 Item i = inventoryArray.get(position);
                 Intent intent = new Intent(StoreViewActivity.this, ItemView.class);
-                intent.putExtra("item", i);
+                intent.putExtra("storeId", store.getStoreId());
+                intent.putExtra("itemId", i.getItemId());
                 startActivity(intent);
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        inventoryArray = store.getInventoryArrayList();
+        ArrayAdapter<Item> newAdapter = new ArrayAdapter<>(this, R.layout.store_view_item, inventoryArray);
+
+        inventoryListView.setAdapter(newAdapter);
+        inventoryListView.refreshDrawableState();
+
     }
 
 

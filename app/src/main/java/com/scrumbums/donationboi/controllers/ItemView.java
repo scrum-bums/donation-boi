@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Item;
 import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 public class ItemView extends AppCompatActivity {
     private TextView nameView;
@@ -23,8 +24,15 @@ public class ItemView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         setContentView(R.layout.item_view);
-        final Item item = intent.getParcelableExtra("item");
+        final int storeId = intent.getIntExtra("storeId",0);
+        final int itemId = intent.getIntExtra("itemId", 0);
+        Store store = DatabaseAbstraction.getStore(storeId);
+        Item item = store.getInventoryItem(itemId);
+        //TODO: show error if invalid store/item
 
+        if (item == null) {
+            item = new Item("Item not found");
+        }
 
         nameView = findViewById(R.id.item_name);
         nameView.setText(item.getName());
@@ -39,7 +47,7 @@ public class ItemView extends AppCompatActivity {
         descripView.setText(item.getDescription());
 
         categoryView = findViewById(R.id.item_category);
-        categoryView.setText(item.getCategory());
+        categoryView.setText(item.getCategory().toString());
 
 
 

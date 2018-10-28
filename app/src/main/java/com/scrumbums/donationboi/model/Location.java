@@ -3,7 +3,7 @@ package com.scrumbums.donationboi.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Location implements Parcelable {
+public class Location {
 
     private float latitude;
     private float longitude;
@@ -104,45 +104,4 @@ public class Location implements Parcelable {
         ret += ", " + latLon;
         return ret;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeFloat(this.latitude);
-        dest.writeFloat(this.longitude);
-        dest.writeString(this.streetAddress);
-        dest.writeString(this.city);
-        dest.writeString(this.state);
-        dest.writeInt(this.zipcode);
-    }
-
-    protected Location(Parcel in) {
-        this.latitude = in.readFloat();
-        this.longitude = in.readFloat();
-        this.streetAddress = in.readString();
-        this.city = in.readString();
-        this.state = in.readString();
-        this.zipcode = in.readInt();
-    }
-
-    @Override
-    public int hashCode() {
-        return cityStateZipCode().hashCode();
-    }
-
-    public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
-        @Override
-        public Location createFromParcel(Parcel source) {
-            return new Location(source);
-        }
-
-        @Override
-        public Location[] newArray(int size) {
-            return new Location[size];
-        }
-    };
 }

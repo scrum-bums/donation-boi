@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.scrumbums.donationboi.model.AbstractUser;
 import com.scrumbums.donationboi.model.Store;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -82,5 +83,12 @@ public final class DatabaseAbstraction {
         STORE_DATABASE.put(key, store);
         return true;
     }
+
+    public static ArrayList<Store> getStoresArrayList() {
+        ArrayList<Store> temp = new ArrayList<>(STORE_DATABASE.values());
+        return temp;
+
+    }
+
 
 }

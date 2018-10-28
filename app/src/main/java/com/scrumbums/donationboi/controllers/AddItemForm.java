@@ -35,7 +35,7 @@ public class AddItemForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
         setContentView(R.layout.add_item_form);
-        store = DatabaseAbstraction.getStore(intent.getIntExtra("storeIdExtra", 0));
+        store = DatabaseAbstraction.getStore(intent.getIntExtra("storeId", 0));
 
         nameBox = findViewById(R.id.name_box);
         priceBox = findViewById(R.id.price_box);
@@ -51,6 +51,8 @@ public class AddItemForm extends AppCompatActivity {
                 "Household",
                 "Other"
         });
+        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(spinnerAdapter);
 
         mAddButton = findViewById(R.id.add_button);
         mAddButton.setText(R.string.add_button_text);

@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Location;
 import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,21 +22,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListViewCustom extends AppCompatActivity {
-    private List<ListElement> locationSamples = new ArrayList<>();
+    private ArrayList<Store> stores;
     private ListView listView;
+    private ArrayAdapter adapter;
     final String TAG = "LIST_VIEW_CUSTOM";
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.csv_view);
-        readLocationData();
-
 
         listView = findViewById(R.id.mobile_list);
+        stores = DatabaseAbstraction.getStoresArrayList();
 
         //The adapter will change depending on the type of user that is logged in
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, locationSamples);
+        adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, stores);
 
 
         listView.setAdapter(adapter);
@@ -43,170 +44,19 @@ public class ListViewCustom extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
-                ListElement e = locationSamples.get(position);
+                Store e = stores.get(position);
                 Intent intent = new Intent(ListViewCustom.this, StoreViewActivity.class);
-
-                intent.putExtra("Store", 0);
-
-
+                intent.putExtra("storeId", e.getStoreId());
+                Bundle bundle = intent.getExtras();
                 startActivity(intent);
 
             }
         });
     }
 
-    private void readLocationData() {
-        InputStream is = getResources().openRawResource(R.raw.location_data);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-
-        String line = "";
-        try {
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] tokens = line.split(",");
-                ListElement listElement = new ListElement();
-                listElement.setName(tokens[1]);
-                listElement.setLatitude(Float.parseFloat(tokens[2]));
-                listElement.setLongitude(Float.parseFloat(tokens[3]));
-                listElement.setStreetAddress(tokens[4]);
-                listElement.setCity(tokens[5]);
-                listElement.setState(tokens[6]);
-                listElement.setZipCode(Integer.parseInt(tokens[7]));
-                listElement.setLocationType(tokens[8]);
-                listElement.setPhoneNumber(tokens[9]);
-                listElement.setWebsite(tokens[10]);
-                listElement.setStoreObject();
-
-                locationSamples.add(listElement);
-
-
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "error reading assets", e);
-        }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
-
-    class ListElement {
-
-        private String name;
-        private float latitude;
-        private float longitude;
-        private String streetAddress;
-        private String city;
-        private String state;
-        private int zipCode;
-        private String locationType;
-        private String phoneNumber;
-        private String website;
-        private Store storeObject;
-
-        private ListElement(Object[] args) {
-        }
-        private ListElement() {
-            this(new Object[0]);
-        }
-
-        public String toString(){
-            return getName() + ", " + getStreetAddress();
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public float getLatitude() {
-            return latitude;
-        }
-
-        public void setLatitude(float latitude) {
-            this.latitude = latitude;
-        }
-
-        public float getLongitude() {
-            return longitude;
-        }
-
-        public void setLongitude(float longitude) {
-            this.longitude = longitude;
-        }
-
-        public String getStreetAddress() {
-            return streetAddress;
-        }
-
-        public void setStreetAddress(String streetAddress) {
-            this.streetAddress = streetAddress;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public int getZipCode() {
-            return zipCode;
-        }
-
-        public void setZipCode(int zipCode) {
-            this.zipCode = zipCode;
-        }
-
-        public String getLocationType() {
-            return locationType;
-        }
-
-        public void setLocationType(String locationType) {
-            this.locationType = locationType;
-        }
-
-        public String getPhoneNumber() {
-            return phoneNumber;
-        }
-
-        public void setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
-        }
-
-        public String getWebsite() {
-            return website;
-        }
-
-        public void setWebsite(String website) {
-            this.website = website;
-        }
-
-        public Store getStoreObject() {
-            return storeObject;
-        }
-
-        public void setStoreObject(Store storeObject) {
-            this.storeObject = storeObject;
-        }
-
-        public void setStoreObject() {
-            this.storeObject = createStore();
-        }
-
-
-        private Store createStore() {
-            return new Store (name, new Location(streetAddress, state, city, zipCode, latitude, longitude), phoneNumber, website);
-        }
-    }
-
 }
