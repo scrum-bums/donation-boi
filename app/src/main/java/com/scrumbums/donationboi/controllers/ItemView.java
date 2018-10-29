@@ -51,7 +51,7 @@ public class ItemView extends AppCompatActivity {
         descripView.setText(item.getDescription());
 
         shortView = findViewById(R.id.item_short);
-        String shortDescription = item.getDescription().substring(0,30) + "...";
+        String shortDescription = item.getDescription().length() > 31 ? item.getDescription().substring(0,30) + "..." : item.getDescription();
         shortView.setText(shortDescription);
 
         categoryView = findViewById(R.id.item_category);
