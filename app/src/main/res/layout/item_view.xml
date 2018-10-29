@@ -61,6 +61,21 @@
         app:layout_constraintTop_toBottomOf="@+id/item_price" />
 
     <TextView
+        android:id="@+id/item_short"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Short Description"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_timestamp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_descrip"
+        app:layout_constraintVertical_bias="0.005" />
+
+    <TextView
         android:id="@+id/item_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,7 +97,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/item_category"
         app:layout_constraintTop_toBottomOf="@+id/item_descrip"
-        app:layout_constraintVertical_bias="0.565"
+        app:layout_constraintVertical_bias="0.826"
         tools:layout_editor_absoluteX="1dp" />
 
 </android.support.constraint.ConstraintLayout>

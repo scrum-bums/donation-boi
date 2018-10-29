@@ -11,11 +11,14 @@ import com.scrumbums.donationboi.model.Item;
 import com.scrumbums.donationboi.model.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
+import java.util.Locale;
+
 public class ItemView extends AppCompatActivity {
     private TextView nameView;
     private TextView typeView;
     private TextView priceView;
     private TextView descripView;
+    private TextView shortView;
     private TextView categoryView;
     private TextView timestampView;
 
@@ -42,10 +45,14 @@ public class ItemView extends AppCompatActivity {
         typeView.setText(item.getType());
 
         priceView = findViewById(R.id.item_price);
-        priceView.setText(item.getPrice() + "");
+        priceView.setText(String.format(Locale.ENGLISH,"$%.2f",item.getPrice()));
 
         descripView = findViewById(R.id.item_descrip);
         descripView.setText(item.getDescription());
+
+        shortView = findViewById(R.id.item_short);
+        String shortDescription = item.getDescription().substring(0,30) + "...";
+        shortView.setText(shortDescription);
 
         categoryView = findViewById(R.id.item_category);
         categoryView.setText(item.getCategory().toString());
