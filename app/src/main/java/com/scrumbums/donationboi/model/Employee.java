@@ -17,6 +17,7 @@ public class Employee extends AbstractUser {
      */
     public Employee(String username, String name, String email, String password) {
         super(username, name, email, password);
+        this.canAddDonations = true;
     }
 
 }

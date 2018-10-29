@@ -96,7 +96,7 @@ public final class AccountValidation {
      */
     public static final boolean isValidPassword(String s) {
         return isStringNonEmpty(s) && !containsIllegalCharacters(s)
-                && s.length() >= MINPASSWORDLENGTH && hasMinChars(s);
+                && s.length() >= MINPASSWORDLENGTH; //&& hasMinChars(s);
     }
 
     /**

@@ -8,12 +8,14 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -311,13 +313,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             try {
                 // Simulate network access.
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 return false;
             }
 
 
-            switch ((loginResult = DatabaseAbstraction.login(mEmail, mPassword))) {
+            switch ((loginResult = DatabaseAbstraction.login(getApplicationContext(), mEmail, mPassword))) {
                 case 1:
                     return true;
                 case 0:
@@ -336,9 +338,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
-                finish();
-
                 startActivity(new Intent(LoginActivity.this, ListViewCustom.class));
+                finish();
             } else if (loginResult == 0){
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

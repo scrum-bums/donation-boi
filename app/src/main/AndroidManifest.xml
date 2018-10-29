@@ -26,8 +26,7 @@
         </activity>
         <activity android:name=".controllers.ApplicationActivity" />
         <activity android:name=".controllers.ListViewCustom" />
-        <activity
-            android:name=".controllers.ListElementPage"></activity>
+        <activity android:name=".controllers.ListElementPage" />
         <activity
             android:name=".controllers.RegistrationActivity"
             android:label="@string/title_activity_registration"
@@ -36,6 +35,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.scrumbums.donationboi.controllers.MainActivity" />
         </activity>
+        <activity
+            android:name=".controllers.StoreViewActivity"
+            android:label="@string/title_activity_store_view" />
+        <activity
+            android:name=".controllers.ItemView"
+            android:label="@string/title_activity_item_view" />
+        <activity
+            android:name=".controllers.AddItemForm"
+            android:label="@string/title_activity_add_item_form"></activity>
     </application>
 
 </manifest>

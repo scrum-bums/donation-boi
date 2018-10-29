@@ -15,6 +15,7 @@ public abstract class AbstractUser {
     private String name;
     private String emailAddress;
     private String password;
+    public boolean canAddDonations = false;
 
     /**
      * Create an AbstractUser.
