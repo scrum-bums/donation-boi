@@ -17,6 +17,7 @@ public class ItemView extends AppCompatActivity {
     private TextView priceView;
     private TextView descripView;
     private TextView categoryView;
+    private TextView timestampView;
 
 
     @Override
@@ -49,6 +50,8 @@ public class ItemView extends AppCompatActivity {
         categoryView = findViewById(R.id.item_category);
         categoryView.setText(item.getCategory().toString());
 
+        timestampView = findViewById(R.id.item_timestamp);
+        timestampView.setText(item.getTimestamp().toString());
 
 
     }

@@ -72,4 +72,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_descrip" />
 
+    <TextView
+        android:id="@+id/item_timestamp"
+        android:layout_width="382dp"
+        android:layout_height="29dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Timestamp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_category"
+        app:layout_constraintTop_toBottomOf="@+id/item_descrip"
+        app:layout_constraintVertical_bias="0.565"
+        tools:layout_editor_absoluteX="1dp" />
+
 </android.support.constraint.ConstraintLayout>

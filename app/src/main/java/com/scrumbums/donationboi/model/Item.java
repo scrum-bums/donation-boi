@@ -1,5 +1,9 @@
 package com.scrumbums.donationboi.model;
 
+
+import java.util.Calendar;
+import java.util.Date;
+
 public class Item {
 
     private static int itemCount = 0;
@@ -9,6 +13,7 @@ public class Item {
     private String type;
     private Categories category;
     private int itemId;
+    private Date timestamp;
 
     public Item(String n, String d, double p, String t, Categories category) {
         this.name = n;
@@ -18,6 +23,7 @@ public class Item {
         this.category = category;
         itemCount++;
         this.itemId = itemCount;
+        timestamp = Calendar.getInstance().getTime();
     }
 
     public Item(String n) {
@@ -92,6 +98,18 @@ public class Item {
         hash = 31 * hash + description == null ? 0 : description.hashCode();
         hash = 31 * hash + type == null ? 0 : type.hashCode();
         return hash;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getTimestampString() {
+        return timestamp.toString();
     }
 }
 
