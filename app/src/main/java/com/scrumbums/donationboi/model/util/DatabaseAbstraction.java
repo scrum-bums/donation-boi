@@ -2,10 +2,14 @@ package com.scrumbums.donationboi.model.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.scrumbums.donationboi.model.AbstractUser;
+import com.scrumbums.donationboi.model.AppDatabase;
 import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +44,8 @@ public final class DatabaseAbstraction {
      */
     public static int login(Context context, String key, String password) {
         // case where the account is not registered
+        AppDatabase DATABASE = AppDatabase.getDatabase(context);
+        Log.i("login",DATABASE.userDao().getAll().toString());
         if (USER_DATABASE.get(key) == null) {
             return -1;
         }
@@ -57,15 +63,22 @@ public final class DatabaseAbstraction {
 
     /**
      * Register the given user.
-     * @param au The AbstractUser to register.
-     * @return If the AbstractUser was registered. If not, the key (email) has
+     * @param user The User to register.
+     * @return If the User was registered. If not, the key (email) has
      * already been registered.
      */
-    public static boolean register(AbstractUser au) {
+    public static boolean register(final Context context, final User user) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AppDatabase.getDatabase(context).userDao().createUser(user);
+                Log.i("databaseabstraction",AppDatabase.getDatabase(context).userDao().getAll().toString());
+            }
+        }).start();
         // in this case, the email is already registered
-        if (USER_DATABASE.get(au.getEmailAddress()) != null) return false;
-        // otherwise add it
-        USER_DATABASE.put(au.getEmailAddress(), au);
+//        if (USER_DATABASE.get(au.getEmailAddress()) != null) return false;
+//        // otherwise add it
+//        USER_DATABASE.put(au.getEmailAddress(), au);
         return true;
     }
 
@@ -87,8 +100,5 @@ public final class DatabaseAbstraction {
     public static ArrayList<Store> getStoresArrayList() {
         ArrayList<Store> temp = new ArrayList<>(STORE_DATABASE.values());
         return temp;
-
     }
-
-
 }

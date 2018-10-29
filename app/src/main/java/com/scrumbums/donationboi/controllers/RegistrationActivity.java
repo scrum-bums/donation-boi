@@ -11,9 +11,12 @@ import android.widget.Spinner;
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.AbstractUser;
 import com.scrumbums.donationboi.model.Administrator;
+import com.scrumbums.donationboi.model.AppDatabase;
 import com.scrumbums.donationboi.model.Employee;
 import com.scrumbums.donationboi.model.Manager;
 import com.scrumbums.donationboi.model.User;
+import com.scrumbums.donationboi.model.UserDao;
+import com.scrumbums.donationboi.model.UserRole;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
@@ -52,9 +55,9 @@ public class RegistrationActivity extends Activity {
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AbstractUser u;
+                User u;
                 if ((u = getUser()) != null) {
-                    if (DatabaseAbstraction.register(u)) {
+                    if (DatabaseAbstraction.register(getApplicationContext(), u)) {
                         finish();
                     } else {
                         emailField.setError(getString(R.string.error_email_already_registered));
@@ -72,7 +75,7 @@ public class RegistrationActivity extends Activity {
         });
     }
 
-    private AbstractUser getUser() {
+    private User getUser() {
         String username = usernameField.getText().toString();
         String name = nameField.getText().toString();
         String email = emailField.getText().toString();
@@ -87,18 +90,18 @@ public class RegistrationActivity extends Activity {
             passwordField.requestFocus();
             return null;
         }
-        switch ((String) typeSpinner.getSelectedItem()) {
-            case "User":
-                return new User(username, name, email, password);
-            case "Employee":
-                return new Employee(username, name, email, password);
-            case "Manager":
-                return new Manager(username, name, email, password);
-            case "Administrator":
-                return new Administrator(username, name, email, password);
-            default:
-                return new User(username, name, email, password);
+
+        UserRole role = UserRole.getRole(typeSpinner.getSelectedItem().toString());
+        if (role == null) {
+            role = UserRole.USER;
         }
+        User newUser = new User(username, name, email, password, role);
+
+        DatabaseAbstraction.register(getApplicationContext(), newUser);
+
+        return newUser;
+
+
     }
 
 }
