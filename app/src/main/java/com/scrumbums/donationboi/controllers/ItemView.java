@@ -39,26 +39,26 @@ public class ItemView extends AppCompatActivity {
         }
 
         nameView = findViewById(R.id.item_name);
-        nameView.setText(item.getName());
+        nameView.setText("Name: " + item.getName());
 
-        typeView= findViewById(R.id.item_type);
-        typeView.setText(item.getType());
+        typeView = findViewById(R.id.item_type);
+        typeView.setText("Type: " + item.getType());
 
         priceView = findViewById(R.id.item_price);
-        priceView.setText(String.format(Locale.ENGLISH,"$%.2f",item.getPrice()));
+        priceView.setText("Price: " + (String.format(Locale.ENGLISH,"$%.2f",item.getPrice())));
 
         descripView = findViewById(R.id.item_descrip);
-        descripView.setText(item.getDescription());
+        descripView.setText("Description: " + item.getDescription());
 
         shortView = findViewById(R.id.item_short);
         String shortDescription = item.getDescription().length() > 31 ? item.getDescription().substring(0,30) + "..." : item.getDescription();
-        shortView.setText(shortDescription);
+        shortView.setText("Short Description: " + shortDescription + "\n");
 
         categoryView = findViewById(R.id.item_category);
-        categoryView.setText(item.getCategory().toString());
+        categoryView.setText("Category: " + item.getCategory().toString());
 
         timestampView = findViewById(R.id.item_timestamp);
-        timestampView.setText(item.getTimestamp().toString());
+        timestampView.setText("Donation Time: " + item.getTimestamp().toString());
 
 
     }
