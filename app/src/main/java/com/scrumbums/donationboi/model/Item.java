@@ -8,6 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Calendar;
 
+//TODO: ADD ItemDao
 @Entity(foreignKeys = {@ForeignKey(
         entity = Store.class,
         parentColumns = "id",
