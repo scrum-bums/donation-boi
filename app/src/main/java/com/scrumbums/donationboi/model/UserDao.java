@@ -6,14 +6,20 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+
 @Dao
 public interface UserDao {
 
     @Query("SELECT * FROM user")
     List<User> getAll();
 
-    @Query("SELEct * FROM user WHERE email=:email AND password=:password")
-    User getUser(String email, String password);
+    @Query("SELECT * FROM user WHERE email=:email")
+    Maybe<User> getUser(String email);
+
+    @Query("SELECT * FROM user WHERE email=:email AND password=:password")
+    Single<User> getUser(String email, String password);
 
     @Insert
     void createUser(User user);

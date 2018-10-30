@@ -3,6 +3,7 @@ package com.scrumbums.donationboi.model.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -10,9 +11,18 @@ import com.scrumbums.donationboi.model.AbstractUser;
 import com.scrumbums.donationboi.model.AppDatabase;
 import com.scrumbums.donationboi.model.Store;
 import com.scrumbums.donationboi.model.User;
+import com.scrumbums.donationboi.model.UserDao;
+import com.scrumbums.donationboi.model.UserRole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.functions.Functions;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Abstraction of the database. Handles useful database functions through an
@@ -22,6 +32,8 @@ import java.util.HashMap;
  * @author jdierberger3
  */
 public final class DatabaseAbstraction {
+
+    private static User signedInUser;
 
     /**
      * do not use.
@@ -34,6 +46,7 @@ public final class DatabaseAbstraction {
      */
     private static final HashMap<String, AbstractUser> USER_DATABASE
             = new HashMap<String, AbstractUser>();
+
 
     /**
      * Attempt to login with the given credentials.
@@ -68,13 +81,14 @@ public final class DatabaseAbstraction {
      * already been registered.
      */
     public static boolean register(final Context context, final User user) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AppDatabase.getDatabase(context).userDao().createUser(user);
-                Log.i("databaseabstraction",AppDatabase.getDatabase(context).userDao().getAll().toString());
-            }
-        }).start();
+        AppDatabase database = AppDatabase.getDatabase(context);
+        UserDao dao = database.userDao();
+
+        Disposable s = dao.getUser(user.getEmail())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(u -> Log.i("DATABASE_ABSTRACTION", u.toString()),
+                        exception ->Log.i("DATABASE_ABSTRACTION", "error in single" + exception.getMessage()) );
+
         // in this case, the email is already registered
 //        if (USER_DATABASE.get(au.getEmailAddress()) != null) return false;
 //        // otherwise add it
@@ -100,5 +114,9 @@ public final class DatabaseAbstraction {
     public static ArrayList<Store> getStoresArrayList() {
         ArrayList<Store> temp = new ArrayList<>(STORE_DATABASE.values());
         return temp;
+    }
+
+    public static User getSignedInUser() {
+        return signedInUser;
     }
 }
