@@ -1,6 +1,7 @@
 package com.scrumbums.donationboi.model;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ public class Item {
     private Categories category;
     private int itemId;
     private Date timestamp;
+    private ArrayList<String> comments;
 
     public Item(String n, String d, double p, String t, Categories category) {
         this.name = n;
@@ -24,6 +26,7 @@ public class Item {
         itemCount++;
         this.itemId = itemCount;
         timestamp = Calendar.getInstance().getTime();
+        this.comments = new ArrayList<>();
     }
 
     public Item(String n) {
@@ -72,6 +75,14 @@ public class Item {
 
     private void setType(String t) {
         this.type = t;
+    }
+
+    public ArrayList<String> getComments() { return comments; }
+
+    public void setComments(ArrayList<String> comments) { this.comments = comments; }
+
+    public void addComment(String comment) {
+        this.comments.add(comment);
     }
 
     public String toString() {
