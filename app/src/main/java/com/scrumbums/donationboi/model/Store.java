@@ -2,6 +2,7 @@ package com.scrumbums.donationboi.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Store {
     @PrimaryKey(autoGenerate = true)
     private final int storeId;
 
+    @Ignore
     private HashMap<Integer, Item> inventory;
 
     @ColumnInfo(name = "name")
@@ -149,7 +151,7 @@ public class Store {
     }
 
     public void addToInventory(String name, String description, double price, String type, Categories cat) {
-        addToInventory(new Item(name, description, price, type, cat));
+        addToInventory(new Item(name, description, price, type, cat, storeId));
     }
 
     public ArrayList<Item> getInventoryArrayList() {

@@ -1,21 +1,47 @@
 package com.scrumbums.donationboi.model;
 
 
-import java.util.Calendar;
-import java.util.Date;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
 
+import java.util.Calendar;
+
+@Entity(foreignKeys = {@ForeignKey(
+        entity = Store.class,
+        parentColumns = "id",
+        childColumns = "storeId"
+)})
 public class Item {
 
     private static int itemCount = 0;
-    private String name;
-    private String description;
-    private double price;
-    private String type;
-    private Categories category;
-    private int itemId;
-    private Date timestamp;
 
-    public Item(String n, String d, double p, String t, Categories category) {
+    @ColumnInfo(name = "name")
+    private String name;
+
+    @ColumnInfo(name = "description")
+    private String description;
+
+    @ColumnInfo(name = "price")
+    private double price;
+
+    @ColumnInfo(name = "type")
+    private String type;
+
+    @ColumnInfo(name = "category")
+    private Categories category;
+
+    @PrimaryKey(autoGenerate = true)
+    private int itemId;
+
+    @ColumnInfo(name = "timestamp")
+    private String timestamp;
+
+    @ColumnInfo(name = "storeId")
+    private int storeId;
+
+    public Item(String n, String d, double p, String t, Categories category, int storeId) {
         this.name = n;
         this.description = d;
         this.price = p;
@@ -23,11 +49,12 @@ public class Item {
         this.category = category;
         itemCount++;
         this.itemId = itemCount;
-        timestamp = Calendar.getInstance().getTime();
+        timestamp = Calendar.getInstance().getTime().toString();
+        this.storeId = storeId;
     }
 
     public Item(String n) {
-        this(n, null, 0.0, null, null);
+        this(n, null, 0.0, null, null, 0);
     }
 
     public int getItemId() {
@@ -100,16 +127,10 @@ public class Item {
         return hash;
     }
 
-    public Date getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
 
-    public String getTimestampString() {
-        return timestamp.toString();
-    }
 }
 
