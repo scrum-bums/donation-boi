@@ -10,7 +10,7 @@ import android.content.Context;
 import com.scrumbums.donationboi.model.util.Converters;
 
 @TypeConverters({Converters.class})
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
 
@@ -23,6 +23,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (DATABASE == null) {
                     DATABASE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
