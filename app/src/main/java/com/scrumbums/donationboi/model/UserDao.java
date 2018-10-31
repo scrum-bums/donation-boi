@@ -13,13 +13,6 @@ import io.reactivex.Single;
 
 @Dao
 public interface UserDao {
-
-    @Query("SELECT * FROM user")
-    List<User> getAll();
-
-    @Query("SELECT * FROM user WHERE email=:email")
-    Flowable<User> getUser(String email);
-
     @Query("SELECT * FROM user WHERE email=:email AND password=:password")
     Single<User> getUser(String email, String password);
 

@@ -51,28 +51,17 @@ public final class DatabaseAbstraction {
 
     /**
      * Attempt to login with the given credentials.
-     * @param key The key (email or username) of the user.
+     * @param username The username (email or username) of the user.
      * @param password The password of the user.
      * @return 1 if the given credentials are valid, 0 if the password is
      * invalid, or -1 if the username is invalid.
      */
-    public static int login(Context context, String key, String password) {
+    public static Single<User> login(Context context, String username, String password) {
         // case where the account is not registered
-        AppDatabase DATABASE = AppDatabase.getDatabase(context);
-        Log.i("login",DATABASE.userDao().getAll().toString());
-        if (USER_DATABASE.get(key) == null) {
-            return -1;
-        }
-        // account exists; verify password
-        if (USER_DATABASE.get(key).verifyPassword(password)) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("canAddItems", USER_DATABASE.get(key).canAddDonations);
-            editor.commit();
-            return 1;
-        }
-        // otherwise password is bayud
-        return 0;
+        AppDatabase database = AppDatabase.getDatabase(context);
+        Log.i("login",database.userDao().getAll().toString());
+
+        return database.userDao().getUser(username, password);
     }
 
     /**

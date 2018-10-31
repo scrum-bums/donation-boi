@@ -19,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,11 +31,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
+import com.scrumbums.donationboi.model.User;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -295,7 +301,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Single<User>> {
 
         private final String mEmail;
         private final String mPassword;
@@ -308,42 +314,38 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Single<User> doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                return false;
-            }
 
+            return DatabaseAbstraction.login(getApplicationContext(), mEmail, mPassword);
 
-            switch ((loginResult = DatabaseAbstraction.login(getApplicationContext(), mEmail, mPassword))) {
-                case 1:
-                    return true;
-                case 0:
-                    return false;
-                case -1:
-                    mEmailView.setError(getString(R.string.error_account_not_recognized));
-                    return false;
-                default:
-                    return false;
-            }
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Single<User> result) {
             mAuthTask = null;
-            showProgress(false);
 
-            if (success) {
-                startActivity(new Intent(LoginActivity.this, ListViewCustom.class));
-                finish();
-            } else if (loginResult == 0){
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
+
+            Disposable loginResult = result
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(
+                    user-> {
+                        runOnUiThread(() -> {
+                            showProgress(false);
+                            finish();
+                            startActivity(new Intent(LoginActivity.this, ListViewCustom.class));
+                        });
+                    },
+                    error -> {
+                        runOnUiThread(() -> {
+                            showProgress(false);
+                            mEmailView.setError(getString(R.string.error_account_not_recognized));
+                        });
+
+                        error.printStackTrace();
+                    }
+            );
         }
 
         @Override
