@@ -1,6 +1,9 @@
 package com.scrumbums.donationboi.model;
 
-import android.util.SparseArray;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +12,32 @@ import java.util.HashMap;
  * Store class. Abstracts away a store.
  * @author Nate Schneider
  */
+@Entity
 public class Store {
+    @PrimaryKey(autoGenerate = true)
+    private final int storeId;
+
+    @Ignore
     private HashMap<Integer, Item> inventory;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "location")
     private Location location;
+
+    @ColumnInfo(name = "locationType")
     private String locationType;
+
+    @ColumnInfo(name = "phoneNumber")
+    private String phoneNumber;
+
+    @ColumnInfo(name = "website")
+    private String website;
+
+    private static int storeCount = 0;
+
+
 
     public int getStoreId() {
         return storeId;
@@ -28,11 +52,7 @@ public class Store {
         this.locationType = locationType;
     }
 
-    private String phoneNumber;
-    private String website;
 
-    private static int storeCount = 0;
-    private final int storeId;
 
     /**
      * Constructor for a store. Only accepts a name and location with no phone
@@ -131,7 +151,7 @@ public class Store {
     }
 
     public void addToInventory(String name, String description, double price, String type, Categories cat) {
-        addToInventory(new Item(name, description, price, type, cat));
+        addToInventory(new Item(name, description, price, type, cat, storeId));
     }
 
     public ArrayList<Item> getInventoryArrayList() {
