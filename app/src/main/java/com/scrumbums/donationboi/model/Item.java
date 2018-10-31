@@ -6,6 +6,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.scrumbums.donationboi.model.entities.Store;
+
 import java.util.Calendar;
 
 //TODO: ADD ItemDao

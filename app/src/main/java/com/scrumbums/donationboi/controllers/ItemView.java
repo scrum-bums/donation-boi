@@ -2,13 +2,12 @@ package com.scrumbums.donationboi.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Item;
-import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.Locale;

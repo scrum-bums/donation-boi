@@ -2,24 +2,16 @@ package com.scrumbums.donationboi.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.Location;
-import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListViewCustom extends AppCompatActivity {
     private ArrayList<Store> stores;

@@ -10,19 +10,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.AbstractUser;
-import com.scrumbums.donationboi.model.Administrator;
-import com.scrumbums.donationboi.model.AppDatabase;
-import com.scrumbums.donationboi.model.Employee;
-import com.scrumbums.donationboi.model.Manager;
-import com.scrumbums.donationboi.model.User;
-import com.scrumbums.donationboi.model.UserDao;
+import com.scrumbums.donationboi.model.entities.User;
 import com.scrumbums.donationboi.model.UserRole;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
-import io.reactivex.Completable;
-import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 

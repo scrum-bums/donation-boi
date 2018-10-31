@@ -3,10 +3,11 @@ package com.scrumbums.donationboi.model;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
+import com.scrumbums.donationboi.model.daos.UserDao;
+import com.scrumbums.donationboi.model.entities.User;
 import com.scrumbums.donationboi.model.util.Converters;
 
 @TypeConverters({Converters.class})

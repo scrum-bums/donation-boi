@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Categories;
-import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 public class AddItemForm extends AppCompatActivity {

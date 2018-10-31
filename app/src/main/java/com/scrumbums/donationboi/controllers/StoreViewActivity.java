@@ -3,10 +3,8 @@ package com.scrumbums.donationboi.controllers;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,12 +14,10 @@ import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Item;
-import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**

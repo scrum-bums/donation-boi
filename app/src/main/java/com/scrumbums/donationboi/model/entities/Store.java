@@ -1,9 +1,13 @@
-package com.scrumbums.donationboi.model;
+package com.scrumbums.donationboi.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+
+import com.scrumbums.donationboi.model.Categories;
+import com.scrumbums.donationboi.model.Item;
+import com.scrumbums.donationboi.model.Location;
 
 import java.util.ArrayList;
 import java.util.HashMap;
