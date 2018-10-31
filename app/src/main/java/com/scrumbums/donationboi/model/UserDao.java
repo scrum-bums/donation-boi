@@ -6,6 +6,8 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
@@ -16,7 +18,7 @@ public interface UserDao {
     List<User> getAll();
 
     @Query("SELECT * FROM user WHERE email=:email")
-    Maybe<User> getUser(String email);
+    Flowable<User> getUser(String email);
 
     @Query("SELECT * FROM user WHERE email=:email AND password=:password")
     Single<User> getUser(String email, String password);

@@ -2,6 +2,7 @@ package com.scrumbums.donationboi.controllers;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +20,11 @@ import com.scrumbums.donationboi.model.UserDao;
 import com.scrumbums.donationboi.model.UserRole;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
+
+import io.reactivex.Completable;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class RegistrationActivity extends Activity {
 
@@ -57,12 +63,18 @@ public class RegistrationActivity extends Activity {
             public void onClick(View v) {
                 User u;
                 if ((u = getUser()) != null) {
-                    if (DatabaseAbstraction.register(getApplicationContext(), u)) {
-                        finish();
-                    } else {
-                        emailField.setError(getString(R.string.error_email_already_registered));
-                        emailField.requestFocus();
-                    }
+                    Disposable addUser = DatabaseAbstraction.register(getApplicationContext(), u)
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(
+                                    () -> runOnUiThread(() -> finish()),
+                                    e -> {
+                                        Log.i("REGISTER",e.getMessage());
+                                        runOnUiThread(() -> {
+                                            emailField.setError(getString(R.string.error_email_already_registered));
+                                            emailField.requestFocus();
+                                        });
+                                    }
+                                    );
                 }
             }
         });

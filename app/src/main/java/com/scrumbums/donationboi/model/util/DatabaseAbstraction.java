@@ -17,6 +17,7 @@ import com.scrumbums.donationboi.model.UserRole;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -80,20 +81,11 @@ public final class DatabaseAbstraction {
      * @return If the User was registered. If not, the key (email) has
      * already been registered.
      */
-    public static boolean register(final Context context, final User user) {
+    public static Completable register(final Context context, final User user) {
         AppDatabase database = AppDatabase.getDatabase(context);
         UserDao dao = database.userDao();
 
-        Disposable s = dao.getUser(user.getEmail())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(u -> Log.i("DATABASE_ABSTRACTION", u.toString()),
-                        exception ->Log.i("DATABASE_ABSTRACTION", "error in single" + exception.getMessage()) );
-
-        // in this case, the email is already registered
-//        if (USER_DATABASE.get(au.getEmailAddress()) != null) return false;
-//        // otherwise add it
-//        USER_DATABASE.put(au.getEmailAddress(), au);
-        return true;
+        return Completable.fromAction(() -> dao.createUser(user));
     }
 
     private static final HashMap<Integer, Store> STORE_DATABASE
