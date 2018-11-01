@@ -13,6 +13,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 /**
  * Abstraction of the database. Handles useful database functions through an
@@ -52,10 +53,12 @@ public final class DatabaseAbstraction {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("canAddItems", canAddItems);
             editor.putString("userEmail", user.getEmail());
+            editor.putBoolean("loggedIn", true);
             editor.commit();
-
+            realm.close();
             return user;
         } else {
+            realm.close();
             return null;
         }
     }
@@ -101,8 +104,12 @@ public final class DatabaseAbstraction {
         return true;
     }
 
-    public static List<Store> getStoresArrayList(Context context) {
-        return null;
+    public static Store[] getStoresArrayList() {
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<Store> storeRealmQuery = realm.where(Store.class);
+        RealmResults<Store> result = storeRealmQuery.findAll();
+        Store[] out = new Store[result.toArray().length];
+        return storeRealmQuery.findAll().toArray(out);
     }
 
     public static User getSignedInUser() {

@@ -15,24 +15,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
 
 /**
  * Store class. Abstracts away a store.
  *
  * @author Nate Schneider, Gibran Essa, and Evan Strat
  */
-public class Store {
-    private static int storeCount = 0;
-    private int storeId;
-    private HashMap<Integer, Item> inventory;
+public class Store extends RealmObject {
+    @Ignore private static int storeCount = 0;
+
+    @PrimaryKey private int storeId;
+
+    @Ignore private HashMap<Integer, Item> inventory;
 
     private String name;
 
     private Location location;
-    private int locationId;
+
+    @Ignore private int locationId;
     private String locationType;
     private String phoneNumber;
     private String website;
+
+    public Store() { }
 
     /**
      * Constructor for a store. Only accepts a name and location with no phone
@@ -54,7 +64,7 @@ public class Store {
      * @param phoneNumber This store's phone number.
      */
     public Store(String name, Location location, String phoneNumber) {
-        this(name, 0, phoneNumber, null, null);
+        this(name, location, phoneNumber, null, null);
     }
 
 
@@ -66,24 +76,15 @@ public class Store {
      * @param phoneNumber This store's phone number.
      * @param website     This store's website.
      */
-    public Store(String name, int locationId, String phoneNumber, String website, String locationType) {
+    public Store(String name, Location location, String phoneNumber, String website, String locationType) {
         this.inventory = new HashMap<>();
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.website = website;
-        this.locationId = locationId;
+        this.location = location;
         this.locationType = locationType;
-    }
-
-    /**
-     * Get sample store data
-     *
-     * @param context App context object
-     * @return A List of sample Stores
-     */
-    public static HashMap<String, List> populateData(Context context) {
-        return readLocationData(context);
-
+        storeCount++;
+        this.storeId = storeCount;
     }
 
     /**
@@ -92,12 +93,11 @@ public class Store {
      * @param context App context object
      * @return A list of sample Stores
      */
-    private static HashMap<String, List> readLocationData(Context context) {
+    public static void saveSampleLocationData(Context context) {
         InputStream inputStream = context.getResources().openRawResource(R.raw.location_data);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
         List<Store> stores = new ArrayList<>();
-        List<Location> locations = new ArrayList<>();
 
         String line = "";
         try {
@@ -117,24 +117,20 @@ public class Store {
                 String website = tokens[10];
                 Location location = new Location(streetAddress, state, city, zipCode,
                                                  latitude, longitude);
-                Store store = new Store(name, location.getLocationId(), phoneNumber, website, locationType);
+                Store store = new Store(name, location, phoneNumber, website, locationType);
                 stores.add(store);
-                locations.add(location);
-                storeId++; // since we're importing this data only when the database is created
-                            // it's a somewhat reasonable that the first store id will be 0.  But we
-                            // really shouldn't bank on that
             }
 
-            HashMap<String, List> result = new HashMap<>();
-            result.put("stores",stores);
-            result.put("locations", locations);
-            return result;
-
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            for (Store s : stores) {
+                realm.insertOrUpdate(s);
+            }
+            realm.commitTransaction();
+            realm.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 
     public int getLocationId() {

@@ -10,11 +10,16 @@ import android.widget.ListView;
 
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.entities.Store;
+import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import io.realm.RealmBaseAdapter;
+import io.realm.RealmResults;
+
 public class StoreListActivity extends AppCompatActivity {
-    private ArrayList<Store> stores;
+    private Store[] stores;
     private ListView listView;
     private Button loadSampleData;
     private ArrayAdapter adapter;
@@ -26,14 +31,14 @@ public class StoreListActivity extends AppCompatActivity {
         setContentView(R.layout.csv_view);
 
         listView = findViewById(R.id.mobile_list);
-        stores = new ArrayList<>(); //TODO: fetch this with a query
+        stores = DatabaseAbstraction.getStoresArrayList();
         adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, stores);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
-                Store e = stores.get(position);
+                Store e = stores[position];
                 Intent intent = new Intent(StoreListActivity.this, StoreViewActivity.class);
                 intent.putExtra("storeId", e.getStoreId());
                 Bundle bundle = intent.getExtras();

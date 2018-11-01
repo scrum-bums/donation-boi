@@ -102,6 +102,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             @Override
             public void onClick(View v) {
 
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -325,8 +326,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
-                finish();
                 startActivity(new Intent(LoginActivity.this, StoreListActivity.class));
+                finish();
             } else if (loginResult == 0){
                 mEmailView.setError(getString(R.string.error_account_not_recognized));
                 mEmailView.requestFocus();

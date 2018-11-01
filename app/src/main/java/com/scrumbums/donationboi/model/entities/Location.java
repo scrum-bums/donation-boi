@@ -1,10 +1,13 @@
 package com.scrumbums.donationboi.model.entities;
 
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
-public class Location {
-
+public class Location extends RealmObject {
+    @Ignore private static int locationCount = 0;
+    @PrimaryKey
     private int locationId;
 
     private float latitude;
@@ -14,6 +17,8 @@ public class Location {
     private String state;
     private int zipcode;
 
+    public Location() { } // Public no-arg constructor for Realm
+
     public Location(String streetAddress, String state, String city, int zipcode, float latitude,
                     float longitude) {
         this.streetAddress = streetAddress;
@@ -22,6 +27,8 @@ public class Location {
         this.zipcode = zipcode;
         this.latitude = latitude;
         this.longitude = longitude;
+        locationCount++;
+        this.locationId = locationCount;
     }
 
     public int getLocationId() {

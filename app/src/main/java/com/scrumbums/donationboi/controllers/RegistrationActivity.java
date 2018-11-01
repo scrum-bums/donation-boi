@@ -1,6 +1,7 @@
 package com.scrumbums.donationboi.controllers;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -65,7 +66,9 @@ public class RegistrationActivity extends Activity {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
                 finish();
+
             }
         });
     }
