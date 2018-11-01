@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.Item;
+import com.scrumbums.donationboi.model.entities.Item;
 import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
@@ -34,7 +34,7 @@ public class ItemView extends AppCompatActivity {
         //TODO: show error if invalid store/item
 
         if (item == null) {
-            item = new Item("Item not found");
+            item = new Item("Item not found", store);
         }
 
         nameView = findViewById(R.id.item_name);
