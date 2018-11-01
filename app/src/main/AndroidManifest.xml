@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controllers.ApplicationActivity" />
-        <activity android:name=".controllers.ListViewCustom" />
+        <activity android:name=".controllers.StoreListActivity" />
         <activity android:name=".controllers.ListElementPage" />
         <activity
             android:name=".controllers.RegistrationActivity"

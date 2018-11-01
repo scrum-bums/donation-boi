@@ -1,9 +1,18 @@
-package com.scrumbums.donationboi.model;
+package com.scrumbums.donationboi.model.entities;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
 
+import com.scrumbums.donationboi.model.entities.Store;
+
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity
 public class Location {
+
+    @PrimaryKey(autoGenerate = true)
+    private int locationId;
 
     private float latitude;
     private float longitude;
@@ -12,17 +21,22 @@ public class Location {
     private String state;
     private int zipcode;
 
-    public Location(String streetAddress, String state, String city, int zipcode) {
-        this(streetAddress, state, city, zipcode, 0, 0);
-    }
-
-    public Location(String streetAddress, String state, String city, int zipcode, float latitude, float longitude) {
+    public Location(String streetAddress, String state, String city, int zipcode, float latitude,
+                    float longitude) {
         this.streetAddress = streetAddress;
         this.state = state;
         this.city = city;
         this.zipcode = zipcode;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
     }
 
     public float getLatitude() {

@@ -331,7 +331,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                         runOnUiThread(() -> {
                             showProgress(false);
                             finish();
-                            startActivity(new Intent(LoginActivity.this, ListViewCustom.class));
+                            startActivity(new Intent(LoginActivity.this, StoreListActivity.class));
                         });
                     },
                     error -> {

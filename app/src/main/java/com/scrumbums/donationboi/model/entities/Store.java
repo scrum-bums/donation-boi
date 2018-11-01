@@ -2,49 +2,184 @@ package com.scrumbums.donationboi.model.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.Context;
 
+import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Categories;
 import com.scrumbums.donationboi.model.Item;
-import com.scrumbums.donationboi.model.Location;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
  * Store class. Abstracts away a store.
- * @author Nate Schneider
+ *
+ * @author Nate Schneider, Gibran Essa, and Evan Strat
  */
-@Entity
+@Entity(foreignKeys = @ForeignKey(entity = Location.class,
+        parentColumns = "locationId",
+        childColumns = "locationId",
+        onDelete = CASCADE),
+        indices = @Index(value = {"locationId"}))
 public class Store {
+    private static int storeCount = 0;
     @PrimaryKey(autoGenerate = true)
-    private final int storeId;
-
+    private int storeId;
     @Ignore
     private HashMap<Integer, Item> inventory;
 
     @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "location")
+    @Ignore
     private Location location;
-
+    private int locationId;
     @ColumnInfo(name = "locationType")
     private String locationType;
-
     @ColumnInfo(name = "phoneNumber")
     private String phoneNumber;
-
     @ColumnInfo(name = "website")
     private String website;
 
-    private static int storeCount = 0;
+    /**
+     * Constructor for a store. Only accepts a name and location with no phone
+     * number or website.
+     *
+     * @param name     The name of the store.
+     * @param location The location of the store.
+     */
+    @Ignore
+    public Store(String name, Location location) {
+        this(name, location, null);
+    }
+
+    /**
+     * Constructor for a store. Only accepts a name, location and phone number
+     * without a website.
+     *
+     * @param name        The name of the store.
+     * @param location    The location of the store.
+     * @param phoneNumber This store's phone number.
+     */
+    @Ignore
+    public Store(String name, Location location, String phoneNumber) {
+        this(name, 0, phoneNumber, null, null);
+    }
 
 
+    /**
+     * Constructor for a store. Only accepts a name, location and phone number
+     * without a website.
+     *
+     * @param name        The name of the store.
+     * @param phoneNumber This store's phone number.
+     * @param website     This store's website.
+     */
+    public Store(String name, int locationId, String phoneNumber, String website, String locationType) {
+        this.inventory = new HashMap<>();
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.website = website;
+        this.locationId = locationId;
+        this.locationType = locationType;
+    }
+
+    /**
+     * Get sample store data
+     *
+     * @param context App context object
+     * @return A List of sample Stores
+     */
+    public static HashMap<String, List> populateData(Context context) {
+        return readLocationData(context);
+
+    }
+
+    /**
+     * Reads in sample stores from a CSV and converts them to Store objects
+     *
+     * @param context App context object
+     * @return A list of sample Stores
+     */
+    private static HashMap<String, List> readLocationData(Context context) {
+        InputStream inputStream = context.getResources().openRawResource(R.raw.location_data);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+
+        List<Store> stores = new ArrayList<>();
+        List<Location> locations = new ArrayList<>();
+
+        String line = "";
+        try {
+            int storeId = 1;
+            bufferedReader.readLine(); // Skip over the first line of the CSV that's the column names
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] tokens = line.split(",");
+                String name = (tokens[1]);
+                float latitude = Float.parseFloat(tokens[2]);
+                float longitude = Float.parseFloat(tokens[3]);
+                String streetAddress = tokens[4];
+                String city = tokens[5];
+                String state = tokens[6];
+                int zipCode = Integer.parseInt(tokens[7]);
+                String locationType = tokens[8];
+                String phoneNumber = tokens[9];
+                String website = tokens[10];
+                Location location = new Location(streetAddress, state, city, zipCode,
+                                                 latitude, longitude);
+                Store store = new Store(name, location.getLocationId(), phoneNumber, website, locationType);
+                stores.add(store);
+                locations.add(location);
+                storeId++; // since we're importing this data only when the database is created
+                            // it's a somewhat reasonable that the first store id will be 0.  But we
+                            // really shouldn't bank on that
+            }
+
+            HashMap<String, List> result = new HashMap<>();
+            result.put("stores",stores);
+            result.put("locations", locations);
+            return result;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public int getStoreId() {
         return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 
     public String getLocationType() {
@@ -56,98 +191,46 @@ public class Store {
         this.locationType = locationType;
     }
 
-
-
-    /**
-     * Constructor for a store. Only accepts a name and location with no phone
-     * number or website.
-     * @param name The name of the store.
-     * @param location The location of the store.
-     */
-    public Store(String name, Location location) {
-        this(name, location, null);
-    }
-
-    /**
-     * Constructor for a store. Only accepts a name, location and phone number
-     * without a website.
-     * @param name The name of the store.
-     * @param location The location of the store.
-     * @param phoneNumber This store's phone number.
-     */
-    public Store(String name, Location location, String phoneNumber) {
-        this(name, location, phoneNumber, null, null);
-    }
-
-    /**
-     * Constructor for a store. Only accepts a name, location and phone number
-     * without a website.
-     * @param name The name of the store.
-     * @param location The location of the store.
-     * @param phoneNumber This store's phone number.
-     * @param website This store's website.
-     */
-    public Store(String name, Location location, String phoneNumber, String website, String locationType) {
-        this.inventory = new HashMap<>();
-        this.name = name;
-        this.location = location;
-        this.phoneNumber = phoneNumber;
-        this.website = website;
-        this.locationType = locationType;
-        storeCount++;
-        this.storeId = storeCount;
-    }
-
-    /**
-     * Set this store's entire inventory.
-     * @param aList The list to set the inventory to.
-     */
-    private void setInventory(HashMap<Integer, Item> aList) {
-        this.inventory = aList;
-    }
-
     /**
      * Get this store's inventory.
+     *
      * @return
      */
     public HashMap<Integer, Item> getInventory() {
         return inventory;
     }
 
-    private void setName(String name) {
-        this.name = name;
+    /**
+     * Set this store's entire inventory.
+     *
+     * @param aList The list to set the inventory to.
+     */
+    private void setInventory(HashMap<Integer, Item> aList) {
+        this.inventory = aList;
     }
 
     public String getName() {
         return name;
     }
 
-    private void setLocation(Location loc) {
-        this.location = location;
-    }
-
-    public void setLocation(String streetAddress, String state, String city, int zipcode, float latitude, float longitude) {
-        location = new Location(streetAddress, state, city, zipcode, latitude, longitude);
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Location getLocation() {
         return location;
     }
 
-    private void setPhoneNumber(String pN) {
-        this.phoneNumber = pN;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    private void setWebsite(String website) {
-        this.website = website;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getWebsite() {
         return website;
+    }
+
+    private void setWebsite(String website) {
+        this.website = website;
     }
 
     public void addToInventory(Item item) {
@@ -170,10 +253,6 @@ public class Store {
         }
     }
 
-    public void addToInventory(String name) {
-        addToInventory(name, null, 0.0, null, null);
-    }
-
     public String toString() {
         String ret = "";
         ret += "Name: " + (name == null ? "not listed" : name);
@@ -187,4 +266,5 @@ public class Store {
     public int hashCode() {
         return inventory.hashCode() + name.hashCode() + location.hashCode() + phoneNumber.hashCode() + website.hashCode();
     }
+
 }

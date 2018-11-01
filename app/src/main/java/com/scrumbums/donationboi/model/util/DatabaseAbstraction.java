@@ -9,9 +9,13 @@ import com.scrumbums.donationboi.model.daos.UserDao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.function.Function;
 
 import io.reactivex.Completable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Abstraction of the database. Handles useful database functions through an
@@ -71,9 +75,11 @@ public final class DatabaseAbstraction {
         return true;
     }
 
-    public static ArrayList<Store> getStoresArrayList() {
-        ArrayList<Store> temp = new ArrayList<>(STORE_DATABASE.values());
-        return temp;
+    public static Single<List<Store>> getStoresArrayList(Context context) {
+        AppDatabase database = AppDatabase.getDatabase(context);
+
+        return Single.fromCallable(() -> database.storeDao().getStoresWithLocations())
+                .observeOn(Schedulers.io());
     }
 
     public static User getSignedInUser() {
