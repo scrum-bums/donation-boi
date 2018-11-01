@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Categories;
 import com.scrumbums.donationboi.model.entities.Store;
+import com.scrumbums.donationboi.model.util.Converters;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 public class AddItemForm extends AppCompatActivity {
@@ -64,26 +65,8 @@ public class AddItemForm extends AppCompatActivity {
                 String itemType = typeBox.getText().toString();
                 double itemPrice = Double.valueOf(priceBox.getText().toString());
                 String itemDescription = descripBox.getText().toString();
-                Categories cat;
-                switch ((String) categorySpinner.getSelectedItem()) {
-                    case "Clothing":
-                        cat = Categories.CLOTHING;
-                        break;
-                    case "Hat":
-                        cat = Categories.HAT;
-                        break;
-                    case "Kitchen":
-                        cat = Categories.KITCHEN;
-                        break;
-                    case "Electronics":
-                        cat = Categories.ELECTRONICS;
-                        break;
-                    case "Household":
-                        cat = Categories.HOUSEHOLD;
-                        break;
-                    default:
-                        cat = Categories.OTHER;
-                }
+                Categories cat = Converters.stringToCategories(categorySpinner
+                        .getSelectedItem().toString());
 
                 store.addToInventory(itemName, itemDescription, itemPrice, itemType, cat);
                 finish();
