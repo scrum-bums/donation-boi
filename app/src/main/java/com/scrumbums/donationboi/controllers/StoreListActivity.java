@@ -13,7 +13,7 @@ import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.ArrayList;
 
-public class ListViewCustom extends AppCompatActivity {
+public class StoreListActivity extends AppCompatActivity {
     private ArrayList<Store> stores;
     private ListView listView;
     private ArrayAdapter adapter;
@@ -27,7 +27,6 @@ public class ListViewCustom extends AppCompatActivity {
         listView = findViewById(R.id.mobile_list);
         stores = DatabaseAbstraction.getStoresArrayList();
 
-        //The adapter will change depending on the type of user that is logged in
         adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, stores);
 
 
@@ -37,7 +36,7 @@ public class ListViewCustom extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
                 Store e = stores.get(position);
-                Intent intent = new Intent(ListViewCustom.this, StoreViewActivity.class);
+                Intent intent = new Intent(StoreListActivity.this, StoreViewActivity.class);
                 intent.putExtra("storeId", e.getStoreId());
                 Bundle bundle = intent.getExtras();
                 startActivity(intent);
