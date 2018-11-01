@@ -35,10 +35,6 @@ import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -298,7 +294,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Single<User>> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
@@ -311,38 +307,30 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected Single<User> doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            User user = DatabaseAbstraction.login(getApplicationContext(), mEmail, mPassword);
 
+            if (user == null) {
+                runOnUiThread(() -> mEmailView.setError(getString(R.string.error_account_not_recognized)));
+                return false;
+            }
 
-            return DatabaseAbstraction.login(getApplicationContext(), mEmail, mPassword);
-
+            return true;
         }
 
         @Override
-        protected void onPostExecute(final Single<User> result) {
+        protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
+            showProgress(false);
 
-
-            Disposable loginResult = result
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(
-                    user-> {
-                        runOnUiThread(() -> {
-                            showProgress(false);
-                            finish();
-                            startActivity(new Intent(LoginActivity.this, StoreListActivity.class));
-                        });
-                    },
-                    error -> {
-                        runOnUiThread(() -> {
-                            showProgress(false);
-                            mEmailView.setError(getString(R.string.error_account_not_recognized));
-                        });
-
-                        error.printStackTrace();
-                    }
-            );
+            if (success) {
+                finish();
+                startActivity(new Intent(LoginActivity.this, StoreListActivity.class));
+            } else if (loginResult == 0){
+                mEmailView.setError(getString(R.string.error_account_not_recognized));
+                mEmailView.requestFocus();
+            }
         }
 
         @Override

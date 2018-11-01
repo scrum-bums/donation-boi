@@ -1,11 +1,5 @@
 package com.scrumbums.donationboi.model.entities;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
 import android.content.Context;
 
 import com.scrumbums.donationboi.R;
@@ -21,36 +15,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
  * Store class. Abstracts away a store.
  *
  * @author Nate Schneider, Gibran Essa, and Evan Strat
  */
-@Entity(foreignKeys = @ForeignKey(entity = Location.class,
-        parentColumns = "locationId",
-        childColumns = "locationId",
-        onDelete = CASCADE),
-        indices = @Index(value = {"locationId"}))
 public class Store {
     private static int storeCount = 0;
-    @PrimaryKey(autoGenerate = true)
     private int storeId;
-    @Ignore
     private HashMap<Integer, Item> inventory;
 
-    @ColumnInfo(name = "name")
     private String name;
 
-    @Ignore
     private Location location;
     private int locationId;
-    @ColumnInfo(name = "locationType")
     private String locationType;
-    @ColumnInfo(name = "phoneNumber")
     private String phoneNumber;
-    @ColumnInfo(name = "website")
     private String website;
 
     /**
@@ -60,7 +41,6 @@ public class Store {
      * @param name     The name of the store.
      * @param location The location of the store.
      */
-    @Ignore
     public Store(String name, Location location) {
         this(name, location, null);
     }
@@ -73,7 +53,6 @@ public class Store {
      * @param location    The location of the store.
      * @param phoneNumber This store's phone number.
      */
-    @Ignore
     public Store(String name, Location location, String phoneNumber) {
         this(name, 0, phoneNumber, null, null);
     }

@@ -1,47 +1,28 @@
 package com.scrumbums.donationboi.model;
 
-
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.PrimaryKey;
-
 import com.scrumbums.donationboi.model.entities.Store;
 
 import java.util.Calendar;
 
 //TODO: ADD ItemDao
-@Entity(foreignKeys = {@ForeignKey(
-        entity = Store.class,
-        parentColumns = "id",
-        childColumns = "storeId"
-)})
 public class Item {
 
     private static int itemCount = 0;
 
-    @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "description")
     private String description;
 
-    @ColumnInfo(name = "price")
     private double price;
 
-    @ColumnInfo(name = "type")
     private String type;
 
-    @ColumnInfo(name = "category")
     private Categories category;
 
-    @PrimaryKey(autoGenerate = true)
     private int itemId;
 
-    @ColumnInfo(name = "timestamp")
     private String timestamp;
 
-    @ColumnInfo(name = "storeId")
     private int storeId;
 
     public Item(String n, String d, double p, String t, Categories category, int storeId) {

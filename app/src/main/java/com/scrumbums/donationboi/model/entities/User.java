@@ -1,11 +1,10 @@
 package com.scrumbums.donationboi.model.entities;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
-
 import com.scrumbums.donationboi.model.UserRole;
+import com.scrumbums.donationboi.model.util.Converters;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Database entity representing a user account in the app.
@@ -14,33 +13,25 @@ import com.scrumbums.donationboi.model.UserRole;
  * @version 2.0
  */
 
-@Entity(indices = {@Index(value = {"email"},
-        unique = true)})
-public class User {
-    @PrimaryKey(autoGenerate = true)
+public class User extends RealmObject {
+
+    @PrimaryKey
     private int uid;
 
-    @ColumnInfo(name = "name")
     private String name;
-
-    @ColumnInfo(name = "username")
     private String username;
-
-    @ColumnInfo(name = "email")
     private String email;
-
-    @ColumnInfo(name = "password")
     private String password;
+    private String role;
 
-    @ColumnInfo(name = "role")
-    private UserRole role;
+    public User() { }
 
     public User(String name, String username, String email, String password, UserRole role) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+        setRole(role);
     }
 
     public int getUid() {
@@ -84,11 +75,11 @@ public class User {
     }
 
     public UserRole getRole() {
-        return role;
+        return Converters.stringToUserRole(role);
     }
 
     public void setRole(UserRole role) {
-        this.role = role;
+        this.role = Converters.fromUserRole(role);
     }
 
     @Override

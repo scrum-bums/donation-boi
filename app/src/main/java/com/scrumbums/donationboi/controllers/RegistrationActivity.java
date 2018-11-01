@@ -15,9 +15,6 @@ import com.scrumbums.donationboi.model.UserRole;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
 public class RegistrationActivity extends Activity {
 
     Button regBtn;
@@ -55,18 +52,12 @@ public class RegistrationActivity extends Activity {
             public void onClick(View v) {
                 User u;
                 if ((u = getUser()) != null) {
-                    Disposable addUser = DatabaseAbstraction.register(getApplicationContext(), u)
-                            .subscribeOn(Schedulers.io())
-                            .subscribe(
-                                    () -> runOnUiThread(() -> finish()),
-                                    e -> {
-                                        Log.i("REGISTER",e.getMessage());
-                                        runOnUiThread(() -> {
-                                            emailField.setError(getString(R.string.error_email_already_registered));
-                                            emailField.requestFocus();
-                                        });
-                                    }
-                                    );
+                    if(DatabaseAbstraction.register(getApplicationContext(), u)) {
+                        finish();
+                    } else {
+                        emailField.setError(getString(R.string.error_email_already_registered));
+                        emailField.requestFocus();
+                    }
                 }
             }
         });
@@ -99,11 +90,8 @@ public class RegistrationActivity extends Activity {
         if (role == null) {
             role = UserRole.USER;
         }
-        User newUser = new User(username, name, email, password, role);
 
-        DatabaseAbstraction.register(getApplicationContext(), newUser);
-
-        return newUser;
+        return new User(username, name, email, password, role);
 
 
     }

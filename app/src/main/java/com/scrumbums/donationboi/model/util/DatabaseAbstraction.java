@@ -1,21 +1,18 @@
 package com.scrumbums.donationboi.model.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-import com.scrumbums.donationboi.model.AppDatabase;
+import com.scrumbums.donationboi.model.UserRole;
 import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.entities.User;
-import com.scrumbums.donationboi.model.daos.UserDao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
-import io.reactivex.Completable;
-import io.reactivex.Scheduler;
-import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
+import io.realm.RealmQuery;
 
 /**
  * Abstraction of the database. Handles useful database functions through an
@@ -35,15 +32,32 @@ public final class DatabaseAbstraction {
 
     /**
      * Attempt to login with the given credentials.
-     * @param email The user's email address.
+     * @param email The email of the user.
      * @param password The password of the user.
-     * @return A Single that will evaluate successfully if a user with the given email and password exists,
-     *         or error otherwise.
+     * @return 1 if the given credentials are valid, 0 if the password is
+     * invalid, or -1 if the username is invalid.
      */
-    public static Single<User> login(Context context, String email, String password) {
-        AppDatabase database = AppDatabase.getDatabase(context);
+    public static User login(Context context, String email, String password) {
+        Realm realm = Realm.getDefaultInstance();
 
-        return database.userDao().getUser(email, password);
+        RealmQuery<User> query = realm.where(User.class);
+        query.equalTo("email", email)
+                .equalTo("password",password);
+
+        User user;
+
+        if ((user = query.findFirst()) != null) {
+            boolean canAddItems = user.getRole().equals(UserRole.EMPLOYEE);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("canAddItems", canAddItems);
+            editor.putString("userEmail", user.getEmail());
+            editor.commit();
+
+            return user;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -53,11 +67,23 @@ public final class DatabaseAbstraction {
      * @return A Completable that will complete when the user has been registered successfully,
      *         or error otherwise.
      */
-    public static Completable register(final Context context, final User user) {
-        AppDatabase database = AppDatabase.getDatabase(context);
-        UserDao dao = database.userDao();
+    public static boolean register(final Context context, final User user) {
+        Realm realm = Realm.getDefaultInstance();
 
-        return Completable.fromAction(() -> dao.createUser(user));
+        RealmQuery<User> query = realm.where(User.class);
+        query.equalTo("email", user.getEmail());
+
+        User result = query.findFirst();
+
+        if (result != null) { // User with this email already exists
+            return false;
+        }
+
+        realm.beginTransaction();
+        realm.insert(user);
+        realm.commitTransaction();
+        realm.close();
+        return true;
     }
 
     private static final HashMap<Integer, Store> STORE_DATABASE
@@ -75,11 +101,8 @@ public final class DatabaseAbstraction {
         return true;
     }
 
-    public static Single<List<Store>> getStoresArrayList(Context context) {
-        AppDatabase database = AppDatabase.getDatabase(context);
-
-        return Single.fromCallable(() -> database.storeDao().getStoresWithLocations())
-                .observeOn(Schedulers.io());
+    public static List<Store> getStoresArrayList(Context context) {
+        return null;
     }
 
     public static User getSignedInUser() {
