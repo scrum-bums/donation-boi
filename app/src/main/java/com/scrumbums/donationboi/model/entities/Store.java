@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Categories;
-import com.scrumbums.donationboi.model.Item;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,12 +11,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 import io.realm.annotations.Ignore;
+import io.realm.annotations.LinkingObjects;
 import io.realm.annotations.PrimaryKey;
 
 
@@ -27,11 +28,10 @@ import io.realm.annotations.PrimaryKey;
  * @author Nate Schneider, Gibran Essa, and Evan Strat
  */
 public class Store extends RealmObject {
-    @Ignore private static int storeCount = 0;
-
     @PrimaryKey private int storeId;
 
-    @Ignore private HashMap<Integer, Item> inventory;
+    @LinkingObjects("store")
+    private final RealmResults<Item> inventory = null;
 
     private String name;
 
@@ -77,14 +77,20 @@ public class Store extends RealmObject {
      * @param website     This store's website.
      */
     public Store(String name, Location location, String phoneNumber, String website, String locationType) {
-        this.inventory = new HashMap<>();
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.website = website;
         this.location = location;
         this.locationType = locationType;
-        storeCount++;
-        this.storeId = storeCount;
+
+        Realm realm = Realm.getDefaultInstance();
+        // make sure we give this user a unique (i.e., auto-incrementing) ID in the database
+        Number highestId = realm.where(Store.class).max("storeId");
+        if (highestId == null) {
+            this.storeId = 1;
+        } else {
+            this.storeId = highestId.intValue() + 1;
+        }
     }
 
     /**
@@ -171,17 +177,8 @@ public class Store extends RealmObject {
      *
      * @return
      */
-    public HashMap<Integer, Item> getInventory() {
+    public RealmResults<Item> getInventory() {
         return inventory;
-    }
-
-    /**
-     * Set this store's entire inventory.
-     *
-     * @param aList The list to set the inventory to.
-     */
-    private void setInventory(HashMap<Integer, Item> aList) {
-        this.inventory = aList;
     }
 
     public String getName() {
@@ -209,23 +206,28 @@ public class Store extends RealmObject {
     }
 
     public void addToInventory(Item item) {
-        inventory.put(item.getItemId(), item);
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealm(item);
+        realm.commitTransaction();
     }
 
     public void addToInventory(String name, String description, double price, String type, Categories cat) {
-        addToInventory(new Item(name, description, price, type, cat, storeId));
+        addToInventory(new Item(name, description, price, type, cat, this));
     }
 
     public ArrayList<Item> getInventoryArrayList() {
-        return new ArrayList<>(inventory.values());
+        if (inventory == null) {
+            return null;
+        }
+        return new ArrayList<>(inventory);
     }
 
     public Item getInventoryItem(int itemId) {
-        if (inventory.containsKey(itemId)) {
-            return inventory.get(itemId);
-        } else {
-            return null;
-        }
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<Item> query = realm.where(Item.class);
+        query.equalTo("itemId", itemId);
+        return query.findFirst();
     }
 
     public String toString() {
@@ -239,7 +241,7 @@ public class Store extends RealmObject {
 
     @Override
     public int hashCode() {
-        return inventory.hashCode() + name.hashCode() + location.hashCode() + phoneNumber.hashCode() + website.hashCode();
+        return name.hashCode() + location.hashCode() + phoneNumber.hashCode() + website.hashCode();
     }
 
 }

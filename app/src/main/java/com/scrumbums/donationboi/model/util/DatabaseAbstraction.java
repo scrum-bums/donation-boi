@@ -9,7 +9,6 @@ import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.entities.User;
 
 import java.util.HashMap;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -23,9 +22,6 @@ import io.realm.RealmResults;
  * @author jdierberger3
  */
 public final class DatabaseAbstraction {
-
-    private static User signedInUser;
-
     /**
      * do not use.
      */
@@ -92,16 +88,12 @@ public final class DatabaseAbstraction {
     private static final HashMap<Integer, Store> STORE_DATABASE
             = new HashMap<Integer, Store>();
 
-    public static Store getStore(Integer key) {
-        return STORE_DATABASE.get(key);
-    }
-
-    public static boolean addStore(Integer key, Store store) {
-        if (STORE_DATABASE.get(key) != null) {
-            return false;
-        }
-        STORE_DATABASE.put(key, store);
-        return true;
+    public static Store getStore(int storeId) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<Store> query = realm.where(Store.class);
+        query.equalTo("storeId", storeId);
+        Store result = query.findFirst();
+        return result;
     }
 
     public static Store[] getStoresArrayList() {
@@ -112,7 +104,10 @@ public final class DatabaseAbstraction {
         return storeRealmQuery.findAll().toArray(out);
     }
 
-    public static User getSignedInUser() {
-        return signedInUser;
+    public static void logout(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
     }
 }

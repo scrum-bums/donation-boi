@@ -3,8 +3,8 @@ package com.scrumbums.donationboi.model.entities;
 import com.scrumbums.donationboi.model.UserRole;
 import com.scrumbums.donationboi.model.util.Converters;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -15,9 +15,6 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class User extends RealmObject {
-    @Ignore
-    private static int userCount = 0;
-
     @PrimaryKey
     private int uid;
 
@@ -34,8 +31,16 @@ public class User extends RealmObject {
         this.username = username;
         this.email = email;
         this.password = password;
-        userCount++;
-        this.uid = userCount;
+
+        Realm realm = Realm.getDefaultInstance();
+        // make sure we give this user a unique (i.e., auto-incrementing) ID in the database
+        Number highestId = realm.where(User.class).max("uid");
+        if (highestId == null) {
+            this.uid = 1;
+        } else {
+            this.uid = highestId.intValue() + 1;
+        }
+
         setRole(role);
     }
 
