@@ -12,23 +12,17 @@ import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
-import io.realm.RealmBaseAdapter;
-import io.realm.RealmResults;
-
 public class StoreListActivity extends AppCompatActivity {
     private Store[] stores;
     private ListView listView;
-    private Button loadSampleData;
+    private Button logout;
     private ArrayAdapter adapter;
     final String TAG = "DONATION-BOI/StoreList";
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.csv_view);
+        setContentView(R.layout.store_list);
 
         listView = findViewById(R.id.mobile_list);
         stores = DatabaseAbstraction.getStoresArrayList();
@@ -43,8 +37,14 @@ public class StoreListActivity extends AppCompatActivity {
                 intent.putExtra("storeId", e.getStoreId());
                 Bundle bundle = intent.getExtras();
                 startActivity(intent);
-
             }
+        });
+
+        logout = findViewById(R.id.logout);
+        logout.setOnClickListener(v -> {
+            DatabaseAbstraction.logout(getApplicationContext());
+            startActivity(new Intent(StoreListActivity.this, MainActivity.class));
+            finish();
         });
     }
 
