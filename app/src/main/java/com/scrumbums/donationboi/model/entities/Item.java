@@ -128,5 +128,12 @@ public class Item extends RealmObject {
     }
 
 
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
 }
 
