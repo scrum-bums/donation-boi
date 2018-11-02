@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;import java.util.function.Predicate;
+import android.widget.ListView;
 
 import android.widget.Spinner;
 
@@ -46,6 +47,7 @@ public class ItemSearchActivity extends AppCompatActivity {
         } else {
             inventoryArray = DatabaseAbstraction.getStore(storeId).getInventoryArrayList();
         }
+        filteredArray = inventoryArray;
         setContentView(R.layout.item_search);
 
         notFound = Snackbar.make(findViewById(R.id.search_constraint_layout), "No Items Found", 3000);
@@ -81,6 +83,15 @@ public class ItemSearchActivity extends AppCompatActivity {
             if(filteredArray.size() == 0) {
                 notFound.show();
             }
+        });
+
+        results.setOnItemClickListener((adapter, v, position, id) -> {
+            Item i = filteredArray.get(position);
+            Intent intent1 = new Intent(ItemSearchActivity.this, ItemView.class);
+            intent1.putExtra("storeId", i.getStore().getStoreId());
+            intent1.putExtra("itemId", i.getItemId());
+            startActivity(intent1);
+
         });
 
     }
