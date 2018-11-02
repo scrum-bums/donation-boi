@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -103,12 +102,11 @@ public class Store extends RealmObject {
         InputStream inputStream = context.getResources().openRawResource(R.raw.location_data);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
-        List<Store> stores = new ArrayList<>();
-
         String line = "";
         try {
-            int storeId = 1;
             bufferedReader.readLine(); // Skip over the first line of the CSV that's the column names
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
             while ((line = bufferedReader.readLine()) != null) {
                 String[] tokens = line.split(",");
                 String name = (tokens[1]);
@@ -123,15 +121,10 @@ public class Store extends RealmObject {
                 String website = tokens[10];
                 Location location = new Location(streetAddress, state, city, zipCode,
                                                  latitude, longitude);
-                Store store = new Store(name, location, phoneNumber, website, locationType);
-                stores.add(store);
-            }
-
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            for (Store s : stores) {
+                Store s = new Store(name, location, phoneNumber, website, locationType);
                 realm.insertOrUpdate(s);
             }
+
             realm.commitTransaction();
             realm.close();
         } catch (IOException e) {
