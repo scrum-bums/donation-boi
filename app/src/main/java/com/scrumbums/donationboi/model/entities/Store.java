@@ -106,7 +106,6 @@ public class Store extends RealmObject {
         try {
             bufferedReader.readLine(); // Skip over the first line of the CSV that's the column names
             Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
             while ((line = bufferedReader.readLine()) != null) {
                 String[] tokens = line.split(",");
                 String name = (tokens[1]);
@@ -122,10 +121,15 @@ public class Store extends RealmObject {
                 Location location = new Location(streetAddress, state, city, zipCode,
                                                  latitude, longitude);
                 Store s = new Store(name, location, phoneNumber, website, locationType);
-                realm.insertOrUpdate(s);
+                RealmQuery<Store> storeExists = realm.where(Store.class);
+                storeExists.equalTo("name", s.getName());
+                if (storeExists.findFirst() == null) {
+                    realm.beginTransaction();
+                    realm.insertOrUpdate(s);
+                    realm.commitTransaction();
+                }
             }
 
-            realm.commitTransaction();
             realm.close();
         } catch (IOException e) {
             e.printStackTrace();
