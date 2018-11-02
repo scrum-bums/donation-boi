@@ -16,6 +16,7 @@ public class StoreListActivity extends AppCompatActivity {
     private Store[] stores;
     private ListView listView;
     private Button logout;
+    private Button searchBtn;
     private ArrayAdapter adapter;
     final String TAG = "DONATION-BOI/StoreList";
 
@@ -45,6 +46,16 @@ public class StoreListActivity extends AppCompatActivity {
             DatabaseAbstraction.logout(getApplicationContext());
             startActivity(new Intent(StoreListActivity.this, MainActivity.class));
             finish();
+        });
+
+        searchBtn = findViewById(R.id.search_items);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addItemIntent = new Intent(StoreListActivity.this, ItemSearchActivity.class);
+                addItemIntent.putExtra("storeId", 0);
+                startActivity(addItemIntent);
+            }
         });
     }
 
