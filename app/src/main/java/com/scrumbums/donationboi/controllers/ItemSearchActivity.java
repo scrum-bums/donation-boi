@@ -48,7 +48,7 @@ public class ItemSearchActivity extends AppCompatActivity {
         }
         setContentView(R.layout.item_search);
 
-        notFound = Snackbar.make(findViewById(R.id.search_constraint_layout), "No Items Found", 100);
+        notFound = Snackbar.make(findViewById(R.id.search_constraint_layout), "No Items Found", 3000);
         searchButton = findViewById(R.id.search_button);
         categorySpinner = findViewById(R.id.category_spinner);
         searchBar = findViewById(R.id.search_bar);
