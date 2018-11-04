@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import android.widget.Spinner;
 
 import com.scrumbums.donationboi.R;
@@ -56,7 +54,8 @@ public class ItemSearchActivity extends AppCompatActivity {
         searchBar = findViewById(R.id.search_bar);
         results = findViewById(R.id.inventory_list_view);
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, new String[] {
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,
+                R.layout.support_simple_spinner_dropdown_item, new String[]{
                 "All",
                 "Clothing",
                 "Hat",
@@ -76,9 +75,13 @@ public class ItemSearchActivity extends AppCompatActivity {
 
         //sets filteredArray to a filtered version based on search terms.
         searchButton.setOnClickListener(v -> {
-            filteredArray = inventoryArray.stream().filter(item -> item.getName().contains(searchBar.getText())
-                    && (categorySpinner.getSelectedItem().toString().equals("All")
-                    || Converters.stringToCategories(categorySpinner.getSelectedItem().toString()) == item.getCategory())).collect(Collectors.toList());
+            filteredArray = inventoryArray.stream()
+                    .filter(item -> item.getName()
+                            .contains(searchBar.getText())
+                            && (categorySpinner.getSelectedItem().toString().equals("All")
+                            || Converters.stringToCategories(categorySpinner
+                            .getSelectedItem().toString()) == item.getCategory()))
+                    .collect(Collectors.toList());
             results.setAdapter(new ArrayAdapter<>(this, R.layout.store_view_item, filteredArray));
             if(filteredArray.size() == 0) {
                 notFound.show();
