@@ -3,10 +3,8 @@ package com.scrumbums.donationboi.controllers;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,13 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.Item;
-import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.entities.Item;
+import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -34,6 +30,7 @@ public class StoreViewActivity extends AppCompatActivity {
     private ArrayList<Item> inventoryArray = new ArrayList<>();
     private ListView inventoryListView;
     private Button addItemBtn;
+    private Button searchBtn;
     private Store store;
     private ArrayAdapter adapter;
     private int storeId;
@@ -59,6 +56,8 @@ public class StoreViewActivity extends AppCompatActivity {
 
 
         addItemBtn = findViewById(R.id.add_item_button);
+        searchBtn = findViewById(R.id.search_button);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean canAddItems = prefs.getBoolean("canAddItems",false);
         if (!canAddItems) {
@@ -69,6 +68,15 @@ public class StoreViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addItemIntent = new Intent(StoreViewActivity.this, AddItemForm.class);
+                addItemIntent.putExtra("storeId", storeId);
+                startActivity(addItemIntent);
+            }
+        });
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addItemIntent = new Intent(StoreViewActivity.this, ItemSearchActivity.class);
                 addItemIntent.putExtra("storeId", storeId);
                 startActivity(addItemIntent);
             }

@@ -1,36 +1,56 @@
-package com.scrumbums.donationboi.model;
+package com.scrumbums.donationboi.model.entities;
 
+import com.scrumbums.donationboi.model.Categories;
+import com.scrumbums.donationboi.model.util.Converters;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
-public class Item {
+import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.annotations.LinkingObjects;
 
-    private static int itemCount = 0;
+public class Item extends RealmObject {
     private String name;
-    private String description;
-    private double price;
-    private String type;
-    private Categories category;
-    private int itemId;
-    private Date timestamp;
-    private ArrayList<String> comments;
 
-    public Item(String n, String d, double p, String t, Categories category) {
+    private String description;
+
+    private double price;
+
+    private String type;
+
+    private String category;
+
+    private int itemId;
+
+
+    private Store store;
+
+    private String timestamp;
+
+    public Item() { } // Public no-arg constructor for Realm
+
+    public Item(String n, String d, double p, String t, Categories category, Store store) {
         this.name = n;
         this.description = d;
         this.price = p;
         this.type = t;
-        this.category = category;
-        itemCount++;
-        this.itemId = itemCount;
-        timestamp = Calendar.getInstance().getTime();
-        this.comments = new ArrayList<>();
+        setCategory(category);
+
+        Realm realm = Realm.getDefaultInstance();
+        // make sure we give this user a unique (i.e., auto-incrementing) ID in the database
+        Number highestId = realm.where(Item.class).max("itemId");
+        if (highestId == null) {
+            this.itemId = 1;
+        } else {
+            this.itemId = highestId.intValue() + 1;
+        }
+
+        this.store = store;
+        timestamp = Calendar.getInstance().getTime().toString();
     }
 
-    public Item(String n) {
-        this(n, null, 0.0, null, null);
+    public Item(String n, Store store) {
+        this(n, null, 0.0, null, null, store);
     }
 
     public int getItemId() {
@@ -38,11 +58,11 @@ public class Item {
     }
 
     public Categories getCategory() {
-        return category;
+        return Converters.stringToCategories(category);
     }
 
     public void setCategory(Categories category) {
-        this.category = category;
+        this.category = Converters.fromCategories(category);
     }
 
     public String getName() {
@@ -77,14 +97,6 @@ public class Item {
         this.type = t;
     }
 
-    public ArrayList<String> getComments() { return comments; }
-
-    public void setComments(ArrayList<String> comments) { this.comments = comments; }
-
-    public void addComment(String comment) {
-        this.comments.add(comment);
-    }
-
     public String toString() {
         String ret = "Name: " + name;
         ret += description == null ? "\n" + "Description: not listed": "\n" + "Description: " + description;
@@ -111,16 +123,17 @@ public class Item {
         return hash;
     }
 
-    public Date getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+
+    public Store getStore() {
+        return store;
     }
 
-    public String getTimestampString() {
-        return timestamp.toString();
+    public void setStore(Store store) {
+        this.store = store;
     }
 }
 

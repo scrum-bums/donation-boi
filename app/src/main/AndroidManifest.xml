@@ -7,13 +7,15 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".MyApplication">
         <activity
             android:name=".controllers.LoginActivity"
             android:label="@string/title_activity_login" />
@@ -25,8 +27,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".controllers.ApplicationActivity" />
-        <activity android:name=".controllers.ListViewCustom" />
-        <activity android:name=".controllers.ListElementPage" />
+        <activity android:name=".controllers.StoreListActivity" />
+        <activity android:name=".controllers.ItemSearchActivity" />
         <activity
             android:name=".controllers.RegistrationActivity"
             android:label="@string/title_activity_registration"

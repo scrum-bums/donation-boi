@@ -8,14 +8,12 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -30,6 +28,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
+import com.scrumbums.donationboi.model.entities.User;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
@@ -103,6 +102,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             @Override
             public void onClick(View v) {
 
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -310,26 +310,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            User user = DatabaseAbstraction.login(getApplicationContext(), mEmail, mPassword);
 
-            try {
-                // Simulate network access.
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
+            if (user == null) {
+                runOnUiThread(() -> mEmailView.setError(getString(R.string.error_account_not_recognized)));
                 return false;
             }
 
-
-            switch ((loginResult = DatabaseAbstraction.login(getApplicationContext(), mEmail, mPassword))) {
-                case 1:
-                    return true;
-                case 0:
-                    return false;
-                case -1:
-                    mEmailView.setError(getString(R.string.error_account_not_recognized));
-                    return false;
-                default:
-                    return false;
-            }
+            return true;
         }
 
         @Override
@@ -338,11 +326,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(LoginActivity.this, ListViewCustom.class));
+                startActivity(new Intent(LoginActivity.this, StoreListActivity.class));
                 finish();
             } else if (loginResult == 0){
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                mEmailView.setError(getString(R.string.error_account_not_recognized));
+                mEmailView.requestFocus();
             }
         }
 
