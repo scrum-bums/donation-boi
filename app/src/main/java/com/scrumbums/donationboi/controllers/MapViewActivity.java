@@ -10,7 +10,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        ArrayList<Store> stores = DatabaseAbstraction.getStoresArrayList();
+        Store[] stores = DatabaseAbstraction.getStoresArrayList();
 
         for (Store store : stores) {
             // Add a marker in Sydney and move the camera
