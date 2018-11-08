@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.scrumbums.donationboi.model.AbstractUser;
-import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.UserRole;
+import com.scrumbums.donationboi.model.entities.Store;
+import com.scrumbums.donationboi.model.entities.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+
+import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 /**
  * Abstraction of the database. Handles useful database functions through an
@@ -18,77 +22,92 @@ import java.util.HashMap;
  * @author jdierberger3
  */
 public final class DatabaseAbstraction {
-
     /**
      * do not use.
      */
     private DatabaseAbstraction() { }
 
     /**
-     * Local database while we wait on Firebase. Maps keys (email in this case)
-     * to users.
-     */
-    private static final HashMap<String, AbstractUser> USER_DATABASE
-            = new HashMap<String, AbstractUser>();
-
-    /**
      * Attempt to login with the given credentials.
-     * @param key The key (email or username) of the user.
+     * @param email The email of the user.
      * @param password The password of the user.
      * @return 1 if the given credentials are valid, 0 if the password is
      * invalid, or -1 if the username is invalid.
      */
-    public static int login(Context context, String key, String password) {
-        // case where the account is not registered
-        if (USER_DATABASE.get(key) == null) {
-            return -1;
-        }
-        // account exists; verify password
-        if (USER_DATABASE.get(key).verifyPassword(password)) {
+    public static User login(Context context, String email, String password) {
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<User> query = realm.where(User.class);
+        query.equalTo("email", email)
+                .equalTo("password",password);
+
+        User user;
+
+        if ((user = query.findFirst()) != null) {
+            boolean canAddItems = user.getRole().equals(UserRole.EMPLOYEE);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("canAddItems", USER_DATABASE.get(key).canAddDonations);
+            editor.putBoolean("canAddItems", canAddItems);
+            editor.putString("userEmail", user.getEmail());
+            editor.putBoolean("loggedIn", true);
             editor.commit();
-            return 1;
+            realm.close();
+            return user;
+        } else {
+            realm.close();
+            return null;
         }
-        // otherwise password is bayud
-        return 0;
     }
 
     /**
      * Register the given user.
-     * @param au The AbstractUser to register.
-     * @return If the AbstractUser was registered. If not, the key (email) has
-     * already been registered.
+     * @param context An Application context to use to obtain the database
+     * @param user The User to register.
+     * @return A Completable that will complete when the user has been registered successfully,
+     *         or error otherwise.
      */
-    public static boolean register(AbstractUser au) {
-        // in this case, the email is already registered
-        if (USER_DATABASE.get(au.getEmailAddress()) != null) return false;
-        // otherwise add it
-        USER_DATABASE.put(au.getEmailAddress(), au);
+    public static boolean register(final Context context, final User user) {
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<User> query = realm.where(User.class);
+        query.equalTo("email", user.getEmail());
+
+        User result = query.findFirst();
+
+        if (result != null) { // User with this email already exists
+            return false;
+        }
+
+        realm.beginTransaction();
+        realm.insert(user);
+        realm.commitTransaction();
+        realm.close();
         return true;
     }
 
     private static final HashMap<Integer, Store> STORE_DATABASE
             = new HashMap<Integer, Store>();
 
-    public static Store getStore(Integer key) {
-        return STORE_DATABASE.get(key);
+    public static Store getStore(int storeId) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<Store> query = realm.where(Store.class);
+        query.equalTo("storeId", storeId);
+        Store result = query.findFirst();
+        return result;
     }
 
-    public static boolean addStore(Integer key, Store store) {
-        if (STORE_DATABASE.get(key) != null) {
-            return false;
-        }
-        STORE_DATABASE.put(key, store);
-        return true;
+    public static Store[] getStoresArrayList() {
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<Store> storeRealmQuery = realm.where(Store.class);
+        RealmResults<Store> result = storeRealmQuery.findAll();
+        Store[] out = new Store[result.toArray().length];
+        return storeRealmQuery.findAll().toArray(out);
     }
 
-    public static ArrayList<Store> getStoresArrayList() {
-        ArrayList<Store> temp = new ArrayList<>(STORE_DATABASE.values());
-        return temp;
-
+    public static void logout(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
     }
-
-
 }

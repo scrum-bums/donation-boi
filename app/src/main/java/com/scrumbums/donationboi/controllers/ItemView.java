@@ -2,13 +2,12 @@ package com.scrumbums.donationboi.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.Item;
-import com.scrumbums.donationboi.model.Store;
+import com.scrumbums.donationboi.model.entities.Item;
+import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.Locale;
@@ -21,6 +20,7 @@ public class ItemView extends AppCompatActivity {
     private TextView shortView;
     private TextView categoryView;
     private TextView timestampView;
+    private TextView storeNameView;
 
 
     @Override
@@ -35,30 +35,34 @@ public class ItemView extends AppCompatActivity {
         //TODO: show error if invalid store/item
 
         if (item == null) {
-            item = new Item("Item not found");
+            item = new Item("Item not found", store);
         }
 
         nameView = findViewById(R.id.item_name);
-        nameView.setText(item.getName());
+        nameView.setText("Name: " + item.getName());
 
-        typeView= findViewById(R.id.item_type);
-        typeView.setText(item.getType());
+        typeView = findViewById(R.id.item_type);
+        typeView.setText("Type: " + item.getType());
 
         priceView = findViewById(R.id.item_price);
-        priceView.setText(String.format(Locale.ENGLISH,"$%.2f",item.getPrice()));
+        priceView.setText("Price: " + (String.format(Locale.ENGLISH,"$%.2f",item.getPrice())));
 
         descripView = findViewById(R.id.item_descrip);
-        descripView.setText(item.getDescription());
+        descripView.setText("Description: " + item.getDescription());
 
         shortView = findViewById(R.id.item_short);
-        String shortDescription = item.getDescription().length() > 31 ? item.getDescription().substring(0,30) + "..." : item.getDescription();
-        shortView.setText(shortDescription);
+        String shortDescription = item.getDescription().length() > 31
+                ? item.getDescription().substring(0,30) + "..." : item.getDescription();
+        shortView.setText("Short Description: " + shortDescription + "\n");
 
         categoryView = findViewById(R.id.item_category);
-        categoryView.setText(item.getCategory().toString());
+        categoryView.setText("Category: " + item.getCategory().toString());
 
         timestampView = findViewById(R.id.item_timestamp);
-        timestampView.setText(item.getTimestamp().toString());
+        timestampView.setText("Donation Time: " + item.getTimestamp());
+
+        storeNameView = findViewById(R.id.store_name);
+        storeNameView.setText(item.getStore().getName());
 
 
     }
