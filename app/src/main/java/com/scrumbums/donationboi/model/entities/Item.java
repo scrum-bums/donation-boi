@@ -111,7 +111,9 @@ public class Item extends RealmObject {
             return false;
         }
         Item temp = (Item) o;
-        return (temp.getName().equals(name) && temp.getPrice() == price && temp.getType().equals(type) && temp.getDescription().equals(description));
+        return (temp.getName().equals(name) && temp.getPrice()
+                == price && temp.getType().equals(type)
+                && temp.getDescription().equals(description));
     }
 
     public int hashCode() {

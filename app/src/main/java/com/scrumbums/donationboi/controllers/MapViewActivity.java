@@ -3,6 +3,7 @@ package com.scrumbums.donationboi.controllers;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,6 +15,7 @@ import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Controller for the map view for stores.
@@ -54,9 +56,13 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
             // Add a marker in Sydney and move the camera
             LatLng pin = new LatLng(store.getLocation().getLatitude(),
                     store.getLocation().getLongitude());
+            String snippet = String.format(Locale.ENGLISH, "%s, %s", store.getPhoneNumber(), store.getWebsite());
             mMap.addMarker(new MarkerOptions().position(pin).title(
-                    store.getName()));
+                    store.getName()).snippet(snippet));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(pin));
+
         }
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(10));
+
     }
 }
