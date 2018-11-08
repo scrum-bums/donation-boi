@@ -17,6 +17,7 @@ public class StoreListActivity extends AppCompatActivity {
     private ListView listView;
     private Button logout;
     private Button searchBtn;
+    private Button mapBtn;
     private ArrayAdapter adapter;
     final String TAG = "DONATION-BOI/StoreList";
 
@@ -56,6 +57,12 @@ public class StoreListActivity extends AppCompatActivity {
                 addItemIntent.putExtra("storeId", 0);
                 startActivity(addItemIntent);
             }
+        });
+
+        mapBtn = findViewById(R.id.goto_map);
+        mapBtn.setOnClickListener((v) -> {
+            Intent mapIntent = new Intent(StoreListActivity.this, MapViewActivity.class);
+            startActivity(mapIntent);
         });
     }
 
