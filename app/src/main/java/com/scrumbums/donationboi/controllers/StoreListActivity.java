@@ -12,12 +12,15 @@ import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
+/**
+ * A list of stores wow cool
+ */
 public class StoreListActivity extends AppCompatActivity {
     private Store[] stores;
     private ArrayAdapter adapter;
     final String TAG = "DONATION-BOI/StoreList";
 
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_list);
