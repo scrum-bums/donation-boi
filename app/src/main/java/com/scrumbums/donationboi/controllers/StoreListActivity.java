@@ -12,6 +12,9 @@ import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
+/**
+ * A list of stores wow cool
+ */
 public class StoreListActivity extends AppCompatActivity {
     private Store[] stores;
     private ArrayAdapter adapter;
