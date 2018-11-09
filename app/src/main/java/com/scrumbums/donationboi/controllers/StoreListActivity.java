@@ -17,7 +17,7 @@ public class StoreListActivity extends AppCompatActivity {
     private ArrayAdapter adapter;
     final String TAG = "DONATION-BOI/StoreList";
 
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_list);
