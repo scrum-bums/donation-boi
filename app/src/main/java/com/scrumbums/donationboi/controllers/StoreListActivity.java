@@ -18,7 +18,7 @@ import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 public class StoreListActivity extends AppCompatActivity {
     private Store[] stores;
     private ArrayAdapter adapter;
-    final String TAG = "DONATION-BOI/StoreList";
+    private static final String TAG = "DONATION-BOI/StoreList";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
