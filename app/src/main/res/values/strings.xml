@@ -47,5 +47,6 @@
     <string name="price">Price</string>
     <string name="description">Description</string>
     <string name="add_time_btn_add">Add</string>
+    <string name="title_activity_map_view">Map</string>
 
 </resources>
