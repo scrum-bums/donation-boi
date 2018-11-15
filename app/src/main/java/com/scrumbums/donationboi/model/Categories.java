@@ -1,7 +1,10 @@
 package com.scrumbums.donationboi.model;
 
-import java.util.Arrays;
+import android.support.annotation.NonNull;
 
+/**
+ * Represents the different categories an Item in a Store an be classified into.
+ */
 public enum Categories {
     ELECTRONICS("Electronics"),
     CLOTHING("Clothing"),
@@ -10,15 +13,18 @@ public enum Categories {
     HOUSEHOLD("Household"),
     OTHER("Other");
 
-    private String name;
+    private final String name;
+
     Categories(String name) {
         this.name = name;
     }
 
-    public String toString() {
-        return name;
-    }
-
+    /**
+     * Get the enum for a category based on its String representation
+     *
+     * @param name The name of the category to use to look for an enum member
+     * @return The enum member if found.  Otherwise, null.
+     */
     public static Categories getCategory(String name) {
         for(Categories c: Categories.values()) {
             if (c.name.equals(name)) {
@@ -26,5 +32,10 @@ public enum Categories {
             }
         }
         return null;
+    }
+
+    @NonNull
+    public String toString() {
+        return name;
     }
 }
