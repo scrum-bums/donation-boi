@@ -10,7 +10,6 @@ import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.entities.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -31,6 +30,7 @@ public final class DatabaseAbstraction {
 
     /**
      * Attempt to login with the given credentials.
+     * @param context The current application context
      * @param email The email of the user.
      * @param password The password of the user.
      * @return 1 if the given credentials are valid, 0 if the password is
@@ -43,9 +43,9 @@ public final class DatabaseAbstraction {
         query.equalTo("email", email)
                 .equalTo("password",password);
 
-        User user;
+        User user = query.findFirst();
 
-        if ((user = query.findFirst()) != null) {
+        if (user != null) {
             boolean canAddItems = user.getRole().equals(UserRole.EMPLOYEE);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = prefs.edit();
@@ -87,15 +87,17 @@ public final class DatabaseAbstraction {
         return true;
     }
 
-    private static final HashMap<Integer, Store> STORE_DATABASE
-            = new HashMap<Integer, Store>();
-
+    /**
+     * Get a store by its store ID
+     *
+     * @param storeId The store ID to search by
+     * @return The store if found.  Otherwise, null.
+     */
     public static Store getStore(int storeId) {
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<Store> query = realm.where(Store.class);
         query.equalTo("storeId", storeId);
-        Store result = query.findFirst();
-        return result;
+        return query.findFirst();
     }
 
     public static ArrayList<Item> getItemsByStoreId(int storeId) {
@@ -103,6 +105,11 @@ public final class DatabaseAbstraction {
         return s.getInventoryArrayList();
     }
 
+    /**
+     * Get all the stores in the database
+     *
+     * @return An array containing all the stores in the database
+     */
     public static Store[] getStoresArrayList() {
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<Store> storeRealmQuery = realm.where(Store.class);
@@ -111,6 +118,11 @@ public final class DatabaseAbstraction {
         return storeRealmQuery.findAll().toArray(out);
     }
 
+    /**
+     * Logs the user out of the application
+     *
+     * @param context The current application context
+     */
     public static void logout(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();

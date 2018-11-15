@@ -144,7 +144,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         // Check for a valid password, if the user entered one.
 
-        if (!AccountValidation.isValidPassword(password)) {
+        if (AccountValidation.isInvalidPassword(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -156,7 +156,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             focusView = mEmailView;
             cancel = true;
 
-        } else if (!AccountValidation.isValidEmail(email)) {
+        } else if (AccountValidation.isInvalidEmail(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;

@@ -3,6 +3,7 @@ package com.scrumbums.donationboi.controllers;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,6 +24,9 @@ import java.util.Objects;
  */
 public class MapViewActivity extends FragmentActivity implements OnMapReadyCallback {
 
+
+    private GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         Objects.requireNonNull(mapFragment).getMapAsync(this);
+
     }
 
 
@@ -60,6 +65,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
 
         }
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(10));
+
 
     }
 }

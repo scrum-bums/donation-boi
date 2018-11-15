@@ -41,7 +41,7 @@ public class ItemSearchActivity extends AppCompatActivity {
         int storeId = intent.getIntExtra("storeId", 0);
         if (storeId == 0) {
             inventoryArray = new ArrayList<>();
-            for(Store s: DatabaseAbstraction.getStoresArrayList()) {
+            for (Store s : DatabaseAbstraction.getStoresArrayList()) {
                 inventoryArray.addAll(s.getInventoryArrayList());
             }
         } else {

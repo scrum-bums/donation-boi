@@ -3,14 +3,15 @@ package com.scrumbums.donationboi.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.entities.User;
 import com.scrumbums.donationboi.model.UserRole;
+import com.scrumbums.donationboi.model.entities.User;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
@@ -32,6 +33,7 @@ public class RegistrationActivity extends Activity {
 
         Button regBtn = findViewById(R.id.button_register);
         Button cancelBtn = findViewById(R.id.button_cancel);
+
         typeSpinner = findViewById(R.id.field_usertype);
         usernameField = findViewById(R.id.field_username);
         nameField = findViewById(R.id.field_name);
@@ -72,12 +74,12 @@ public class RegistrationActivity extends Activity {
         String name = nameField.getText().toString();
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
-        if (!AccountValidation.isValidEmail(email)) {
+        if (AccountValidation.isInvalidEmail(email)) {
             emailField.setError(getString(R.string.error_invalid_email));
             emailField.requestFocus();
             return null;
         }
-        if (!AccountValidation.isValidPassword(password)) {
+        if (AccountValidation.isInvalidPassword(password)) {
             passwordField.setError(getString(R.string.error_invalid_password));
             passwordField.requestFocus();
             return null;
