@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.scrumbums.donationboi.model.UserRole;
+import com.scrumbums.donationboi.model.entities.Item;
 import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.entities.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.realm.Realm;
@@ -94,6 +96,11 @@ public final class DatabaseAbstraction {
         query.equalTo("storeId", storeId);
         Store result = query.findFirst();
         return result;
+    }
+
+    public static ArrayList<Item> getItemsByStoreId(int storeId) {
+        Store s = getStore(storeId);
+        return s.getInventoryArrayList();
     }
 
     public static Store[] getStoresArrayList() {

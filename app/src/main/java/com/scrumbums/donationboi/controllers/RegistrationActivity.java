@@ -3,7 +3,6 @@ package com.scrumbums.donationboi.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +14,9 @@ import com.scrumbums.donationboi.model.UserRole;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
+/**
+ * Activity to register a new user.
+ */
 public class RegistrationActivity extends Activity {
 
     private Spinner typeSpinner;

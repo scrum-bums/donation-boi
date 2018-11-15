@@ -18,7 +18,7 @@ import java.util.Locale;
 public class ItemView extends AppCompatActivity {
 
 
-    public static final int LEN = 31;
+    private static final int LEN = 31;
     public static final int LEN1 = 31;
 
     @Override

@@ -90,7 +90,7 @@ public class StoreViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         inventoryArray = store.getInventoryArrayList();
-        ArrayAdapter<Item> newAdapter = new ArrayAdapter<>(this,
+        ListAdapter newAdapter = new ArrayAdapter<>(this,
                 R.layout.store_view_item, inventoryArray);
 
         inventoryListView.setAdapter(newAdapter);

@@ -134,6 +134,10 @@ public class Item extends RealmObject {
         return store;
     }
 
+    public int getStoreId() {
+        return store.getStoreId();
+    }
+
     public void setStore(Store store) {
         this.store = store;
     }

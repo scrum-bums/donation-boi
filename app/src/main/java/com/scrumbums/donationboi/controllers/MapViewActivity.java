@@ -50,8 +50,8 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
 
         for (Store store : stores) {
             // Add a marker in Sydney and move the camera
-            LatLng pin = new LatLng(store.getLocation().getLatitude(),
-                    store.getLocation().getLongitude());
+            LatLng pin = new LatLng(store.getLatitude(),
+                    store.getLongitude());
             String snippet = String.format(Locale.ENGLISH,
                     "%s, %s", store.getPhoneNumber(), store.getWebsite());
             googleMap.addMarker(new MarkerOptions().position(pin).title(

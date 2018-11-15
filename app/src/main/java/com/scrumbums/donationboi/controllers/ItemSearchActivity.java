@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class ItemSearchActivity extends AppCompatActivity {
 
-    public static final int DURATION = 3000;
+    private static final int DURATION = 3000;
     private Spinner categorySpinner;
     private EditText searchBar;
     private ListView results;
@@ -45,8 +45,7 @@ public class ItemSearchActivity extends AppCompatActivity {
                 inventoryArray.addAll(s.getInventoryArrayList());
             }
         } else {
-            Store store = DatabaseAbstraction.getStore(storeId);
-            inventoryArray = store.getInventoryArrayList();
+            inventoryArray = DatabaseAbstraction.getItemsByStoreId(storeId);
         }
         filteredArray = inventoryArray;
         setContentView(R.layout.item_search);
@@ -100,8 +99,7 @@ public class ItemSearchActivity extends AppCompatActivity {
         results.setOnItemClickListener((adapter, v, position, id) -> {
             Item i = filteredArray.get(position);
             Intent intent1 = new Intent(ItemSearchActivity.this, ItemView.class);
-            Store store = i.getStore();
-            intent1.putExtra("storeId", store.getStoreId());
+            intent1.putExtra("storeId", i.getStoreId());
             intent1.putExtra("itemId", i.getItemId());
             startActivity(intent1);
 

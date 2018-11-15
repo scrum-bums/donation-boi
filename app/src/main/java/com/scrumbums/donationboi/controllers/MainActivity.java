@@ -13,7 +13,7 @@ import com.scrumbums.donationboi.R;
  * main application activity
  */
 public class MainActivity extends AppCompatActivity {
-    final String TAG = "DONATION-BOI/MainActivity";
+    private static final String TAG = "DONATION-BOI/MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

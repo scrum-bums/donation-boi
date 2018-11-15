@@ -241,4 +241,12 @@ public class Store extends RealmObject {
         return name.hashCode() + location.hashCode() + phoneNumber.hashCode() + website.hashCode();
     }
 
+    public float getLatitude() {
+        return location.getLatitude();
+    }
+
+    public float getLongitude() {
+        return location.getLongitude();
+    }
+
 }
