@@ -25,8 +25,8 @@ public class StoreListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_list);
 
-        ListView listView = findViewById(R.id.mobile_list);
-        stores = DatabaseAbstraction.getStoresArrayList();
+        listView = findViewById(R.id.mobile_list);
+        stores = DatabaseAbstraction.getStoresArray();
         adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, stores);
         listView.setAdapter(adapter);
 
