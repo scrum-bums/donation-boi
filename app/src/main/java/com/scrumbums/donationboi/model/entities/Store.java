@@ -1,6 +1,7 @@
 package com.scrumbums.donationboi.model.entities;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Categories;
@@ -41,18 +42,10 @@ public class Store extends RealmObject {
     private String phoneNumber;
     private String website;
 
-    public Store() { }
-
     /**
-     * Constructor for a store. Only accepts a name and location with no phone
-     * number or website.
-     *
-     * @param name     The name of the store.
-     * @param location The location of the store.
+     * No-arg constructor for Realm
      */
-    public Store(String name, Location location) {
-        this(name, location, null);
-    }
+    public Store() { }
 
     /**
      * Constructor for a store. Only accepts a name, location and phone number
@@ -62,7 +55,7 @@ public class Store extends RealmObject {
      * @param location    The location of the store.
      * @param phoneNumber This store's phone number.
      */
-    public Store(String name, Location location, String phoneNumber) {
+    private Store(String name, Location location, String phoneNumber) {
         this(name, location, phoneNumber, null, null);
     }
 
@@ -75,7 +68,8 @@ public class Store extends RealmObject {
      * @param phoneNumber This store's phone number.
      * @param website     This store's website.
      */
-    public Store(String name, Location location, String phoneNumber, String website, String locationType) {
+    private Store(String name, Location location, String phoneNumber, String website,
+                  String locationType) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.website = website;
@@ -96,18 +90,16 @@ public class Store extends RealmObject {
      * Reads in sample stores from a CSV and converts them to Store objects
      *
      * @param context App context object
-     * @return A list of sample Stores
      */
     public static void saveSampleLocationData(Context context) {
         InputStream inputStream = context.getResources().openRawResource(R.raw.location_data);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,
+                StandardCharsets.UTF_8));
 
-        String line = "";
         try {
-            bufferedReader.readLine(); // Skip over the first line of the CSV that's the column names
+            bufferedReader.readLine(); //Skip over the first line of the CSV that's the column names
             Realm realm = Realm.getDefaultInstance();
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] tokens = line.split(",");
+            bufferedReader.lines().map(line -> line.split(",")).forEach(tokens -> {
                 String name = (tokens[1]);
                 float latitude = Float.parseFloat(tokens[2]);
                 float longitude = Float.parseFloat(tokens[3]);
@@ -119,7 +111,7 @@ public class Store extends RealmObject {
                 String phoneNumber = tokens[9];
                 String website = tokens[10];
                 Location location = new Location(streetAddress, state, city, zipCode,
-                                                 latitude, longitude);
+                        latitude, longitude);
                 Store s = new Store(name, location, phoneNumber, website, locationType);
                 RealmQuery<Store> storeExists = realm.where(Store.class);
                 storeExists.equalTo("name", s.getName());
@@ -128,7 +120,7 @@ public class Store extends RealmObject {
                     realm.insertOrUpdate(s);
                     realm.commitTransaction();
                 }
-            }
+            });
 
             realm.close();
         } catch (IOException e) {
@@ -136,35 +128,68 @@ public class Store extends RealmObject {
         }
     }
 
+    /**
+     * Get this location's ID
+     *
+     * @return This location's ID
+     */
     public int getLocationId() {
         return locationId;
     }
 
+    /**
+     * Set this location's ID
+     * @param locationId The ID to set the location ID to
+     */
     public void setLocationId(int locationId) {
         this.locationId = locationId;
     }
 
+    /**
+     * Get this location's phone number
+     * @return This location's phone number
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * Set this location's phone number
+     * @param phoneNumber The new phone number
+     */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * Get this store's ID
+     * @return This store's ID
+     */
     public int getStoreId() {
         return storeId;
     }
 
+    /**
+     * Set this store's ID
+     * @param storeId The new store ID
+     */
     public void setStoreId(int storeId) {
         this.storeId = storeId;
     }
 
+    /**
+     * Get the type of this location
+     * @return This location's type
+     */
     public String getLocationType() {
 
         return locationType;
     }
 
+    /**
+     * Set this location's type
+     * @param locationType New location type
+     */
     public void setLocationType(String locationType) {
         this.locationType = locationType;
     }
@@ -172,28 +197,48 @@ public class Store extends RealmObject {
     /**
      * Get this store's inventory.
      *
-     * @return
+     * @return A RealmResults list containing the store's inventory
      */
     public RealmResults<Item> getInventory() {
-        return inventory;
+        return this.inventory; // note: the type of this return is correct as-is
     }
 
+    /**
+     * Get this store's name
+     * @return The store's name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set this store's name
+     * @param name The store's name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get this store's location
+     * @return A Location object representing the store's physical location
+     */
     public Location getLocation() {
         return location;
     }
 
+    /**
+     * Set this store's location
+     * @param location A Location  object representing the new location for this store
+     */
     public void setLocation(Location location) {
         this.location = location;
     }
 
+    /**
+     * Get the website URL for this store
+     * @return The store's website
+     */
     public String getWebsite() {
         return website;
     }
@@ -202,24 +247,44 @@ public class Store extends RealmObject {
         this.website = website;
     }
 
-    public void addToInventory(Item item) {
+    private void addToInventory(Item item) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.copyToRealm(item);
         realm.commitTransaction();
     }
 
-    public void addToInventory(String name, String description, double price, String type, Categories cat) {
+    /**
+     * Creates a new Item and adds it to the inventory
+     *
+     * @param name        The item's name
+     * @param description The item's description
+     * @param price       The item's price
+     * @param type        The item's type
+     * @param cat         The item's category
+     */
+    public void addToInventory(String name, String description, double price, String type,
+                               Categories cat) {
         addToInventory(new Item(name, description, price, type, cat, this));
     }
 
+    /**
+     * Get the store's inventory
+     * @return An ArrayList of the items in this store's inventory
+     */
     public ArrayList<Item> getInventoryArrayList() {
-        if (inventory == null) {
+        if (inventory == null) { // Not always null - Realm handles this though, so it's not
+            // obvious here
             return null;
         }
         return new ArrayList<>(inventory);
     }
 
+    /**
+     * Lookup an item in this store's inventory by its ID
+     * @param itemId The item ID to search by
+     * @return The item, if it was found.  Otherwise, null.
+     */
     public Item getInventoryItem(int itemId) {
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<Item> query = realm.where(Item.class);
@@ -227,6 +292,7 @@ public class Store extends RealmObject {
         return query.findFirst();
     }
 
+    @NonNull
     public String toString() {
         String ret = "";
         ret += "Name: " + (name == null ? "not listed" : name);
@@ -234,6 +300,19 @@ public class Store extends RealmObject {
         ret += "\nPhone Number: " + (phoneNumber == null ? "not listed" : phoneNumber);
         ret += "\nWebsite: " + (website == null ? "not listed" : website);
         return ret;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof Store) {
+            Store compare = (Store) obj;
+            return compare.storeId == this.storeId;
+        }
+        return false;
+
     }
 
     @Override
