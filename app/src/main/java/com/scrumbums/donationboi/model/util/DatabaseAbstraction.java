@@ -63,12 +63,11 @@ public final class DatabaseAbstraction {
      * Register the given user.
      * @param context An Application context to use to obtain the database
      * @param user The User to register.
+     * @param realm The Realm instance to use
      * @return A Completable that will complete when the user has been registered successfully,
      *         or error otherwise.
      */
-    public static boolean register(final Context context, final User user) {
-        Realm realm = Realm.getDefaultInstance();
-
+    public static boolean register(final Context context, final User user, Realm realm) {
         RealmQuery<User> query = realm.where(User.class);
         query.equalTo("email", user.getEmail());
 
@@ -78,10 +77,11 @@ public final class DatabaseAbstraction {
             return false;
         }
 
-        realm.beginTransaction();
+        if (!realm.isInTransaction()) {
+            realm.beginTransaction();
+        }
         realm.insert(user);
         realm.commitTransaction();
-        realm.close();
         return true;
     }
 
