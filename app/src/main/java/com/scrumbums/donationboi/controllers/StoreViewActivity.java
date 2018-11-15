@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,13 +26,9 @@ import java.util.ArrayList;
  */
 public class StoreViewActivity extends AppCompatActivity {
 
-    private TextView storeInfo;
     private ArrayList<Item> inventoryArray = new ArrayList<>();
     private ListView inventoryListView;
-    private Button addItemBtn;
-    private Button searchBtn;
     private Store store;
-    private ArrayAdapter adapter;
     private int storeId;
 
     @Override
@@ -42,56 +38,51 @@ public class StoreViewActivity extends AppCompatActivity {
         setContentView(R.layout.store_view);
 
         storeId = intent.getIntExtra("storeId", 0);
-        //TODO: if storeId = 0, show "store not found"
         store = DatabaseAbstraction.getStore(storeId);
 
-        storeInfo = findViewById(R.id.store_info);
+        TextView storeInfo = findViewById(R.id.store_info);
         storeInfo.setText(store.toString());
 
         inventoryArray = store.getInventoryArrayList();
 
-        adapter = new ArrayAdapter<>(this, R.layout.store_view_item, inventoryArray);
+        ListAdapter adapter = new ArrayAdapter<>(this, R.layout.store_view_item, inventoryArray);
         inventoryListView = findViewById(R.id.inventory_list_view);
         inventoryListView.setAdapter(adapter);
 
 
-        addItemBtn = findViewById(R.id.add_item_button);
-        searchBtn = findViewById(R.id.search_button);
+        Button addItemBtn = findViewById(R.id.add_item_button);
+        Button searchBtn = findViewById(R.id.search_button);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs
+                = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean canAddItems = prefs.getBoolean("canAddItems",false);
         if (!canAddItems) {
             addItemBtn.setVisibility(View.GONE);
         }
 
-        addItemBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addItemIntent = new Intent(StoreViewActivity.this, AddItemForm.class);
-                addItemIntent.putExtra("storeId", storeId);
-                startActivity(addItemIntent);
-            }
+        makeListeners(addItemBtn, searchBtn);
+    }
+
+    private void makeListeners(Button addItemBtn, Button searchBtn) {
+        addItemBtn.setOnClickListener(v -> {
+            Intent addItemIntent = new Intent(StoreViewActivity.this, AddItemForm.class);
+            addItemIntent.putExtra("storeId", storeId);
+            startActivity(addItemIntent);
         });
 
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addItemIntent = new Intent(StoreViewActivity.this, ItemSearchActivity.class);
-                addItemIntent.putExtra("storeId", storeId);
-                startActivity(addItemIntent);
-            }
+        searchBtn.setOnClickListener(v -> {
+            Intent addItemIntent = new Intent(StoreViewActivity.this, ItemSearchActivity.class);
+            addItemIntent.putExtra("storeId", storeId);
+            startActivity(addItemIntent);
         });
 
-        inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?>adapter, View v, int position, long id) {
-                Item i = inventoryArray.get(position);
-                Intent intent = new Intent(StoreViewActivity.this, ItemView.class);
-                intent.putExtra("storeId", store.getStoreId());
-                intent.putExtra("itemId", i.getItemId());
-                startActivity(intent);
+        inventoryListView.setOnItemClickListener((adapter1, v, position, id) -> {
+            Item i = inventoryArray.get(position);
+            Intent intent1 = new Intent(StoreViewActivity.this, ItemView.class);
+            intent1.putExtra("storeId", store.getStoreId());
+            intent1.putExtra("itemId", i.getItemId());
+            startActivity(intent1);
 
-            }
         });
     }
 
@@ -99,7 +90,8 @@ public class StoreViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         inventoryArray = store.getInventoryArrayList();
-        ArrayAdapter<Item> newAdapter = new ArrayAdapter<>(this, R.layout.store_view_item, inventoryArray);
+        ArrayAdapter<Item> newAdapter = new ArrayAdapter<>(this,
+                R.layout.store_view_item, inventoryArray);
 
         inventoryListView.setAdapter(newAdapter);
         inventoryListView.refreshDrawableState();

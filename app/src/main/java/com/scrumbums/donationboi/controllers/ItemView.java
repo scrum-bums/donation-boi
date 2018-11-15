@@ -12,16 +12,14 @@ import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.Locale;
 
+/**
+ * view to show info on an item
+ */
 public class ItemView extends AppCompatActivity {
-    private TextView nameView;
-    private TextView typeView;
-    private TextView priceView;
-    private TextView descripView;
-    private TextView shortView;
-    private TextView categoryView;
-    private TextView timestampView;
-    private TextView storeNameView;
 
+
+    public static final int LEN = 31;
+    public static final int LEN1 = 31;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,36 +30,35 @@ public class ItemView extends AppCompatActivity {
         final int itemId = intent.getIntExtra("itemId", 0);
         Store store = DatabaseAbstraction.getStore(storeId);
         Item item = store.getInventoryItem(itemId);
-        //TODO: show error if invalid store/item
 
         if (item == null) {
             item = new Item("Item not found", store);
         }
 
-        nameView = findViewById(R.id.item_name);
+        TextView nameView = findViewById(R.id.item_name);
         nameView.setText("Name: " + item.getName());
 
-        typeView = findViewById(R.id.item_type);
+        TextView typeView = findViewById(R.id.item_type);
         typeView.setText("Type: " + item.getType());
 
-        priceView = findViewById(R.id.item_price);
+        TextView priceView = findViewById(R.id.item_price);
         priceView.setText("Price: " + (String.format(Locale.ENGLISH,"$%.2f",item.getPrice())));
 
-        descripView = findViewById(R.id.item_descrip);
-        descripView.setText("Description: " + item.getDescription());
+        TextView descriptionView = findViewById(R.id.item_descrip);
+        descriptionView.setText("Description: " + item.getDescription());
 
-        shortView = findViewById(R.id.item_short);
-        String shortDescription = item.getDescription().length() > 31
-                ? item.getDescription().substring(0,30) + "..." : item.getDescription();
+        TextView shortView = findViewById(R.id.item_short);
+        String shortDescription = (item.getDescription().length() > LEN)
+                ? (item.getDescription().substring(0, LEN1) + "...") : item.getDescription();
         shortView.setText("Short Description: " + shortDescription + "\n");
 
-        categoryView = findViewById(R.id.item_category);
+        TextView categoryView = findViewById(R.id.item_category);
         categoryView.setText("Category: " + item.getCategory().toString());
 
-        timestampView = findViewById(R.id.item_timestamp);
+        TextView timestampView = findViewById(R.id.item_timestamp);
         timestampView.setText("Donation Time: " + item.getTimestamp());
 
-        storeNameView = findViewById(R.id.store_name);
+        TextView storeNameView = findViewById(R.id.store_name);
         storeNameView.setText(item.getStore().getName());
 
 

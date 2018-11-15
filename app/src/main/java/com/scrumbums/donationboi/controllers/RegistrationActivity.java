@@ -3,7 +3,6 @@ package com.scrumbums.donationboi.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,58 +17,51 @@ import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 public class RegistrationActivity extends Activity {
 
-    Button regBtn;
-    Button cancelBtn;
-    Spinner typeSpinner;
-    EditText usernameField;
-    EditText nameField;
-    EditText passwordField;
-    EditText emailField;
+    private Spinner typeSpinner;
+    private EditText usernameField;
+    private EditText nameField;
+    private EditText passwordField;
+    private EditText emailField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        regBtn = findViewById(R.id.button_register);
-        cancelBtn = findViewById(R.id.button_cancel);
-        typeSpinner = (Spinner) findViewById(R.id.field_usertype);
+        Button regBtn = findViewById(R.id.button_register);
+        Button cancelBtn = findViewById(R.id.button_cancel);
+        typeSpinner = findViewById(R.id.field_usertype);
         usernameField = findViewById(R.id.field_username);
         nameField = findViewById(R.id.field_name);
         emailField = findViewById(R.id.field_email);
         passwordField = findViewById(R.id.field_password);
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[]{
-            "User",
-            "Employee",
-            "Manager",
-            "Administrator"
+        ArrayAdapter adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, new String[]{
+                "User",
+                "Employee",
+                "Manager",
+                "Administrator"
         });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter);
 
-        regBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User u;
-                if ((u = getUser()) != null) {
-                    if(DatabaseAbstraction.register(getApplicationContext(), u)) {
-                        finish();
-                    } else {
-                        emailField.setError(getString(R.string.error_email_already_registered));
-                        emailField.requestFocus();
-                    }
+        regBtn.setOnClickListener(v -> {
+            User u = getUser();
+            if (u != null) {
+                if(DatabaseAbstraction.register(getApplicationContext(), u)) {
+                    finish();
+                } else {
+                    emailField.setError(getString(R.string.error_email_already_registered));
+                    emailField.requestFocus();
                 }
             }
         });
 
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
-                finish();
+        cancelBtn.setOnClickListener(v -> {
+            startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+            finish();
 
-            }
         });
     }
 
