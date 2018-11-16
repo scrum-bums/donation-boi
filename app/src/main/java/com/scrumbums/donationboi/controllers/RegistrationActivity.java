@@ -3,73 +3,68 @@ package com.scrumbums.donationboi.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.scrumbums.donationboi.R;
-import com.scrumbums.donationboi.model.entities.User;
 import com.scrumbums.donationboi.model.UserRole;
+import com.scrumbums.donationboi.model.entities.User;
 import com.scrumbums.donationboi.model.util.AccountValidation;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
+/**
+ * Activity to register a new user.
+ */
 public class RegistrationActivity extends Activity {
 
-    Button regBtn;
-    Button cancelBtn;
-    Spinner typeSpinner;
-    EditText usernameField;
-    EditText nameField;
-    EditText passwordField;
-    EditText emailField;
+    private Spinner typeSpinner;
+    private EditText usernameField;
+    private EditText nameField;
+    private EditText passwordField;
+    private EditText emailField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        regBtn = findViewById(R.id.button_register);
-        cancelBtn = findViewById(R.id.button_cancel);
-        typeSpinner = (Spinner) findViewById(R.id.field_usertype);
+        Button regBtn = findViewById(R.id.button_register);
+        Button cancelBtn = findViewById(R.id.button_cancel);
+
+        typeSpinner = findViewById(R.id.field_user_type);
         usernameField = findViewById(R.id.field_username);
         nameField = findViewById(R.id.field_name);
         emailField = findViewById(R.id.field_email);
         passwordField = findViewById(R.id.field_password);
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[]{
-            "User",
-            "Employee",
-            "Manager",
-            "Administrator"
+        ArrayAdapter adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, new String[]{
+                "User",
+                "Employee",
+                "Manager",
+                "Administrator"
         });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter);
 
-        regBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User u;
-                if ((u = getUser()) != null) {
-                    if(DatabaseAbstraction.register(getApplicationContext(), u)) {
-                        finish();
-                    } else {
-                        emailField.setError(getString(R.string.error_email_already_registered));
-                        emailField.requestFocus();
-                    }
+        regBtn.setOnClickListener(v -> {
+            User u = getUser();
+            if (u != null) {
+                if (DatabaseAbstraction.register(u)) {
+                    finish();
+                } else {
+                    emailField.setError(getString(R.string.error_email_already_registered));
+                    emailField.requestFocus();
                 }
             }
         });
 
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
-                finish();
+        cancelBtn.setOnClickListener(v -> {
+            startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+            finish();
 
-            }
         });
     }
 
@@ -78,12 +73,12 @@ public class RegistrationActivity extends Activity {
         String name = nameField.getText().toString();
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
-        if (!AccountValidation.isValidEmail(email)) {
+        if (AccountValidation.isInvalidEmail(email)) {
             emailField.setError(getString(R.string.error_invalid_email));
             emailField.requestFocus();
             return null;
         }
-        if (!AccountValidation.isValidPassword(password)) {
+        if (AccountValidation.isInvalidPassword(password)) {
             passwordField.setError(getString(R.string.error_invalid_password));
             passwordField.requestFocus();
             return null;
