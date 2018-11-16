@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.scrumbums.donationboi.model.Categories;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -178,22 +179,19 @@ public class Item extends RealmObject {
         }
         Item temp = (Item) o;
 
-        return (((temp.getName() == null) == (name == null))
-                && ((name == null) || temp.getName().equals(name))
+        return Objects.equals(name, temp.name)
                 && (temp.getPrice() == price)
-                && ((temp.getType() == null) == (type == null)) // null test
-                && ((type == null) || temp.getType().equals(type)) // avoid NPE
-                && ((temp.getDescription() == null) == (description == null))
-                && ((description == null)
-                || temp.getDescription().equals(description)));
+                && Objects.equals(type, temp.type)
+                && Objects.equals(temp, temp);
     }
 
+    @Override
     public int hashCode() {
         int hash = 13;
-        hash += (31 * hash) + (int) (Math.round(price));
-        hash += name.hashCode();
-        hash += description.hashCode();
-        hash += type.hashCode();
+        hash = (31 * hash) + (int) (Math.round(price));
+        hash = 31 * hash + name.hashCode();
+        hash = 31 * hash + description.hashCode();
+        hash = 31 * hash + type.hashCode();
         return hash;
     }
 
