@@ -87,6 +87,17 @@ public class Store extends RealmObject {
         }
     }
 
+    /**
+     * Creates a new Store
+     *
+     * @param name         Name of the store
+     * @param location     Physical location of the store
+     * @param phoneNumber  Store's phone number
+     * @param website      Store's website
+     * @param locationType Store type
+     * @param storeId      Manually specify the store ID rather than auto-calculating it using
+     *                     Realm
+     */
     public Store(String name, Location location, String phoneNumber, String website, String
             locationType, int storeId) {
         this.name = name;
@@ -234,7 +245,7 @@ public class Store extends RealmObject {
      * Get this store's location
      * @return A Location object representing the store's physical location
      */
-    public Location getLocation() {
+    private Location getLocation() {
         return location;
     }
 

@@ -42,7 +42,7 @@ public class ItemView extends AppCompatActivity {
         TextView priceView = findViewById(R.id.item_price);
         priceView.setText(getString(R.string.item_price_filled, item.getPrice()));
 
-        TextView descriptionView = findViewById(R.id.item_descrip);
+        TextView descriptionView = findViewById(R.id.item_description);
         descriptionView.setText(getString(R.string.item_desc_filled, item.getDescription()));
 
         TextView shortView = findViewById(R.id.item_short);
