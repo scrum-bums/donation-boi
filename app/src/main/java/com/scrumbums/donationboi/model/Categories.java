@@ -25,7 +25,7 @@ public enum Categories {
      * @param name The name of the category to use to look for an enum member
      * @return The enum member if found.  Otherwise, null.
      */
-    private static Categories getCategory(String name) {
+    public static Categories getCategory(String name) {
         for(Categories c: Categories.values()) {
             if (c.name.equals(name)) {
                 return c;
