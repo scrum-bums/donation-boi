@@ -178,16 +178,20 @@ public class Location extends RealmObject {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
         if (obj instanceof Location) {
             Location compare = (Location) obj;
-            return (this.streetAddress.equals(compare.getStreetAddress())
+            return this.streetAddress.equals(compare.getStreetAddress())
                     && this.city.equals(compare.getCity())
-                    && this.state.equals(compare.getState()))
-                    || ((this.latitude == compare.getLatitude())
-                    && (this.longitude == compare.getLongitude()));
+                    && this.state.equals(compare.getState())
+                    && this.latitude == compare.getLatitude()
+                    && this.longitude == compare.getLongitude()
+                    && this.zipCode == compare.getZipCode();
         }
         return false;
     }
