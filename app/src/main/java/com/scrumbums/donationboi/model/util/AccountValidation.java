@@ -96,7 +96,7 @@ public final class AccountValidation {
      */
     public static boolean isInvalidPassword(String s) {
         return !isStringNonEmpty(s) || containsIllegalCharacters(s)
-                || (s.length() < MIN_PASSWORD_LENGTH) && hasMinChars(s);
+                || ((s.length() < MIN_PASSWORD_LENGTH) && hasMinChars(s));
     }
 
     private static int getNumUppercaseChars(CharSequence s) {
