@@ -79,11 +79,22 @@ public class Store extends RealmObject {
         Realm realm = Realm.getDefaultInstance();
         // make sure we give this user a unique (i.e., auto-incrementing) ID in the database
         Number highestId = realm.where(Store.class).max("storeId");
+
         if (highestId == null) {
             this.storeId = 1;
         } else {
             this.storeId = highestId.intValue() + 1;
         }
+    }
+
+    public Store(String name, Location location, String phoneNumber, String website, String
+            locationType, int storeId) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.website = website;
+        this.location = location;
+        this.locationType = locationType;
+        this.storeId = storeId;
     }
 
     /**
@@ -309,7 +320,9 @@ public class Store extends RealmObject {
         }
         if (obj instanceof Store) {
             Store compare = (Store) obj;
-            return compare.storeId == this.storeId;
+
+            return this.name.equals(compare.getName())
+                    && this.location.equals(compare.getLocation());
         }
         return false;
 
