@@ -22,12 +22,18 @@ public class ItemToStringTest {
 
     @Before
     public void beforeTests() {
-        location1 = new Location("Street1", "Georgia", "Atlanta", 12345, 1.0f, 1.0f);
-        location2 = new Location("Street2", "Florida", "Didney Worl", 12345, 2.0f, 2.0f);
-        location3 = new Location("Street1", "Georgia", "Atlanta", 12345, 1.0f, 1.0f);
-        store1 = new Store("Store1", location1, "000-000-0000", "www.website.com", "DonationCenter", 123);
-        store2 = new Store("Store2", location2, "123-456-7890", "www.website.org", "Drop Off",456);
-        store2_0 = new Store("Store1", location3, "987-654-3210", "www.website.gov", "Store", 789);
+        location1 = new Location("Street1", "Georgia", "Atlanta",
+                12345, 1.0f, 1.0f);
+        location2 = new Location("Street2", "Florida", "Didney Worl",
+                12345, 2.0f, 2.0f);
+        location3 = new Location("Street1", "Georgia", "Atlanta",
+                12345, 1.0f, 1.0f);
+        store1 = new Store("Store1", location1, "000-000-0000",
+                "www.website.com", "DonationCenter", 123);
+        store2 = new Store("Store2", location2, "123-456-7890",
+                "www.website.org", "Drop Off",456);
+        store2_0 = new Store("Store1", location3, "987-654-3210",
+                "www.website.gov", "Store", 789);
     }
 
     @Test
@@ -40,7 +46,8 @@ public class ItemToStringTest {
 
     @Test
     public void withDescriptionToString() {
-        Item tempItem = new Item("Name of Item", "Test Description", 50.00f, "Random Type", Categories.KITCHEN, store1, 123);
+        Item tempItem = new Item("Name of Item", "Test Description", 50.00f,
+                "Random Type", Categories.KITCHEN, store1, 123);
         String tempString = "Name: " + "Name of Item" + "\n" + "Description: "
                 + "Test Description";
         String wrongString = "Invalid String";
@@ -50,7 +57,8 @@ public class ItemToStringTest {
 
     @Test
     public void withNoDescription() {
-        Item tempItem = new Item("Name of Item", null, 500.00, "Temporary Type", Categories.HOUSEHOLD, store2, 456);
+        Item tempItem = new Item("Name of Item", null, 500.00, "Temporary Type",
+                Categories.HOUSEHOLD, store2, 456);
         String tempString = "Name: " + "Name of Item" + "\n"
                 + "Description: not listed";
         String wrongString = "Name: " + "Name of Item" + "\n"
