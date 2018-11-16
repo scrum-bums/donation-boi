@@ -79,11 +79,33 @@ public class Store extends RealmObject {
         Realm realm = Realm.getDefaultInstance();
         // make sure we give this user a unique (i.e., auto-incrementing) ID in the database
         Number highestId = realm.where(Store.class).max("storeId");
+
         if (highestId == null) {
             this.storeId = 1;
         } else {
             this.storeId = highestId.intValue() + 1;
         }
+    }
+
+    /**
+     * Creates a new Store
+     *
+     * @param name         Name of the store
+     * @param location     Physical location of the store
+     * @param phoneNumber  Store's phone number
+     * @param website      Store's website
+     * @param locationType Store type
+     * @param storeId      Manually specify the store ID rather than auto-calculating it using
+     *                     Realm
+     */
+    public Store(String name, Location location, String phoneNumber, String website, String
+            locationType, int storeId) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.website = website;
+        this.location = location;
+        this.locationType = locationType;
+        this.storeId = storeId;
     }
 
     /**
@@ -223,7 +245,7 @@ public class Store extends RealmObject {
      * Get this store's location
      * @return A Location object representing the store's physical location
      */
-    public Location getLocation() {
+    private Location getLocation() {
         return location;
     }
 
@@ -309,7 +331,9 @@ public class Store extends RealmObject {
         }
         if (obj instanceof Store) {
             Store compare = (Store) obj;
-            return compare.storeId == this.storeId;
+
+            return this.name.equals(compare.getName())
+                    && this.location.equals(compare.getLocation());
         }
         return false;
 
@@ -320,10 +344,19 @@ public class Store extends RealmObject {
         return name.hashCode() + location.hashCode() + phoneNumber.hashCode() + website.hashCode();
     }
 
+    /**
+     * Get this store's latitude
+     *
+     * @return The store's latitude
+     */
     public float getLatitude() {
         return location.getLatitude();
     }
 
+    /**
+     * Get this store's longitude
+     * @return The store's longitude
+     */
     public float getLongitude() {
         return location.getLongitude();
     }

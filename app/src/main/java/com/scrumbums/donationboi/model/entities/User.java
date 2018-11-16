@@ -3,7 +3,6 @@ package com.scrumbums.donationboi.model.entities;
 import android.support.annotation.NonNull;
 
 import com.scrumbums.donationboi.model.UserRole;
-import com.scrumbums.donationboi.model.util.Converters;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -143,11 +142,11 @@ public class User extends RealmObject {
      * @return The user's role
      */
     public UserRole getRole() {
-        return Converters.stringToUserRole(role);
+        return UserRole.stringToUserRole(role);
     }
 
     private void setRole(UserRole role) {
-        this.role = Converters.fromUserRole(role);
+        this.role = UserRole.fromUserRole(role);
     }
 
     @NonNull

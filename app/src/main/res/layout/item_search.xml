@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_constraint_layout"
     android:layout_width="match_parent"
@@ -38,8 +39,9 @@
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
         android:ems="10"
-        android:hint="Search items..."
+        android:hint="@string/search_items"
         android:inputType="text|textPersonName"
+        android:importantForAutofill="no"
         app:layout_constraintBottom_toTopOf="@id/category_spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +55,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Search"
+        android:text="@string/search"
         app:layout_constraintBottom_toTopOf="@id/inventory_list_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

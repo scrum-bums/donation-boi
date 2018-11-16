@@ -3,7 +3,6 @@ package com.scrumbums.donationboi.model.entities;
 import android.support.annotation.NonNull;
 
 import com.scrumbums.donationboi.model.Categories;
-import com.scrumbums.donationboi.model.util.Converters;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -80,8 +79,10 @@ public class Item extends RealmObject {
      * @param t        Item type
      * @param category Item category
      * @param store    Store the item was donated to
+     * @param itemId   The ID to give this item
      */
-    public Item(String n, String d, double p, String t, Categories category, Store store, int itemId) {
+    public Item(String n, String d, double p, String t, Categories category, Store store,
+                int itemId) {
         this.name = n;
         this.description = d;
         this.price = p;
@@ -106,11 +107,11 @@ public class Item extends RealmObject {
      * @return The item's category
      */
     public Categories getCategory() {
-        return Converters.stringToCategories(category);
+        return Categories.stringToCategories(category);
     }
 
     private void setCategory(Categories category) {
-        this.category = Converters.fromCategories(category);
+        this.category = Categories.fromCategories(category);
     }
 
     /**
@@ -211,6 +212,11 @@ public class Item extends RealmObject {
         return store;
     }
 
+    /**
+     * Gets this store's ID
+     *
+     * @return The store ID
+     */
     public int getStoreId() {
         return store.getStoreId();
     }

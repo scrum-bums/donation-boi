@@ -95,7 +95,7 @@ public class Location extends RealmObject {
      * Get the street address of the location
      * @return This location's street address
      */
-    public String getStreetAddress() {
+    private String getStreetAddress() {
         return streetAddress;
     }
 
@@ -107,7 +107,7 @@ public class Location extends RealmObject {
      * Get this location's city
      * @return This location's city
      */
-    public String getCity() {
+    private String getCity() {
         return city;
     }
 
@@ -119,7 +119,7 @@ public class Location extends RealmObject {
      * Get this location's state
      * @return State where this location is located
      */
-    public String getState() {
+    private String getState() {
         return state;
     }
 
@@ -161,5 +161,38 @@ public class Location extends RealmObject {
 
         ret += ", " + latLon;
         return ret;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 18;
+        hash += 31 * this.streetAddress.hashCode();
+        hash += 31 * this.state.hashCode();
+        hash += 31 * this.city.hashCode();
+        hash += 31 * this.zipCode;
+        hash += 31 * this.latitude;
+        hash += 31 * this.longitude;
+
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof Location) {
+            Location compare = (Location) obj;
+            return this.streetAddress.equals(compare.getStreetAddress())
+                    && this.city.equals(compare.getCity())
+                    && this.state.equals(compare.getState())
+                    && this.latitude == compare.getLatitude()
+                    && this.longitude == compare.getLongitude()
+                    && this.zipCode == compare.getZipCode();
+        }
+        return false;
     }
 }

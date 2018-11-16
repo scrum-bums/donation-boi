@@ -34,6 +34,26 @@ public enum Categories {
         return null;
     }
 
+    /**
+     * Converts a string to the category represented by that string.
+     *
+     * @param catName name to convert
+     * @return category represented by catName
+     */
+    public static Categories stringToCategories(String catName) {
+        return (catName == null) ? null : getCategory(catName);
+    }
+
+    /**
+     * converts a category to its string.
+     *
+     * @param category role to convert
+     * @return string form of category.
+     */
+    public static String fromCategories(Categories category) {
+        return (category == null) ? null : category.toString();
+    }
+
     @NonNull
     public String toString() {
         return name;
