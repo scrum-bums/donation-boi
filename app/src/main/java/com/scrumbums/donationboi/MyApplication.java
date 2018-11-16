@@ -7,6 +7,10 @@ import com.scrumbums.donationboi.model.entities.Store;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
+/**
+ * Handles high-level application logic including configuring the database and sample data on first
+ * run.
+ */
 public class MyApplication extends Application {
     @Override
     public void onCreate() {

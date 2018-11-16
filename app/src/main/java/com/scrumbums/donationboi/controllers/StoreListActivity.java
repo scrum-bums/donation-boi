@@ -1,9 +1,8 @@
 package com.scrumbums.donationboi.controllers;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -24,9 +23,10 @@ public class StoreListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_list);
-
         ListView listView = findViewById(R.id.mobile_list);
+
         stores = DatabaseAbstraction.getStoresArrayList();
+
         adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, stores);
         listView.setAdapter(adapter);
 

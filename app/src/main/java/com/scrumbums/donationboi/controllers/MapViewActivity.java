@@ -3,7 +3,7 @@ package com.scrumbums.donationboi.controllers;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import com.google.android.gms.maps.CameraUpdate;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,8 +14,8 @@ import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
-import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Controller for the map view for stores.
@@ -23,6 +23,7 @@ import java.util.Locale;
  * @version 1.0
  */
 public class MapViewActivity extends FragmentActivity implements OnMapReadyCallback {
+
 
     private GoogleMap mMap;
 
@@ -33,7 +34,8 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        Objects.requireNonNull(mapFragment).getMapAsync(this);
+
     }
 
 
@@ -48,21 +50,22 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
         Store[] stores = DatabaseAbstraction.getStoresArrayList();
 
         for (Store store : stores) {
             // Add a marker in Sydney and move the camera
-            LatLng pin = new LatLng(store.getLocation().getLatitude(),
-                    store.getLocation().getLongitude());
-            String snippet = String.format(Locale.ENGLISH, "%s, %s", store.getPhoneNumber(), store.getWebsite());
-            mMap.addMarker(new MarkerOptions().position(pin).title(
+            LatLng pin = new LatLng(store.getLatitude(),
+                    store.getLongitude());
+            String snippet = String.format(Locale.ENGLISH,
+                    "%s, %s", store.getPhoneNumber(), store.getWebsite());
+            googleMap.addMarker(new MarkerOptions().position(pin).title(
                     store.getName()).snippet(snippet));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(pin));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(pin));
 
         }
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(10));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(10));
+
 
     }
 }
