@@ -95,7 +95,7 @@ public class Location extends RealmObject {
      * Get the street address of the location
      * @return This location's street address
      */
-    public String getStreetAddress() {
+    private String getStreetAddress() {
         return streetAddress;
     }
 
@@ -107,7 +107,7 @@ public class Location extends RealmObject {
      * Get this location's city
      * @return This location's city
      */
-    public String getCity() {
+    private String getCity() {
         return city;
     }
 
@@ -119,7 +119,7 @@ public class Location extends RealmObject {
      * Get this location's state
      * @return State where this location is located
      */
-    public String getState() {
+    private String getState() {
         return state;
     }
 
@@ -164,6 +164,11 @@ public class Location extends RealmObject {
     }
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -173,8 +178,8 @@ public class Location extends RealmObject {
             return (this.streetAddress.equals(compare.getStreetAddress())
                     && this.city.equals(compare.getCity())
                     && this.state.equals(compare.getState()))
-                    || (this.latitude == compare.getLatitude()
-                    && this.longitude == compare.getLongitude());
+                    || ((this.latitude == compare.getLatitude())
+                    && (this.longitude == compare.getLongitude()));
         }
         return false;
     }

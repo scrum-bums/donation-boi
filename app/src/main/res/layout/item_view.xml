@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -51,14 +52,14 @@
         android:layout_height="wrap_content"
         android:text="@string/price"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/item_descrip"
+        app:layout_constraintBottom_toTopOf="@+id/item_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_type" />
 
     <TextView
-        android:id="@+id/item_descrip"
+        android:id="@+id/item_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/description"
@@ -79,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_descrip" />
+        app:layout_constraintTop_toBottomOf="@+id/item_description" />
 
     <TextView
         android:id="@+id/item_category"
