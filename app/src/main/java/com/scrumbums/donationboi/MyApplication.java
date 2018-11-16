@@ -11,7 +11,7 @@ import io.realm.RealmConfiguration;
  * Handles high-level application logic including configuring the database and sample data on first
  * run.
  */
-class MyApplication extends Application {
+public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

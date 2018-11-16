@@ -37,6 +37,26 @@ public enum UserRole {
         return null;
     }
 
+    /**
+     * converts a role to its string.
+     *
+     * @param role role to convert
+     * @return string form of role.
+     */
+    public static String fromUserRole(UserRole role) {
+        return (role == null) ? null : role.toString();
+    }
+
+    /**
+     * Converts a string to the role represented by that string.
+     *
+     * @param roleName name to convert
+     * @return category represented by roleName
+     */
+    public static UserRole stringToUserRole(String roleName) {
+        return (roleName == null) ? null : getRole(roleName);
+    }
+
     @NonNull
     @Override
     public String toString() {

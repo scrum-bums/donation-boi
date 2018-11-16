@@ -12,9 +12,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.scrumbums.donationboi.R;
+import com.scrumbums.donationboi.model.Categories;
 import com.scrumbums.donationboi.model.entities.Item;
 import com.scrumbums.donationboi.model.entities.Store;
-import com.scrumbums.donationboi.model.util.Converters;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class ItemSearchActivity extends AppCompatActivity {
                     .filter(item -> item.getName()
                             .contains(searchBar.getText())
                             && ("All".equals(categorySpinner.getSelectedItem().toString())
-                            || (Converters.stringToCategories(categorySpinner
+                            || (Categories.stringToCategories(categorySpinner
                             .getSelectedItem().toString()) == item.getCategory())))
                     .collect(Collectors.toList());
             results.setAdapter(new ArrayAdapter<>(this, R.layout.store_view_item, filteredArray));

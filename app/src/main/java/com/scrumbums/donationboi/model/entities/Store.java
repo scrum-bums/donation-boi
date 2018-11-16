@@ -320,10 +320,19 @@ public class Store extends RealmObject {
         return name.hashCode() + location.hashCode() + phoneNumber.hashCode() + website.hashCode();
     }
 
+    /**
+     * Get this store's latitude
+     *
+     * @return The store's latitude
+     */
     public float getLatitude() {
         return location.getLatitude();
     }
 
+    /**
+     * Get this store's longitude
+     * @return The store's longitude
+     */
     public float getLongitude() {
         return location.getLongitude();
     }

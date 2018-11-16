@@ -3,7 +3,6 @@ package com.scrumbums.donationboi.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +33,7 @@ public class RegistrationActivity extends Activity {
         Button regBtn = findViewById(R.id.button_register);
         Button cancelBtn = findViewById(R.id.button_cancel);
 
-        typeSpinner = findViewById(R.id.field_usertype);
+        typeSpinner = findViewById(R.id.field_user_type);
         usernameField = findViewById(R.id.field_username);
         nameField = findViewById(R.id.field_name);
         emailField = findViewById(R.id.field_email);
@@ -53,7 +52,7 @@ public class RegistrationActivity extends Activity {
         regBtn.setOnClickListener(v -> {
             User u = getUser();
             if (u != null) {
-                if(DatabaseAbstraction.register(getApplicationContext(), u)) {
+                if (DatabaseAbstraction.register(u)) {
                     finish();
                 } else {
                     emailField.setError(getString(R.string.error_email_already_registered));

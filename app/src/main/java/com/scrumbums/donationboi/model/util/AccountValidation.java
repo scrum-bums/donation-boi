@@ -99,30 +99,66 @@ public final class AccountValidation {
                 || (s.length() < MIN_PASSWORD_LENGTH); //&& hasMinChars(s);
     }
 
-    /**
-     * Test if the String has the minimum number of chars needed for a valid
-     * password.
-     * @param s The String to validate.
-     * @return If the String has the min character requirements.
-     */
-    private static boolean hasMinChars(CharSequence s) {
+    private static int getNumUppercaseChars(CharSequence s) {
         int numUpper = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if ((c >= 'A') && (c <= 'Z')) {
+                numUpper++;
+            }
+        }
+
+        return numUpper;
+    }
+
+    private static int getNumLowercaseChars(CharSequence s) {
         int numLower = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if ((c >= 'a') && (c <= 'z')) {
+                numLower++;
+            }
+        }
+
+        return numLower;
+    }
+
+    private static int getNumSpecialChars(CharSequence s) {
         int numSpecial = 0;
-        int numNum = 0;
+
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if ((c + "").matches(SPECIAL_CHARS_REGEX)) {
                 numSpecial++;
-            } else if ((c >= 'a') && (c <= 'z')) {
-                numLower++;
-            } else if ((c >= 'A') && (c <= 'Z')) {
-                numUpper++;
-            } else if ((c >= '0') && (c <= '9')) {
-                numNum++;
+            }
+        }
+
+        return numSpecial;
+    }
+
+    private static int getNumNumericChars(CharSequence s) {
+        int numNumeric = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if ((c >= '0') && (c <= '9')) {
+                numNumeric++;
             } // else should never happen
         }
-        return (numUpper >= MIN_UPPERCASE_CHARS) && (numLower >= MIN_LOWERCASE_CHARS)
-                && (numSpecial >= MIN_SPECIAL_CHARS) && (numNum >= MIN_NUMERIC_CHARS);
+        return numNumeric;
+    }
+
+    /**
+     * Test if the String has the minimum number of chars needed for a valid password.
+     *
+     * @param s The String to validate.
+     * @return If the String has the min character requirements.
+     */
+    private static boolean hasMinChars(CharSequence s) {
+        return (getNumUppercaseChars(s) >= MIN_UPPERCASE_CHARS)
+                && (getNumLowercaseChars(s) >= MIN_LOWERCASE_CHARS)
+                && (getNumSpecialChars(s) >= MIN_SPECIAL_CHARS)
+                && (getNumNumericChars(s) >= MIN_NUMERIC_CHARS);
     }
 }

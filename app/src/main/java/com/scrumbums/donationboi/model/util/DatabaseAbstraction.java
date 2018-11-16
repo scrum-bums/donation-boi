@@ -9,7 +9,7 @@ import com.scrumbums.donationboi.model.entities.Item;
 import com.scrumbums.donationboi.model.entities.Store;
 import com.scrumbums.donationboi.model.entities.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -52,7 +52,7 @@ public final class DatabaseAbstraction {
             editor.putBoolean("canAddItems", canAddItems);
             editor.putString("userEmail", user.getEmail());
             editor.putBoolean("loggedIn", true);
-            editor.commit();
+            editor.apply();
             realm.close();
             return user;
         } else {
@@ -63,12 +63,11 @@ public final class DatabaseAbstraction {
 
     /**
      * Register the given user.
-     * @param context An Application context to use to obtain the database
      * @param user The User to register.
      * @return A Completable that will complete when the user has been registered successfully,
      *         or error otherwise.
      */
-    public static boolean register(final Context context, final User user) {
+    public static boolean register(final User user) {
         Realm realm = Realm.getDefaultInstance();
 
         RealmQuery<User> query = realm.where(User.class);
@@ -102,10 +101,10 @@ public final class DatabaseAbstraction {
 
     /**
      * retrieves an array of items from a store with specified id
-     * @param storeId
+     * @param storeId The store ID to search by
      * @return the items belonging to a store.
      */
-    public static ArrayList<Item> getItemsByStoreId(int storeId) {
+    public static List<Item> getItemsByStoreId(int storeId) {
         Store s = getStore(storeId);
         return s.getInventoryArrayList();
     }
@@ -132,6 +131,6 @@ public final class DatabaseAbstraction {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 }

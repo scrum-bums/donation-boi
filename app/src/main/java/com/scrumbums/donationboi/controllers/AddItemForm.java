@@ -12,7 +12,6 @@ import android.widget.Spinner;
 import com.scrumbums.donationboi.R;
 import com.scrumbums.donationboi.model.Categories;
 import com.scrumbums.donationboi.model.entities.Store;
-import com.scrumbums.donationboi.model.util.Converters;
 import com.scrumbums.donationboi.model.util.DatabaseAbstraction;
 
 /**
@@ -65,7 +64,7 @@ public class AddItemForm extends AppCompatActivity {
             Editable description = descriptionBox.getText();
             String itemDescription = description.toString();
             Object selectedItem = categorySpinner.getSelectedItem();
-            Categories cat = Converters.stringToCategories(selectedItem.toString());
+            Categories cat = Categories.stringToCategories(selectedItem.toString());
 
             store.addToInventory(itemName, itemDescription, itemPrice, itemType, cat);
             finish();
