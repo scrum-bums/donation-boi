@@ -48,11 +48,7 @@ public class Item extends RealmObject {
      * @param store    Store the item was donated to
      */
     public Item(String n, String d, double p, String t, Categories category, Store store) {
-        this.name = n;
-        this.description = d;
-        this.price = p;
-        this.type = t;
-        this.setCategory(category);
+        this(n, d, p ,t, category, store, 0);
 
         Realm realm = Realm.getDefaultInstance();
         // make sure we give this user a unique (i.e., auto-incrementing) ID in the database
@@ -62,9 +58,6 @@ public class Item extends RealmObject {
         } else {
             this.itemId = highestId.intValue() + 1;
         }
-
-        this.store = store;
-        timestamp = Calendar.getInstance().getTime().toString();
     }
 
     /**
@@ -74,6 +67,28 @@ public class Item extends RealmObject {
      */
     public Item(String n, Store store) {
         this(n, null, 0.0, null, null, store);
+    }
+
+    /**
+     * Create a new item
+     *
+     * @param n        The name of the item
+     * @param d        Description for the item
+     * @param p        Price for the item
+     * @param t        Item type
+     * @param category Item category
+     * @param store    Store the item was donated to
+     */
+    public Item(String n, String d, double p, String t, Categories category, Store store, int itemId) {
+        this.name = n;
+        this.description = d;
+        this.price = p;
+        this.type = t;
+        this.setCategory(category);
+        this.itemId = itemId;
+
+        this.store = store;
+        timestamp = Calendar.getInstance().getTime().toString();
     }
 
     /**
@@ -161,10 +176,14 @@ public class Item extends RealmObject {
         }
         Item temp = (Item) o;
 
-        return (temp.getName().equals(name) && (temp.getPrice()
-                == price)
-                && temp.getType().equals(type)
-                && temp.getDescription().equals(description));
+        return ((temp.getName() == null) == (name == null)
+                && (name == null || temp.getName().equals(name))
+                && (temp.getPrice() == price)
+                && ((temp.getType() == null) == (type == null)) // null test
+                && (type == null || temp.getType().equals(type)) // avoid NPE
+                && ((temp.getDescription() == null) == (description == null))
+                && (description == null
+                    || temp.getDescription().equals(description)));
     }
 
     public int hashCode() {
