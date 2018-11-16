@@ -35,7 +35,7 @@ public class AddItemForm extends AppCompatActivity {
 
         nameBox = findViewById(R.id.name_box);
         priceBox = findViewById(R.id.price_box);
-        descriptionBox = findViewById(R.id.descrip_box);
+        descriptionBox = findViewById(R.id.description_box);
         typeBox = findViewById(R.id.type_box);
 
         categorySpinner = findViewById(R.id.category_spinner);
