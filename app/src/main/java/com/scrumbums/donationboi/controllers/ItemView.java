@@ -19,7 +19,7 @@ public class ItemView extends AppCompatActivity {
 
 
     private static final int LEN = 31;
-    public static final int LEN1 = 31;
+    private static final int LEN1 = 31;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

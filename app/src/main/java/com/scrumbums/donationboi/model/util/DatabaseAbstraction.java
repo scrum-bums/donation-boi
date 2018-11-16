@@ -100,6 +100,11 @@ public final class DatabaseAbstraction {
         return query.findFirst();
     }
 
+    /**
+     * retrieves an array of items from a store with specified id
+     * @param storeId
+     * @return the items belonging to a store.
+     */
     public static ArrayList<Item> getItemsByStoreId(int storeId) {
         Store s = getStore(storeId);
         return s.getInventoryArrayList();
