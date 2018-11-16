@@ -165,7 +165,15 @@ public class Location extends RealmObject {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int hash = 18;
+        hash += 31 * this.streetAddress.hashCode();
+        hash += 31 * this.state.hashCode();
+        hash += 31 * this.city.hashCode();
+        hash += 31 * this.zipCode;
+        hash += 31 * this.latitude;
+        hash += 31 * this.longitude;
+
+        return hash;
     }
 
     @Override
