@@ -78,8 +78,10 @@ public class Item extends RealmObject {
      * @param t        Item type
      * @param category Item category
      * @param store    Store the item was donated to
+     * @param itemId   The ID to give this item
      */
-    public Item(String n, String d, double p, String t, Categories category, Store store, int itemId) {
+    public Item(String n, String d, double p, String t, Categories category, Store store,
+                int itemId) {
         this.name = n;
         this.description = d;
         this.price = p;
@@ -176,14 +178,14 @@ public class Item extends RealmObject {
         }
         Item temp = (Item) o;
 
-        return ((temp.getName() == null) == (name == null)
-                && (name == null || temp.getName().equals(name))
+        return (((temp.getName() == null) == (name == null))
+                && ((name == null) || temp.getName().equals(name))
                 && (temp.getPrice() == price)
                 && ((temp.getType() == null) == (type == null)) // null test
-                && (type == null || temp.getType().equals(type)) // avoid NPE
+                && ((type == null) || temp.getType().equals(type)) // avoid NPE
                 && ((temp.getDescription() == null) == (description == null))
-                && (description == null
-                    || temp.getDescription().equals(description)));
+                && ((description == null)
+                || temp.getDescription().equals(description)));
     }
 
     public int hashCode() {
