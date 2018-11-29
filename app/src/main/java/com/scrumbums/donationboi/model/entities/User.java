@@ -58,6 +58,28 @@ public class User extends RealmObject {
     }
 
     /**
+     * Create a new user
+     *
+     * @param name     The user's full name
+     * @param username A username for this user
+     * @param email    The user's email address
+     * @param password Plaintext password for the user
+     * @param role     The role to assign to this user
+     * @param id       The user's ID
+     */
+    public User(String name, String username, String email, String password, UserRole role,
+                int id) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+
+        this.uid = id;
+
+        this.setRole(role);
+    }
+
+    /**
      * Get this user's ID
      * @return The user's ID
      */

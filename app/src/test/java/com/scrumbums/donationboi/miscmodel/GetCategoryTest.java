@@ -1,4 +1,4 @@
-package com.scrumbums.donationboi;
+package com.scrumbums.donationboi.miscmodel;
 
 import com.scrumbums.donationboi.model.Categories;
 
@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CategoryEqualsTest {
+public class GetCategoryTest {
     @Test
     public void testGetCategory() {
         assertEquals(Categories.ELECTRONICS, Categories.getCategory("Electronics"));

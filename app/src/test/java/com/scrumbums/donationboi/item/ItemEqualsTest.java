@@ -1,4 +1,4 @@
-package com.scrumbums.donationboi;
+package com.scrumbums.donationboi.item;
 
 import android.content.Context;
 

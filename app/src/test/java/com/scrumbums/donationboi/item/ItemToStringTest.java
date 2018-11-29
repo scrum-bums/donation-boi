@@ -1,4 +1,4 @@
-package com.scrumbums.donationboi;
+package com.scrumbums.donationboi.item;
 
 import com.scrumbums.donationboi.model.Categories;
 import com.scrumbums.donationboi.model.entities.Item;
