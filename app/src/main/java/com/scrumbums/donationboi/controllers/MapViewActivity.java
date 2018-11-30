@@ -51,7 +51,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        Store[] stores = DatabaseAbstraction.getStoresArrayList();
+        Store[] stores = DatabaseAbstraction.get().getStoresArrayList();
 
         for (Store store : stores) {
             // Add a marker in Sydney and move the camera

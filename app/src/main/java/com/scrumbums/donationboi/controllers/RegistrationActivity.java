@@ -52,7 +52,7 @@ public class RegistrationActivity extends Activity {
         regBtn.setOnClickListener(v -> {
             User u = getUser();
             if (u != null) {
-                if (DatabaseAbstraction.register(u)) {
+                if (DatabaseAbstraction.get().register(u)) {
                     finish();
                 } else {
                     emailField.setError(getString(R.string.error_email_already_registered));

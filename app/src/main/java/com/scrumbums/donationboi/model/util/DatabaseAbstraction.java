@@ -28,6 +28,19 @@ public final class DatabaseAbstraction {
      */
     private DatabaseAbstraction() { }
 
+    private static DatabaseAbstraction instance;
+
+    /**
+     * Get the singleton instance of the database abstraction.
+     * @return The singleton instance.
+     */
+    public static DatabaseAbstraction get() {
+        if (instance == null) {
+            instance = new DatabaseAbstraction();
+        }
+        return instance;
+    }
+
     /**
      * Attempt to login with the given credentials.
      * @param context The current application context
@@ -36,7 +49,7 @@ public final class DatabaseAbstraction {
      * @return 1 if the given credentials are valid, 0 if the password is
      * invalid, or -1 if the username is invalid.
      */
-    public static User login(Context context, String email, String password) {
+    public User login(Context context, String email, String password) {
         Realm realm = Realm.getDefaultInstance();
 
         RealmQuery<User> query = realm.where(User.class);
@@ -67,7 +80,7 @@ public final class DatabaseAbstraction {
      * @return A Completable that will complete when the user has been registered successfully,
      *         or error otherwise.
      */
-    public static boolean register(final User user) {
+    public boolean register(final User user) {
         Realm realm = Realm.getDefaultInstance();
 
         RealmQuery<User> query = realm.where(User.class);
@@ -92,7 +105,7 @@ public final class DatabaseAbstraction {
      * @param storeId The store ID to search by
      * @return The store if found.  Otherwise, null.
      */
-    public static Store getStore(int storeId) {
+    public Store getStore(int storeId) {
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<Store> query = realm.where(Store.class);
         query.equalTo("storeId", storeId);
@@ -104,7 +117,7 @@ public final class DatabaseAbstraction {
      * @param storeId The store ID to search by
      * @return the items belonging to a store.
      */
-    public static List<Item> getItemsByStoreId(int storeId) {
+    public List<Item> getItemsByStoreId(int storeId) {
         Store s = getStore(storeId);
         return s.getInventoryArrayList();
     }
@@ -114,7 +127,7 @@ public final class DatabaseAbstraction {
      *
      * @return An array containing all the stores in the database
      */
-    public static Store[] getStoresArrayList() {
+    public Store[] getStoresArrayList() {
         Realm realm = Realm.getDefaultInstance();
         RealmQuery<Store> storeRealmQuery = realm.where(Store.class);
         RealmResults<Store> result = storeRealmQuery.findAll();
@@ -127,7 +140,7 @@ public final class DatabaseAbstraction {
      *
      * @param context The current application context
      */
-    public static void logout(Context context) {
+    public void logout(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();

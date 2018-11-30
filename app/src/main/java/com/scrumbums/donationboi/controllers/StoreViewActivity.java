@@ -38,7 +38,7 @@ public class StoreViewActivity extends AppCompatActivity {
         setContentView(R.layout.store_view);
 
         storeId = intent.getIntExtra("storeId", 0);
-        store = DatabaseAbstraction.getStore(storeId);
+        store = DatabaseAbstraction.get().getStore(storeId);
 
         TextView storeInfo = findViewById(R.id.store_info);
         storeInfo.setText(store.toString());

@@ -41,11 +41,11 @@ public class ItemSearchActivity extends AppCompatActivity {
         int storeId = intent.getIntExtra("storeId", 0);
         if (storeId == 0) {
             inventoryArray = new ArrayList<>();
-            for (Store s : DatabaseAbstraction.getStoresArrayList()) {
+            for (Store s : DatabaseAbstraction.get().getStoresArrayList()) {
                 inventoryArray.addAll(s.getInventoryArrayList());
             }
         } else {
-            inventoryArray = DatabaseAbstraction.getItemsByStoreId(storeId);
+            inventoryArray = DatabaseAbstraction.get().getItemsByStoreId(storeId);
         }
         filteredArray = inventoryArray;
         setContentView(R.layout.item_search);

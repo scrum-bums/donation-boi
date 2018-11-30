@@ -25,7 +25,7 @@ public class StoreListActivity extends AppCompatActivity {
         setContentView(R.layout.store_list);
         ListView listView = findViewById(R.id.mobile_list);
 
-        stores = DatabaseAbstraction.getStoresArrayList();
+        stores = DatabaseAbstraction.get().getStoresArrayList();
 
         adapter = new ArrayAdapter<>(this, R.layout.csv_element_view, stores);
         listView.setAdapter(adapter);
@@ -39,7 +39,7 @@ public class StoreListActivity extends AppCompatActivity {
 
         Button logout = findViewById(R.id.logout);
         logout.setOnClickListener(v -> {
-            DatabaseAbstraction.logout(getApplicationContext());
+            DatabaseAbstraction.get().logout(getApplicationContext());
             startActivity(new Intent(StoreListActivity.this, MainActivity.class));
             finish();
         });
