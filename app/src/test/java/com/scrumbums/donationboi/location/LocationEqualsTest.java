@@ -1,4 +1,4 @@
-package com.scrumbums.donationboi;
+package com.scrumbums.donationboi.location;
 
 import com.scrumbums.donationboi.model.entities.Location;
 
