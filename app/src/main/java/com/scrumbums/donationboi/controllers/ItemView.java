@@ -26,7 +26,7 @@ public class ItemView extends AppCompatActivity {
         setContentView(R.layout.item_view);
         final int storeId = intent.getIntExtra("storeId",0);
         final int itemId = intent.getIntExtra("itemId", 0);
-        Store store = DatabaseAbstraction.getStore(storeId);
+        Store store = DatabaseAbstraction.get().getStore(storeId);
         Item item = store.getInventoryItem(itemId);
 
         if (item == null) {

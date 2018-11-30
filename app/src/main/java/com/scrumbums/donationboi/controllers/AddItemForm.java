@@ -31,7 +31,7 @@ public class AddItemForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
         setContentView(R.layout.add_item_form);
-        store = DatabaseAbstraction.getStore(intent.getIntExtra("storeId", 0));
+        store = DatabaseAbstraction.get().getStore(intent.getIntExtra("storeId", 0));
 
         nameBox = findViewById(R.id.name_box);
         priceBox = findViewById(R.id.price_box);

@@ -280,7 +280,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            User user = DatabaseAbstraction.login(getApplicationContext(), mEmail, mPassword);
+            User user = DatabaseAbstraction.get().login(getApplicationContext(), mEmail, mPassword);
 
             if (user == null) {
                 runOnUiThread(()

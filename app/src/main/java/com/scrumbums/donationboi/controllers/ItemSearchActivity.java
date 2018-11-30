@@ -41,11 +41,11 @@ public class ItemSearchActivity extends AppCompatActivity {
         int storeId = intent.getIntExtra("storeId", 0);
         if (storeId == 0) {
             inventoryArray = new ArrayList<>();
-            for (Store s : DatabaseAbstraction.getStoresArrayList()) {
+            for (Store s : DatabaseAbstraction.get().getStoresArrayList()) {
                 inventoryArray.addAll(s.getInventoryArrayList());
             }
         } else {
-            inventoryArray = DatabaseAbstraction.getItemsByStoreId(storeId);
+            inventoryArray = DatabaseAbstraction.get().getItemsByStoreId(storeId);
         }
         filteredArray = inventoryArray;
         setContentView(R.layout.item_search);
@@ -84,8 +84,9 @@ public class ItemSearchActivity extends AppCompatActivity {
     private void setListeners(Button searchButton) {
         searchButton.setOnClickListener(v -> {
             filteredArray = inventoryArray.stream()
-                    .filter(item -> item.getName()
+                    .filter(item -> (item.getName()
                             .contains(searchBar.getText())
+                            || fuzzyContains(item.getName(), searchBar.getText()))
                             && ("All".equals(categorySpinner.getSelectedItem().toString())
                             || (Categories.stringToCategories(categorySpinner
                             .getSelectedItem().toString()) == item.getCategory())))
@@ -104,6 +105,34 @@ public class ItemSearchActivity extends AppCompatActivity {
             startActivity(intent1);
 
         });
+    }
+
+    private static final double FUZZYTHRESH = 0.7;
+
+    /**
+     * Do a fuzzy match search of two Strings.
+     * @param actual The value gotten.
+     * @param expected The expected value.
+     * @return If the given string matches more than a given percent of the expected String.
+     */
+    private static boolean fuzzyContains(CharSequence actual, CharSequence expected) {
+        double matching = 0;
+        int expIndex = 0;
+        for (int i = 0; i < actual.length() && expIndex < expected.length(); i++) {
+            char act = actual.charAt(i);
+            char exp = expected.charAt(expIndex);
+            if (Character.isAlphabetic(act)) {
+                act = Character.toLowerCase(act);
+            }
+            if (Character.isAlphabetic(exp)) {
+                exp = Character.toLowerCase(exp);
+            }
+            if (act == exp) {
+                matching++;
+                expIndex++;
+            }
+        }
+        return matching / expected.length() > FUZZYTHRESH;
     }
 
 }
